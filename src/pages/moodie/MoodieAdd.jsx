@@ -49,6 +49,7 @@ function MoodieAdd() {
     padding-top: 56px;
   `;
   const QuestionSubTitle = styled.li`
+    text-align: left;
     font-size: 14px;
     color: #374723;
     font-weight: 400;
@@ -95,7 +96,49 @@ function MoodieAdd() {
     right: 20px;
     bottom: 15px;
   `;
+  const KeyWordBox = styled.div`
+    background-color: #fff;
+    width: 390px;
+    height: 132px;
+    margin: 0 auto;
+    border-radius: 15px;
+    margin-top: 15px;
+    padding: 0 20px;
+  `;
+  const KeyWordSelect = styled.div`
+    /* text-align: left !important; */
+    display: flex;
+    color: #374723;
+    font-size: 14px;
+    font-weight: 600;
+    padding-top: 21px;
+    margin-bottom: 12px;
+  `;
 
+  const KeyWordItemWrap = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+  `;
+  const KeyWordItems = styled.ul`
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: start;
+  `;
+  const KeyWordItemsLi = styled.li`
+    margin-right: 9px;
+    margin-top: 4px;
+    display: flex;
+    /* gap: 5px; */
+  `;
+
+  const KeyWordItemsBtn = styled.button`
+    border: none;
+    padding: 5px 10px;
+    background-color: #ebffd3;
+    border-radius: 20px;
+    /* margin-right: 9px; */
+  `;
   return (
     <div>
       <Header>헤더 로고</Header>
@@ -109,9 +152,13 @@ function MoodieAdd() {
           <QuestionSubTitle>
             · 오늘 가장 기억에 남는 순간은 무엇인가요?
           </QuestionSubTitle>
-          <QuestionSubTitle>· 퀘스쳔 서브 타이틀</QuestionSubTitle>
-          <QuestionSubTitle>· 퀘스쳔 서브 타이틀</QuestionSubTitle>
-          <QuestionSubTitle>· 퀘스쳔 서브 타이틀</QuestionSubTitle>
+          <QuestionSubTitle>· 어떤 감정을 가장 많이 느꼈나요?</QuestionSubTitle>
+          <QuestionSubTitle>
+            · 무엇이 그런 기분을 느끼게 했나요?
+          </QuestionSubTitle>
+          <QuestionSubTitle>
+            · 내일은 어떤 하루가 되었으면 좋겠나요?
+          </QuestionSubTitle>
         </QuestionSubTitleWrap>
       </QuestionWrap>
       <TodayDiaryWrap>
@@ -124,11 +171,46 @@ function MoodieAdd() {
           <TodayDiaryBtn>감정분석하기</TodayDiaryBtn>
         </TodayDiaryForm>
       </TodayDiaryWrap>
-      <div>
-        키워드 박스
-        <div>감정 키워드 선택</div>
-        <div>키워드 아이템</div>
-      </div>
+      <KeyWordBox>
+        <KeyWordSelect>감정 키워드 선택</KeyWordSelect>
+        <KeyWordItemWrap>
+          <KeyWordItems>
+            <KeyWordItemsLi>
+              <KeyWordItemsBtn>기쁨</KeyWordItemsBtn>
+            </KeyWordItemsLi>
+            <KeyWordItemsLi>
+              <KeyWordItemsBtn>슬픔</KeyWordItemsBtn>
+            </KeyWordItemsLi>
+            <KeyWordItemsLi>
+              <KeyWordItemsBtn>스트레스</KeyWordItemsBtn>
+            </KeyWordItemsLi>
+            <KeyWordItemsLi>
+              <KeyWordItemsBtn>만족</KeyWordItemsBtn>
+            </KeyWordItemsLi>
+            <KeyWordItemsLi>
+              <KeyWordItemsBtn>평온</KeyWordItemsBtn>
+            </KeyWordItemsLi>
+            <KeyWordItemsLi>
+              <KeyWordItemsBtn>불안</KeyWordItemsBtn>
+            </KeyWordItemsLi>
+            <KeyWordItemsLi>
+              <KeyWordItemsBtn>걱정</KeyWordItemsBtn>
+            </KeyWordItemsLi>
+            <KeyWordItemsLi>
+              <KeyWordItemsBtn>우울</KeyWordItemsBtn>
+            </KeyWordItemsLi>
+            <KeyWordItemsLi>
+              <KeyWordItemsBtn>화남</KeyWordItemsBtn>
+            </KeyWordItemsLi>
+            <KeyWordItemsLi>
+              <KeyWordItemsBtn>짜증</KeyWordItemsBtn>
+            </KeyWordItemsLi>
+            <KeyWordItemsLi>
+              <KeyWordItemsBtn>외로움</KeyWordItemsBtn>
+            </KeyWordItemsLi>
+          </KeyWordItems>
+        </KeyWordItemWrap>
+      </KeyWordBox>
       <div>
         체크박스
         <div>간단 감정 체크</div>
