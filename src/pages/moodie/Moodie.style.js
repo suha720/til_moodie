@@ -24,3 +24,137 @@ export const HamCate = styled.div``;
 export const MoodiePTag = styled.p`
   font-size: 24px;
 `;
+
+// 여기서부터 추가된 것
+
+export const ContainerMain = styled.div`
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  background-color: #f0f9e8;
+  min-height: 100vh;
+  box-sizing: border-box;
+`;
+
+export const Logo = styled.div`
+  text-align: center;
+  margin-bottom: 24px;
+`;
+
+export const Greeting = styled.div`
+  text-align: center;
+  margin-bottom: 32px;
+
+  h1 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #2b5906;
+  }
+
+  p {
+    font-size: 14px;
+    color: #4b7045;
+  }
+`;
+
+export const ChartBox = styled.div`
+  background: white;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+`;
+
+export const ChartBoxText = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  h2 {
+    font-size: 16px;
+  }
+  p {
+    font-size: 14px;
+  }
+  margin-bottom: 16px;
+`;
+
+export const ChartBoxContent = styled.div`
+  height: 200px;
+  border: 1px solid #f0f9e8;
+  border-radius: 16px;
+`;
+
+export const EmotionBox = styled(ChartBox)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .emotions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+    width: 100%;
+    gap: 8px;
+
+    img {
+      width: 32px;
+      height: 32px;
+    }
+
+    span {
+      font-size: 12px;
+      color: #4b7045;
+    }
+  }
+
+  height: 240px;
+`;
+
+export const EmotionBoxTitle = styled.div`
+  font-size: 16px;
+  font-weight: 700;
+`;
+
+export const RecordButton = styled.button`
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(90deg, #b7e655, #70cb3f);
+  border: none;
+  border-radius: 999px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  margin: 24px 0;
+  cursor: pointer;
+`;
+
+export const BottomNav = styled.div`
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 600px;
+  background: #eaf8d8;
+  display: flex;
+  justify-content: space-around;
+  padding: 12px 0;
+  border-top: 1px solid #c8e6b1;
+
+  button {
+    background: #ffffff;
+    border: 1px solid #b4dca0;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 12px;
+    color: #4b7045;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: #dff3c6;
+      font-weight: bold;
+    }
+  }
+`;
