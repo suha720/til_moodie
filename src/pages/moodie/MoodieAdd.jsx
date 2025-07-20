@@ -2,6 +2,13 @@ import styled from "@emotion/styled";
 import React from "react";
 
 function MoodieAdd() {
+  const ConatinerAdd = styled.div`
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #f7ffed;
+    // min-height: 100vh;
+  `;
+
   const Header = styled.div`
     height: 60px;
   `;
@@ -139,8 +146,9 @@ function MoodieAdd() {
     border-radius: 20px;
     /* margin-right: 9px; */
   `;
+
   return (
-    <div>
+    <ConatinerAdd>
       <Header>헤더 로고</Header>
       <TodayWrap>
         <TodayTitle>2025년 7월 15일 화요일</TodayTitle>
@@ -219,7 +227,7 @@ function MoodieAdd() {
           <div>체크박스 이모지</div>
         </div>
       </div>
-    </div>
+    </ConatinerAdd>
   );
 }
 
