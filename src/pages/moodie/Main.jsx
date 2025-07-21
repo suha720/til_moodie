@@ -9,6 +9,7 @@ import MoodieAdd from "./MoodieAdd";
 import MoodieEdit from "./MoodieEdit";
 import TestForm from "./TestForm";
 import TestFormList from "./TestFormList";
+import TestNivo from "./TestNivo";
 
 function Main() {
   const [diaries, setDiaries] = useState([]);
@@ -76,6 +77,7 @@ function Main() {
             path="testlist"
             element={<TestFormList diaries={diaries} onDelete={deleteDiary} />}
           ></Route>
+          <Route path="chart" element={<TestNivo></TestNivo>}></Route>
         </Routes>
       </BrowserRouter>
     </div>
