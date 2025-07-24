@@ -1,173 +1,33 @@
 import styled from "@emotion/styled";
 import React from "react";
+import {
+  CheckBox,
+  CheckBoxImoji,
+  CheckBoxImojis,
+  CheckBoxTitle,
+  KeyWordBox,
+  KeyWordItems,
+  KeyWordItemsBtn,
+  KeyWordItemsLi,
+  KeyWordItemWrap,
+  KeyWordSelect,
+  QuestionSubTitle,
+  QuestionSubTitleWrap,
+  QuestionTitle,
+  QuestionWrap,
+  TodayDiaryBox,
+  TodayDiaryBtn,
+  TodayDiaryForm,
+  TodayDiaryTitle,
+  TodayDiaryWrap,
+  TodaySubTitle,
+  TodayTitle,
+  TodayWrap,
+} from "./MoodieAdd.style";
 
 function MoodieAdd() {
-  const TodayWrap = styled.div`
-    display: block;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 57px;
-    margin-top: 129px;
-  `;
-  const TodayTitle = styled.h2`
-    display: block;
-    padding-bottom: 9px;
-    color: #4e741d;
-    font-size: 28px;
-    font-weight: 800;
-  `;
-  const TodaySubTitle = styled.div`
-    display: block;
-    color: #374723;
-    font-size: 15px;
-    font-weight: 600;
-  `;
-  const QuestionWrap = styled.div`
-    position: relative;
-    background-color: #e7f9d0;
-    width: 390px;
-    height: 156px;
-    margin: 0 auto;
-    border-radius: 15px;
-    margin-bottom: 28px;
-  `;
-  const QuestionTitle = styled.div`
-    position: absolute;
-    color: #374723;
-    font-size: 16px;
-    font-weight: 600;
-    padding-top: 26px;
-    left: 31px;
-    img {
-      margin-right: 8px;
-      transform: translateY(2px);
-    }
-  `;
-
-  const QuestionSubTitleWrap = styled.ul`
-    position: absolute;
-    left: 36px;
-    padding-top: 56px;
-    line-height: 2;
-  `;
-  const QuestionSubTitle = styled.li`
-    text-align: left;
-    font-size: 10px;
-    color: #374723;
-    font-weight: 400;
-  `;
-  const TodayDiaryWrap = styled.div`
-    position: relative;
-    background-color: #fff;
-    width: 390px;
-    height: 100;
-    border-radius: 15px;
-    margin: 0 auto;
-  `;
-  const TodayDiaryTitle = styled.div`
-    position: absolute;
-    left: 21px;
-    padding-top: 43px;
-    color: #4e741d;
-    font-size: 16px;
-    font-weight: 600;
-  `;
-  const TodayDiaryForm = styled.form``;
-  const TodayDiaryBox = styled.textarea`
-    position: absolute;
-    margin-top: 74px;
-    left: 20px;
-    width: 350px;
-    height: 172px;
-    border-radius: 15px;
-    border: 1px solid #8cca4130;
-    padding: 15px 17px;
-  `;
-
-  const KeyWordBox = styled.div`
-    margin: 0 auto;
-    border-radius: 15px;
-    padding: 0 20px;
-  `;
-  const KeyWordSelect = styled.div`
-    /* text-align: left !important; */
-    display: flex;
-    color: #4e741d;
-    font-size: 16px;
-    font-weight: 600;
-    padding-top: 267px;
-    margin-bottom: 12px;
-  `;
-
-  const KeyWordItemWrap = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-  `;
-  const KeyWordItems = styled.ul`
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: start;
-  `;
-  const KeyWordItemsLi = styled.li`
-    margin-right: 9px;
-    margin-top: 4px;
-    display: flex;
-    /* gap: 5px; */
-  `;
-
-  const KeyWordItemsBtn = styled.button`
-    border: none;
-    padding: 5px 10px;
-    background-color: #ebffd3;
-    border-radius: 20px;
-    /* margin-right: 9px; */
-  `;
-  const CheckBox = styled.div``;
-  const CheckBoxTitle = styled.div`
-    display: flex;
-    color: #4e741d;
-    font-size: 16px;
-    font-weight: 600;
-    padding-top: 36px;
-    padding-left: 21px;
-    margin-bottom: 23px;
-  `;
-  const CheckBoxImojis = styled.div`
-    display: flex;
-    padding: 0 28px;
-    gap: 27px;
-  `;
-  const CheckBoxImoji = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    padding-bottom: 24px;
-    .label {
-      color: #374723;
-      font-size: 14px;
-      font-weight: 600;
-    }
-    transform: ${({ raise }) => (raise ? "translateY(-4px)" : "none")};
-  `;
-  const TodayDiaryBtn = styled.button`
-    background: linear-gradient(
-      90deg,
-      rgba(188, 246, 117, 1) 0%,
-      rgba(122, 184, 46, 1) 100%
-    );
-    padding: 18px 42px;
-    border: none;
-    border-radius: 15px;
-    font-size: 20px;
-    color: #fff;
-    font-weight: 600;
-    margin-top: 28px;
-    margin-bottom: 51px;
-  `;
   return (
-    <div>
+    <>
       <TodayWrap>
         <TodayTitle>2025년 7월 15일 화요일</TodayTitle>
         <TodaySubTitle>오늘 하루는 어떠셨나요?</TodaySubTitle>
@@ -265,7 +125,7 @@ function MoodieAdd() {
         </TodayDiaryForm>
       </TodayDiaryWrap>
       <TodayDiaryBtn>감정 기록 하기</TodayDiaryBtn>
-    </div>
+    </>
   );
 }
 
