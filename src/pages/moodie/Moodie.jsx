@@ -20,6 +20,8 @@ import {
 import TmpForm from "../../components/forms/TmpForm";
 import MainSummary from "../../components/forms/MainSummary";
 import TmpLogo from "../../components/logo/TmpLogo";
+import MooPopup from "../../components/popups/MooPopup";
+import MooSPopup from "../../components/popups/MooSPopup";
 
 function Moodie() {
   return (
