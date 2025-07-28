@@ -80,7 +80,7 @@ function TestNivo() {
       <h1>Line 차트 예제</h1>
       <div style={{ width: "100%", height: "600px" }}>
         <ResponsiveLine
-          data={chartData2}
+          data={chartData}
           margin={{ top: 40, right: 80, bottom: 60, left: 50 }}
           xScale={{ type: "point" }}
           yScale={{ type: "linear", min: 0, max: 10, stacked: false }}
