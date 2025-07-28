@@ -40,7 +40,7 @@ const LoginBtn = styled.button`
 
 // 종합 감정 차트
 const Card = styled.div`
-  max-width: 420px;
+  max-width: 390px;
   margin: 32px auto;
   padding: 20px;
   background: white;
