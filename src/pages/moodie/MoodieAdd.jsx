@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   CheckBox,
   CheckBoxImoji,
@@ -26,6 +26,7 @@ import {
 } from "./MoodieAdd.style";
 import { ContainerMain } from "./Moodie.style";
 import TmpLogo from "../../components/logo/TmpLogo";
+import MooPopup from "../../components/popups/MooPopup";
 
 function MoodieAdd() {
   const ConatinerAdd = styled.div`
@@ -38,8 +39,25 @@ function MoodieAdd() {
     height: 60px;
   `;
 
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    const handleEsc = e => {
+      if (e.key === "Escape") {
+        setIsVisible(false);
+      }
+    };
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, []);
+
+  const handleClick = () => {
+    setIsVisible(false);
+  };
+
   return (
     <ContainerMain>
+      {isVisible && <MooPopup handleClick={handleClick} />}
       <TmpLogo></TmpLogo>
       <TodayWrap>
         <TodayTitle>2025년 7월 15일 화요일</TodayTitle>
