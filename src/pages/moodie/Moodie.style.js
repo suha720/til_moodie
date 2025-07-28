@@ -28,10 +28,10 @@ export const MoodiePTag = styled.p`
 // 여기서부터 추가된 것
 
 export const ContainerMain = styled.div`
-  max-width: 600px;
+  max-width: 440px;
   margin: 0 auto;
-  padding: 24px 16px;
-  background-color: #f0f9e8;
+  padding: 24px 0;
+  background-color: #f7ffed;
   min-height: 100vh;
   box-sizing: border-box;
   margin-top: 72px;

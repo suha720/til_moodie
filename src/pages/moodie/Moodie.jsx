@@ -19,16 +19,18 @@ import {
 } from "./Moodie.style";
 import TmpForm from "../../components/forms/TmpForm";
 import MainSummary from "../../components/forms/MainSummary";
+import TmpLogo from "../../components/logo/TmpLogo";
 
 function Moodie() {
   return (
     <>
-      <Logo>
+      {/* <Logo>
         <Link to={"/"}>
           {" "}
           <img src="/logo2.svg" alt="Moodie Logo" width={80} />
         </Link>
-      </Logo>
+      </Logo> */}
+      <TmpLogo></TmpLogo>
 
       <ContainerMain>
         <Greeting>
