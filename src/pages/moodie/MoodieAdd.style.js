@@ -5,7 +5,7 @@ export const TodayWrap = styled.div`
   align-items: center;
   justify-content: center;
   margin-bottom: 57px;
-  margin-top: 129px;
+  margin-top: 80px;
 `;
 export const TodayTitle = styled.h2`
   display: block;
@@ -46,11 +46,11 @@ export const QuestionSubTitleWrap = styled.ul`
   position: absolute;
   left: 36px;
   padding-top: 56px;
-  line-height: 2;
+  line-height: 1.6;
 `;
 export const QuestionSubTitle = styled.li`
   text-align: left;
-  font-size: 10px;
+  font-size: 12px;
   color: #374723;
   font-weight: 400;
 `;
@@ -58,7 +58,7 @@ export const TodayDiaryWrap = styled.div`
   position: relative;
   background-color: #fff;
   width: 390px;
-  height: 100;
+  height: 100%;
   border-radius: 15px;
   margin: 0 auto;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);

@@ -82,7 +82,6 @@ export const DetailDiaryInsightBox = styled.div`
 `;
 export const DetailDiaryInsightSubTitle = styled.div`
   text-align: left;
-
   font-size: 14px;
   font-weight: 700;
   color: #4e741d;

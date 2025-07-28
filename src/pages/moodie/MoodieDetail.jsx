@@ -21,10 +21,13 @@ import {
   DetailDiaryScoreWrap,
   WeeklyBtn,
 } from "./MoodieDetail.style";
+import { Container, ContainerMain } from "./Moodie.style";
+import TmpLogo from "../../components/logo/TmpLogo";
 
 function MoodieDetail() {
   return (
-    <>
+    <ContainerMain>
+      <TmpLogo></TmpLogo>
       <AiMoodieBox>
         <AiMoodieImage src="/기쁨.svg" alt="기쁨" />
         <AiMoodieTitle>/D/기분 좋은 하루였네요.</AiMoodieTitle>
@@ -80,7 +83,7 @@ function MoodieDetail() {
         </DetailDiaryScoreBox>
       </DetailDiaryScoreWrap>
       <WeeklyBtn>주간 기록 화면으로</WeeklyBtn>
-    </>
+    </ContainerMain>
   );
 }
 

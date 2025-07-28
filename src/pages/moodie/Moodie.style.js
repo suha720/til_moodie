@@ -28,17 +28,24 @@ export const MoodiePTag = styled.p`
 // 여기서부터 추가된 것
 
 export const ContainerMain = styled.div`
-  max-width: 600px;
+  max-width: 440px;
   margin: 0 auto;
-  padding: 24px 16px;
-  background-color: #f0f9e8;
+  padding: 24px 0;
+  background-color: #f7ffed;
   min-height: 100vh;
   box-sizing: border-box;
+  margin-top: 72px;
 `;
 
 export const Logo = styled.div`
-  text-align: center;
-  margin-bottom: 24px;
+  padding: 24px 0;
+  padding-left: 24px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  background-color: #fff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 `;
 
 export const Greeting = styled.div`
@@ -46,14 +53,14 @@ export const Greeting = styled.div`
   margin-bottom: 32px;
 
   h1 {
-    font-size: 20px;
+    font-size: 28px;
     font-weight: bold;
     margin-bottom: 8px;
     color: #2b5906;
   }
 
   p {
-    font-size: 14px;
+    font-size: 16px;
     color: #4b7045;
   }
 `;
@@ -119,14 +126,17 @@ export const EmotionBoxTitle = styled.div`
 export const RecordButton = styled.button`
   width: 100%;
   padding: 16px;
-  background: linear-gradient(90deg, #b7e655, #70cb3f);
+  background: linear-gradient(90deg, #c6ff7f, #6ead20);
   border: none;
-  border-radius: 999px;
-  font-size: 16px;
+  border-radius: 15px;
+  font-size: 24px;
   font-weight: bold;
-  color: white;
   margin: 24px 0;
   cursor: pointer;
+
+  a {
+    color: white;
+  }
 `;
 
 export const BottomNav = styled.div`

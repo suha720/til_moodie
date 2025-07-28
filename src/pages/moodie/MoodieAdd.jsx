@@ -24,10 +24,23 @@ import {
   TodayTitle,
   TodayWrap,
 } from "./MoodieAdd.style";
+import { ContainerMain } from "./Moodie.style";
+import TmpLogo from "../../components/logo/TmpLogo";
 
 function MoodieAdd() {
+  const ConatinerAdd = styled.div`
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #f7ffed;
+  `;
+
+  const Header = styled.div`
+    height: 60px;
+  `;
+
   return (
-    <>
+    <ContainerMain>
+      <TmpLogo></TmpLogo>
       <TodayWrap>
         <TodayTitle>2025년 7월 15일 화요일</TodayTitle>
         <TodaySubTitle>오늘 하루는 어떠셨나요?</TodaySubTitle>
@@ -125,7 +138,7 @@ function MoodieAdd() {
         </TodayDiaryForm>
       </TodayDiaryWrap>
       <TodayDiaryBtn>감정 기록 하기</TodayDiaryBtn>
-    </>
+    </ContainerMain>
   );
 }
 
