@@ -46,7 +46,7 @@ function Moodie() {
 
         <MainSummary></MainSummary>
 
-        <div style={{ width: "420px", margin: "32px auto" }}>
+        <div style={{ width: "390px", margin: "32px auto" }}>
           <RecordButton>
             <Link to={"/add"}>오늘의 감정 기록하기</Link>
           </RecordButton>

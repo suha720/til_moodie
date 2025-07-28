@@ -53,14 +53,14 @@ export const Greeting = styled.div`
   margin-bottom: 32px;
 
   h1 {
-    font-size: 20px;
+    font-size: 28px;
     font-weight: bold;
     margin-bottom: 8px;
     color: #2b5906;
   }
 
   p {
-    font-size: 14px;
+    font-size: 16px;
     color: #4b7045;
   }
 `;
