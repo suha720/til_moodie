@@ -27,6 +27,7 @@ import {
 import { ContainerMain } from "./Moodie.style";
 import TmpLogo from "../../components/logo/TmpLogo";
 import MooPopup from "../../components/popups/MooPopup";
+import TmpDate from "../../components/dates/TmpDate";
 
 function MoodieAdd() {
   const ConatinerAdd = styled.div`
@@ -60,7 +61,7 @@ function MoodieAdd() {
       {isVisible && <MooPopup handleClick={handleClick} />}
       <TmpLogo></TmpLogo>
       <TodayWrap>
-        <TodayTitle>2025년 7월 15일 화요일</TodayTitle>
+        <TmpDate />
         <TodaySubTitle>오늘 하루는 어떠셨나요?</TodaySubTitle>
       </TodayWrap>
       <QuestionWrap>

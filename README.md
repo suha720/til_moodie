@@ -12,6 +12,8 @@
 
 - Add 페이지 제목에 해당하는 시간을 알려주는 컴포넌트입니다.
 - moment 사용
-    - 포멧은 `format("YYYY년 M월 D일 dddd")`
-    - 한국어로 출력하기 위한 코드 추가
-        - `import "moment/locale/ko"`, `moment.locale("ko")`
+  - 포멧은 `format("YYYY년 M월 D일 dddd")`
+  - 한국어로 출력하기 위한 코드 추가
+    - `import "moment/locale/ko"`, `moment.locale("ko")`
+
+## 브랜치 먼저 생성하기!!
