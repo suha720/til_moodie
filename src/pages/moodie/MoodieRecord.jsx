@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 
 import TmpLogo from "../../components/logo/TmpLogo";
 import { ContainerMain } from "./Moodie.style";
@@ -52,6 +53,7 @@ import {
   WeeklyScoreTitle,
   WeeklyScoreWrap,
 } from "./MoodieRecord.style";
+import WeekCalendar from "../../components/weekcalendar/WeekCalendar";
 
 function MoodieRecord() {
   return (
@@ -69,16 +71,7 @@ function MoodieRecord() {
       </MoodieCategoryBtnWrap>
       <RecordWeeklyWrap>
         <RecordWeeklyTitle>/D/7월 4주차 기록</RecordWeeklyTitle>
-        <RecordWeeklyImg src="./weeklychart.svg" alt="주간 캘린더" />
-        <RecordWeeklyDateWrap>
-          <RecordWeeklyDate>21</RecordWeeklyDate>
-          <RecordWeeklyDate>22</RecordWeeklyDate>
-          <RecordWeeklyDate>23</RecordWeeklyDate>
-          <RecordWeeklyDate>24</RecordWeeklyDate>
-          <RecordWeeklyDate>25</RecordWeeklyDate>
-          <RecordWeeklyDate>26</RecordWeeklyDate>
-          <RecordWeeklyDate>27</RecordWeeklyDate>
-        </RecordWeeklyDateWrap>
+        <WeekCalendar />
         <RecordWeeklyTextBox>
           <RecordWeeklyText>
             /D/7개 중{" "}
