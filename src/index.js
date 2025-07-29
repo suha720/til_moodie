@@ -6,6 +6,9 @@ import TmpForm from "./components/forms/TmpForm";
 import SignUp from "./components/forms/SignUp";
 import MainSummary from "./components/forms/MainSummary";
 import MooSPopup from "./components/popups/MooSPopup";
+import TmpDate from "./components/dates/TmpDate";
+import TmpWeek from "./components/dates/TmpWeek";
+import MiniSchedule from "./components/calendars/MiniSchedule";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<Main />);
