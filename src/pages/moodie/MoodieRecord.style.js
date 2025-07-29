@@ -62,25 +62,9 @@ export const RecordWeeklyTitle = styled.h2`
   font-weight: 600;
   color: #314813;
 `;
-export const RecordWeeklyImg = styled.img`
-  width: 390px;
-  margin: 0 auto;
-`;
-export const RecordWeeklyDateWrap = styled.div`
-  display: flex;
-  justify-content: center;
-  margin: 0 auto;
-  gap: 18px;
-`;
-export const RecordWeeklyDate = styled.div`
-  transform: translateY(-78px);
-  text-align: center;
-  color: rgba(78, 116, 29, 0.1);
-  font-size: 30px;
-  font-weight: 700;
-`;
+
 export const RecordWeeklyTextBox = styled.div`
-  transform: translateY(-15px);
+  margin-top: 40px;
 `;
 export const RecordWeeklyText = styled.div`
   font-size: 20px;
