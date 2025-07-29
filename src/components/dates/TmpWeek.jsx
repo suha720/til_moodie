@@ -1,6 +1,7 @@
 import moment from "moment";
 import React from "react";
 import { DetailDiaryDay } from "../../pages/moodie/MoodieDetail.style";
+import { RecordWeeklyTitle } from "../../pages/moodie/MoodieRecord.style";
 
 function TmpWeek() {
   const getWeekOfMonth = date => {
@@ -16,8 +17,8 @@ function TmpWeek() {
   const month = today.month() + 1; // 월 (0부터 시작)
   const weekOfMonth = getWeekOfMonth(today);
 
-  const result = `${year}년 ${month}월 ${weekOfMonth}주차`;
-  return <DetailDiaryDay>{result}</DetailDiaryDay>;
+  const result = `/D/${month}월 ${weekOfMonth}주차 기록`;
+  return <RecordWeeklyTitle>{result}</RecordWeeklyTitle>;
 }
 
 export default TmpWeek;

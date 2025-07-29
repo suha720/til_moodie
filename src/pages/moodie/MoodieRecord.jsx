@@ -52,6 +52,7 @@ import {
   WeeklyScoreTitle,
   WeeklyScoreWrap,
 } from "./MoodieRecord.style";
+import TmpWeek from "../../components/dates/TmpWeek";
 
 function MoodieRecord() {
   return (
@@ -68,7 +69,7 @@ function MoodieRecord() {
         </MoodieCategorySubBtnWrap>
       </MoodieCategoryBtnWrap>
       <RecordWeeklyWrap>
-        <RecordWeeklyTitle>/D/7월 4주차 기록</RecordWeeklyTitle>
+        <TmpWeek />
         <RecordWeeklyImg src="./weeklychart.svg" alt="주간 캘린더" />
         <RecordWeeklyDateWrap>
           <RecordWeeklyDate>21</RecordWeeklyDate>
