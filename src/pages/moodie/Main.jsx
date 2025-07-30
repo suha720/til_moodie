@@ -11,6 +11,7 @@ import TestForm from "./TestForm";
 import TestFormList from "./TestFormList";
 import TestNivo from "./TestNivo";
 import MoodieWeeklyChart from "./MoodieWeeklyChart";
+import MoodieAllRecord from "./MoodieAllRecord";
 
 function Main() {
   const [diaries, setDiaries] = useState([]);
@@ -71,6 +72,7 @@ function Main() {
           <Route path="add" element={<MoodieAdd />}></Route>
           <Route path="edit" element={<MoodieEdit />}></Route>
           <Route path="/weekly" element={<MoodieWeeklyChart />}></Route>
+          <Route path="/allrecord" element={<MoodieAllRecord />}></Route>
           <Route
             path="test"
             element={<TestForm onAddDiary={addDiary} />}
