@@ -57,6 +57,9 @@ export const AllRecordCalendarSubText = styled.div`
   font-weight: 400;
   margin: 11px 50px 20px 50px;
   color: #314813;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  padding: 0 20px;
 `;
 
 export const MonthlyEmotionReport = styled.div`

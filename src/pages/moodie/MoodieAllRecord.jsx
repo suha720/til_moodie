@@ -32,22 +32,14 @@ import {
   MonthlyInsightTitle,
   MonthlyInsightWrap,
 } from "./MoodieAllRecord.style";
+import MoodieCategoryBt from "../../components/moodiecategorybutton/MoodieCategoryBt";
 
 function MoodieAllRecord() {
   //jsx
   return (
     <ContainerMain>
       <TmpLogo />
-      <MoodieCategoryBtnWrap>
-        <MoodieCategoryMainBtnWrap>
-          <MoodieCategoryMainBtn>작성하기</MoodieCategoryMainBtn>
-          <MoodieCategoryMainBtn>기록 보기</MoodieCategoryMainBtn>
-        </MoodieCategoryMainBtnWrap>
-        <MoodieCategorySubBtnWrap>
-          <MoodieCategorySubBtn>주간 기록</MoodieCategorySubBtn>
-          <MoodieCategorySubBtn>전체 기록</MoodieCategorySubBtn>
-        </MoodieCategorySubBtnWrap>
-      </MoodieCategoryBtnWrap>
+      <MoodieCategoryBt />
 
       <AllRecordCalendarWrap>
         <AllRecordCalendarTopWrap>
@@ -66,9 +58,8 @@ function MoodieAllRecord() {
             <span className="text">총 /D/개의 기록이 보관되어 있어요.</span>
           </AllRecordCalendarText>
           <AllRecordCalendarSubText>
-            /D/차근 차근 감정을 기록하며 자신을 돌보고 있어요!
-            <br />
-            꾸준히 작성하여 큰 변화를 만들어 보아요☺
+            /D/차근 차근 감정을 기록하며 자신을 돌보고 있어요! 꾸준히 작성하여
+            큰 변화를 만들어 보아요☺
           </AllRecordCalendarSubText>
         </AllRecordCalendarTextWrap>
       </AllRecordCalendarWrap>

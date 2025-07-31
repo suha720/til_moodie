@@ -88,7 +88,7 @@ function MoodieAdd() {
           <TodayDiaryBox
             rows={4}
             placeholder="오늘 하루 있었던 일, 느낀 감정, 생각들을 자유롭게 적어보세요. 솔직한 마음이 가장 중요해요.."
-          ></TodayDiaryBox>
+          />
           <KeyWordBox>
             <KeyWordSelect>감정 키워드 선택</KeyWordSelect>
             <KeyWordItemWrap>

@@ -81,6 +81,11 @@ export const TodayDiaryBox = styled.textarea`
   border-radius: 15px;
   border: 1px solid #8cca4130;
   padding: 15px 17px;
+  &::placeholder {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
 `;
 
 export const KeyWordBox = styled.div`
