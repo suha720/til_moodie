@@ -15,12 +15,15 @@ export const MoodieCategoryMainBtn = styled.button`
   white-space: nowrap;
   font-size: 20px;
   font-weight: 600;
-  color: #6b9931;
-  background-color: #fff;
+
+  color: ${({ isActive }) => (isActive ? "#fff" : "#6b9931")};
+  background-color: ${({ isActive }) => (isActive ? "#8dca41" : "#fff")};
+
   border: none;
   border-radius: 10px;
   padding: 12px 58px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
 `;
 export const MoodieCategorySubBtnWrap = styled.div`
   display: flex;
@@ -32,15 +35,18 @@ export const MoodieCategorySubBtnWrap = styled.div`
   margin-top: 14px;
 `;
 export const MoodieCategorySubBtn = styled.button`
-  color: #6b9931;
+  color: ${({ isActive }) => (isActive ? "#6b9931" : "#fff")};
+  background-color: ${({ isActive }) => (isActive ? "#fff" : "#8dca41")};
+
   font-size: 18px;
   font-weight: 600;
   width: 190px;
-  background-color: #fff;
   border: none;
   border-radius: 8px;
   padding: 7px 50px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: ${({ isActive }) =>
+    isActive ? "0px 2px 4px rgba(0, 0, 0, 0.25)" : "none"};
+  cursor: pointer;
 `;
 // end 무디 카테고리 스타일 //
 
@@ -75,10 +81,13 @@ export const RecordWeeklyText = styled.div`
   }
 `;
 export const RecordWeeklySubText = styled.div`
+  padding: 0 25px;
   margin-top: 11px;
   font-size: 14px;
   font-weight: 400;
   color: #314813;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 `;
 
 export const WeeklyRecordBoxWrap = styled.div``;
@@ -241,6 +250,8 @@ export const WeeklyInsightTitle = styled.div`
 export const WeeklyInsightSubTitle = styled.div`
   font-size: 12px;
   font-weight: 400;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 `;
 
 export const EmotionPatternBox = styled.div`
