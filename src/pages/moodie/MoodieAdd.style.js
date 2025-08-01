@@ -21,20 +21,20 @@ export const TodaySubTitle = styled.div`
   font-weight: 600;
 `;
 export const QuestionWrap = styled.div`
-  position: relative;
   background-color: #e7f9d0;
   width: 390px;
-  height: 156px;
+  height: 100%;
   margin: 0 auto;
   border-radius: 15px;
   margin-bottom: 28px;
+  text-align: left;
+  padding: 25px 30px;
 `;
 export const QuestionTitle = styled.div`
-  position: absolute;
   color: #374723;
   font-size: 16px;
   font-weight: 600;
-  padding-top: 26px;
+  padding-bottom: 12px;
   left: 31px;
   img {
     margin-right: 8px;
@@ -43,9 +43,6 @@ export const QuestionTitle = styled.div`
 `;
 
 export const QuestionSubTitleWrap = styled.ul`
-  position: absolute;
-  left: 36px;
-  padding-top: 56px;
   line-height: 1.6;
 `;
 export const QuestionSubTitle = styled.li`
@@ -55,29 +52,27 @@ export const QuestionSubTitle = styled.li`
   font-weight: 400;
 `;
 export const TodayDiaryWrap = styled.div`
-  position: relative;
   background-color: #fff;
   width: 390px;
   height: 100%;
   border-radius: 15px;
   margin: 0 auto;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
+  padding-top: 43px;
+  padding-left: 20px;
+  padding-right: 20px;
 `;
 export const TodayDiaryTitle = styled.div`
-  position: absolute;
-  left: 21px;
-  padding-top: 43px;
+  text-align: left;
   color: #4e741d;
   font-size: 16px;
   font-weight: 600;
+  padding-bottom: 12px;
 `;
 export const TodayDiaryForm = styled.form``;
 export const TodayDiaryBox = styled.textarea`
-  position: absolute;
-  margin-top: 74px;
-  left: 20px;
   width: 350px;
-  height: 172px;
+  height: 100%;
   border-radius: 15px;
   border: 1px solid #8cca4130;
   padding: 15px 17px;
@@ -87,18 +82,29 @@ export const TodayDiaryBox = styled.textarea`
     overflow-wrap: break-word;
   }
 `;
+export const EmotionKeywordPreview = styled.div`
+  text-align: left;
+  padding: 5px 15px;
+  background-color: #fff;
+  border: 1px solid #8cca4130;
+  border-top: none;
+  transform: translateY(-22px);
+  font-size: 12px;
+  height: 100%;
+  border-radius: 0 0 15px 15px;
+  box-shadow: 0px -2px 3px rgba(0, 0, 0, 0.05);
+`;
 
 export const KeyWordBox = styled.div`
   margin: 0 auto;
   border-radius: 15px;
-  padding: 0 20px;
 `;
 export const KeyWordSelect = styled.div`
   display: flex;
   color: #4e741d;
   font-size: 16px;
   font-weight: 600;
-  padding-top: 267px;
+  padding-top: 12px;
   margin-bottom: 12px;
 `;
 
@@ -131,14 +137,12 @@ export const CheckBoxTitle = styled.div`
   color: #4e741d;
   font-size: 16px;
   font-weight: 600;
-  padding-top: 36px;
-  padding-left: 21px;
-  margin-bottom: 23px;
+  padding-top: 32px;
+  margin-bottom: 18px;
 `;
 export const CheckBoxImojis = styled.div`
   display: flex;
-  padding: 0 28px;
-  gap: 27px;
+  gap: 31px;
 `;
 export const CheckBoxImoji = styled.button`
   display: flex;

@@ -5,6 +5,7 @@ import {
   CheckBoxImoji,
   CheckBoxImojis,
   CheckBoxTitle,
+  EmotionKeywordPreview,
   KeyWordBox,
   KeyWordItems,
   KeyWordItemsBtn,
@@ -56,6 +57,36 @@ function MoodieAdd() {
     setIsVisible(false);
   };
 
+  const [diaryText, setDiaryText] = useState("");
+  const [emotionKeyWord, setEmotionKeyWord] = useState([]);
+  const keywords = [
+    "기쁨",
+    "슬픔",
+    "스트레스",
+    "만족",
+    "평온",
+    "불안",
+    "걱정",
+    "우울",
+    "화남",
+    "짜증",
+    "외로움",
+  ];
+  const handleEmotionKeyWordClick = Keyword => {
+    if (!emotionKeyWord.includes(Keyword)) {
+      setEmotionKeyWord(Prev => [...Prev, Keyword]);
+    }
+  };
+
+  const [imojiBt, setImojiBt] = useState(null);
+  const imojis = [
+    { label: "기쁨", src: "./기쁨.svg" },
+    { label: "슬픔", src: "./슬픔.svg" },
+    { label: "불안", src: "./불안.svg" },
+    { label: "화남", src: "./분노.svg" },
+    { label: "평온", src: "./평온.svg" },
+  ];
+
   return (
     <ContainerMain>
       {isVisible && <MooPopup handleClick={handleClick} />}
@@ -86,72 +117,51 @@ function MoodieAdd() {
         <TodayDiaryForm>
           <TodayDiaryTitle>오늘의 감정기록</TodayDiaryTitle>
           <TodayDiaryBox
-            rows={4}
+            value={diaryText}
+            onChange={e => setDiaryText(e.target.value)}
+            rows={10}
             placeholder="오늘 하루 있었던 일, 느낀 감정, 생각들을 자유롭게 적어보세요. 솔직한 마음이 가장 중요해요.."
           />
+          {emotionKeyWord.length > 0 && (
+            <EmotionKeywordPreview>
+              [감정 키워드] {emotionKeyWord.map(k => `#${k}`).join(" ")}
+            </EmotionKeywordPreview>
+          )}
           <KeyWordBox>
             <KeyWordSelect>감정 키워드 선택</KeyWordSelect>
             <KeyWordItemWrap>
               <KeyWordItems>
-                <KeyWordItemsLi>
-                  <KeyWordItemsBtn>기쁨</KeyWordItemsBtn>
-                </KeyWordItemsLi>
-                <KeyWordItemsLi>
-                  <KeyWordItemsBtn>슬픔</KeyWordItemsBtn>
-                </KeyWordItemsLi>
-                <KeyWordItemsLi>
-                  <KeyWordItemsBtn>스트레스</KeyWordItemsBtn>
-                </KeyWordItemsLi>
-                <KeyWordItemsLi>
-                  <KeyWordItemsBtn>만족</KeyWordItemsBtn>
-                </KeyWordItemsLi>
-                <KeyWordItemsLi>
-                  <KeyWordItemsBtn>평온</KeyWordItemsBtn>
-                </KeyWordItemsLi>
-                <KeyWordItemsLi>
-                  <KeyWordItemsBtn>불안</KeyWordItemsBtn>
-                </KeyWordItemsLi>
-                <KeyWordItemsLi>
-                  <KeyWordItemsBtn>걱정</KeyWordItemsBtn>
-                </KeyWordItemsLi>
-                <KeyWordItemsLi>
-                  <KeyWordItemsBtn>우울</KeyWordItemsBtn>
-                </KeyWordItemsLi>
-                <KeyWordItemsLi>
-                  <KeyWordItemsBtn>화남</KeyWordItemsBtn>
-                </KeyWordItemsLi>
-                <KeyWordItemsLi>
-                  <KeyWordItemsBtn>짜증</KeyWordItemsBtn>
-                </KeyWordItemsLi>
-                <KeyWordItemsLi>
-                  <KeyWordItemsBtn>외로움</KeyWordItemsBtn>
-                </KeyWordItemsLi>
+                {keywords.map(word => (
+                  <KeyWordItemsLi key={word}>
+                    <KeyWordItemsBtn
+                      type="button"
+                      onClick={() => handleEmotionKeyWordClick(word)}
+                    >
+                      {word}
+                    </KeyWordItemsBtn>
+                  </KeyWordItemsLi>
+                ))}
               </KeyWordItems>
             </KeyWordItemWrap>
           </KeyWordBox>
           <CheckBox>
             <CheckBoxTitle>간단 감정 체크</CheckBoxTitle>
             <CheckBoxImojis>
-              <CheckBoxImoji>
-                <img src="./기쁨.svg" alt="기쁨" />
-                <span className="label">기쁨</span>
-              </CheckBoxImoji>
-              <CheckBoxImoji>
-                <img src="./슬픔.svg" alt="슬픔" />
-                <span className="label">슬픔</span>
-              </CheckBoxImoji>
-              <CheckBoxImoji raise>
-                <img src="./불안.svg" alt="슬픔" />
-                <span className="label">불안</span>
-              </CheckBoxImoji>
-              <CheckBoxImoji>
-                <img src="./분노.svg" alt="슬픔" />
-                <span className="label">화남</span>
-              </CheckBoxImoji>
-              <CheckBoxImoji>
-                <img src="./평온.svg" alt="슬픔" />
-                <span className="label">평온</span>
-              </CheckBoxImoji>
+              {imojis.map(imoji => (
+                <CheckBoxImoji
+                  type="button"
+                  key={imoji.label}
+                  onClick={() => setImojiBt(imoji.label)}
+                  raise={setImojiBt === imoji.label}
+                >
+                  <img
+                    src={imoji.src}
+                    alt={imoji.label}
+                    style={{ opacity: imojiBt === imoji.label ? 1 : 0.2 }}
+                  />
+                  <span className="label">{imoji.label}</span>
+                </CheckBoxImoji>
+              ))}
             </CheckBoxImojis>
           </CheckBox>
         </TodayDiaryForm>
