@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { ContainerMain } from "./Moodie.style";
 import TmpLogo from "../../components/logo/TmpLogo";
 import {
@@ -35,6 +35,25 @@ import {
 import MoodieCategoryBt from "../../components/moodiecategorybutton/MoodieCategoryBt";
 
 function MoodieAllRecord() {
+  //js
+  const getMonthInfo = () => {
+    const today = new Date();
+    return {
+      year: today.getFullYear(),
+      month: today.getMonth() + 1,
+    };
+  };
+
+  const [currentDate, setCurrentDate] = useState(getMonthInfo);
+
+  const changeMonth = offset => {
+    const newDate = new Date(currentDate.year, currentDate.month - 1 + offset);
+    setCurrentDate({
+      year: newDate.getFullYear(),
+      month: newDate.getMonth() + 1,
+    });
+  };
+
   //jsx
   return (
     <ContainerMain>
@@ -43,19 +62,21 @@ function MoodieAllRecord() {
 
       <AllRecordCalendarWrap>
         <AllRecordCalendarTopWrap>
-          <AllRecordCalendarTopTitle>
-            /Y/년 /M/월 기록
-          </AllRecordCalendarTopTitle>
+          <AllRecordCalendarTopTitle>{`${currentDate.year}년 ${currentDate.month}월 기록`}</AllRecordCalendarTopTitle>
           <AllRecordCalendarTopButtonWrap>
-            <AllRecordCalendarTopButton>/M/월</AllRecordCalendarTopButton>
-            <AllRecordCalendarTopButton>/M/월</AllRecordCalendarTopButton>
+            <AllRecordCalendarTopButton onClick={() => changeMonth(-1)}>
+              {`${currentDate.month - 1}월`}
+            </AllRecordCalendarTopButton>
+            <AllRecordCalendarTopButton onClick={() => changeMonth(1)}>
+              {`${currentDate.month + 1}월`}
+            </AllRecordCalendarTopButton>
           </AllRecordCalendarTopButtonWrap>
         </AllRecordCalendarTopWrap>
-        <AllCalendar />
+        <AllCalendar year={currentDate.year} month={currentDate.month} />
         <AllRecordCalendarTextWrap>
           <AllRecordCalendarText>
-            /M/월에는
-            <span className="text">총 /D/개의 기록이 보관되어 있어요.</span>
+            {`${currentDate.month}월은`}
+            <span className="text"> 총 /D/개의 기록이 보관되어 있어요.</span>
           </AllRecordCalendarText>
           <AllRecordCalendarSubText>
             /D/차근 차근 감정을 기록하며 자신을 돌보고 있어요! 꾸준히 작성하여
@@ -66,7 +87,7 @@ function MoodieAllRecord() {
 
       <MonthlyEmotionReport>
         <MonthlyEmotionReportTitle>
-          /D/월 모든 기록 감정 요약
+          {`${currentDate.month}월 모든 기록 감정 요약`}
         </MonthlyEmotionReportTitle>
         <EmotionStatsInfowrap>
           <EmotionStatsLInfo>

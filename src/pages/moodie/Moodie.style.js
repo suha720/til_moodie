@@ -50,19 +50,20 @@ export const Logo = styled.div`
 `;
 
 export const Greeting = styled.div`
-  text-align: center;
-  margin-bottom: 32px;
+  margin-top: 45px;
+  margin-bottom: 58px;
 
   h1 {
     font-size: 28px;
-    font-weight: bold;
-    margin-bottom: 8px;
-    color: #2b5906;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 10px;
+    color: #4e741d;
   }
 
   p {
     font-size: 16px;
-    color: #4b7045;
+    color: #00000080;
   }
 `;
 
@@ -125,16 +126,21 @@ export const EmotionBoxTitle = styled.div`
 `;
 
 export const RecordButton = styled.button`
-  width: 100%;
-  padding: 16px;
-  background: linear-gradient(90deg, #c6ff7f, #6ead20);
+  background: linear-gradient(
+    90deg,
+    rgba(188, 246, 117, 1) 0%,
+    rgba(122, 184, 46, 1) 100%
+  );
+  padding: 18px 42px;
   border: none;
   border-radius: 15px;
-  font-size: 24px;
-  font-weight: bold;
-  margin: 24px 0;
-  cursor: pointer;
+  font-size: 20px;
 
+  font-weight: 600;
+  margin-top: 28px;
+  margin-bottom: 30px;
+  cursor: pointer;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
   a {
     color: white;
   }

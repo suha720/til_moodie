@@ -50,17 +50,17 @@ const DateCell = styled.div`
   }
 `;
 
-const AllCalendar = () => {
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth();
+const AllCalendar = ({ year, month }) => {
+  // const today = new Date();
+  // const year = today.getFullYear();
+  // const month = today.getMonth();
 
-  // 이번 달 첫째 날
-  const firstDay = new Date(year, month, 1);
+  const firstDay = new Date(year, month - 1, 1);
   const startDay = firstDay.getDay();
+  const lastDate = new Date(year, month, 0).getDate();
 
   // 이번 달 총 일수
-  const lastDate = new Date(year, month + 1, 0).getDate();
+  // const lastDate = new Date(year, month + 1, 0).getDate();
 
   // 총 셀 개수 = 앞에 비는 칸 + 날짜 수
   const totalCells = Math.ceil((startDay + lastDate) / 7) * 7;
