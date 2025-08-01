@@ -1,0 +1,267 @@
+import React, { useEffect, useState } from "react";
+import {
+  Route,
+  BrowserRouter as Router,
+  Routes,
+  useNavigate,
+} from "react-router-dom";
+import Mood from "./Mood";
+import MoodAdd from "./MoodAdd";
+import MoodChart from "./MoodChart";
+import moment from "moment";
+
+function App() {
+  const initMoodList = [
+    {
+      date: "2025-07-28",
+      content:
+        "오늘은 친구들과 축구를 했다. 시원한 바람 속에서 땀 흘리며 놀았더니 기분이 좋았다.",
+      keywords: ["친구", "축구", "땀", "바람", "기분"],
+      joy: 7,
+      sadness: 1,
+      anger: 0,
+      anxiety: 2,
+      calmness: 4,
+      message:
+        "오늘은 친구들과 축구를 하며 즐거운 시간을 보냈군요! ⚽️ 시원한 바람 속에서 땀 흘리는 순간들이 활력을 준 것 같아요 😊 최근에 비해 기쁨이 확 올라간 하루였어요. 이런 좋은 날이 자주 오기를 바랄게요! 내일도 소중한 감정을 일기장에 담아주세요 ✨",
+    },
+    {
+      date: "2025-07-29",
+      content:
+        "회사에서 실수를 해서 팀장님께 혼났다. 하루 종일 마음이 불편하고 우울했다.",
+      keywords: ["회사", "실수", "혼남", "우울", "불편"],
+      joy: 2,
+      sadness: 6,
+      anger: 2,
+      anxiety: 5,
+      calmness: 2,
+      message:
+        "오늘은 회사에서 실수로 혼이 나 마음이 많이 무거웠겠어요 😔 최근에 비해 슬픔과 불안이 높아진 하루였네요. 하지만 그런 날도 있어요. 실수는 누구나 하니까 너무 자책하지 마세요. 당신은 충분히 잘하고 있어요 💪 내일은 조금 더 가벼운 마음으로 하루를 마무리하길 응원할게요 🌿",
+    },
+    {
+      date: "2025-07-30",
+      content:
+        "혼자 카페에 가서 조용히 책을 읽었다. 마음이 차분해지는 하루였다.",
+      keywords: ["카페", "책", "혼자", "조용", "차분"],
+      joy: 5,
+      sadness: 1,
+      anger: 0,
+      anxiety: 1,
+      calmness: 7,
+      message:
+        "조용한 카페에서 혼자 책을 읽으며 차분한 시간을 보냈다니 멋진 하루였어요 ☕📚 최근 불안했던 감정이 조금씩 가라앉고 있는 것 같아 다행이에요. 스스로를 돌보는 시간을 가져주는 모습이 참 인상적이에요. 오늘처럼 평온한 순간을 자주 마주하길 바랄게요 🌼",
+    },
+  ];
+
+  // 일기 전체 목록
+  // const [moodList, setMoodList] = useState([]);
+  const [moodList, setMoodList] = useState(initMoodList);
+
+  // 현재 작성중인 목록
+  const initMood = {
+    date: "",
+    content: "",
+    keywords: [],
+    joy: 0,
+    sadness: 0,
+    anxiety: 0,
+    calmness: 0,
+    message: "",
+  };
+
+  const [mood, setMood] = useState(initMood);
+
+  // 새로운 일기 등록하기
+  const handleAddChange = e => {
+    // 이벤트 확인용, 확인후 삭제하기
+    console.log(e.target);
+    setMood({ ...mood, [e.target.name]: e.target.value });
+  };
+
+  // Start - OpenAI 에서 일기 분석하기
+  const [analysis, setAnalysis] = useState("");
+
+  // 분석이 오래 걸리므로. 로딩창 만들기 + suspense 생각해보기
+  const [isLoading, setIsLoading] = useState(false);
+
+  // 일기 전체 목록 갱신하기
+  const handleAddSubmit = () => {
+    // 입력 날짜 자동 저장하기
+    // 이 어플은 하루에 한번만 작성가능하지만 테스트를 위해서 무제한으로 변경함
+    // 추후 수정 필요함
+    const newMood = {
+      ...mood,
+      date: moment().format("YYYY-MM-DD"),
+    };
+
+    // setMoodList([...moodList, { ...mood }]);
+
+    // 다음 코드 수정 가능성 높음
+    setMoodList([...moodList, { ...newMood }]);
+
+    setMood(initMood);
+  };
+
+  // OpenAI API 분석 함수
+  const analyzeMood = async e => {
+    try {
+      // fetch 로 데이터를 전달 즉, request 하고, response 대기
+      const response = await fetch(
+        "https://api.openai.com/v1/chat/completions",
+        {
+          method: "POST", // 글을 보냈다.
+          // 옵션들
+          // 답변의 길이를 제한함. 500 이상이면 긴 답변
+          max_tokens: 500,
+
+          // 아래 항목은 어떠한 형태로 내용을 보냈다.
+          headers: {
+            "Content-Type": "application/json", // JSON 형태이다.
+            // 나의 자격 증명으로서 허가된 키로 요청한다.
+            Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
+          },
+          // 아래는 실제로 보낼 내용
+          // JSON.stringify: JSON 글자로 변환한다.
+          body: JSON.stringify({
+            // ChatGPT 의 엔진 종류
+            // : gpt-3.5-turbo(빠르고 저렴)
+            // : gpt-4(더 똑똑하고 이해력 높음 - 복잡한 문제 해결)
+            // : gpt-o(텍스트, 이미지, 음성까지 처리 - 사진으로 설명)
+            model: "gpt-3.5-turbo",
+            // 필요로 한 프롬프트를 전달함
+            messages: [
+              {
+                role: "system", // ChatGPT 역할 부여
+                content: `
+                    당신은 일기 애플리케이션의 감정 분석 AI입니다.
+                    사용자의 기분을 분석하고 따뜻하고 건설적인 조언을 제공해주세요
+
+                    작성된 일기를 바탕으로 아래 데이터를 생성하고, 반드시 JSON 형식으로만 응답하세요.
+
+                    - 일기에서 추출한 핵심 키워드 5개 (\`keywords\`: 단어 배열)
+                    - 감정 점수 (0~10점 정수)
+                    - 기쁨 (\`joy\`)
+                    - 슬픔 (\`sadness\`)
+                    - 분노 (\`anger\`)
+                    - 불안 (\`anxiety\`)
+                    - 평온 (\`calmness\`)
+                    - 조언 (\`message\`)
+
+                    다음은 답변 JSON 형식의 예시입니다.
+                    ---
+                    {
+                      "keywords": ["카페", "책", "혼자", "조용", "차분"],
+                      "joy": 5,
+                      "sadness": 1,
+                      "anger": 0,
+                      "anxiety": 1,
+                      "calmness": 7,
+                      "message": "조용한 카페에서 혼자 책을 읽으며 차분한 시간을 보냈다니 멋진 하루였어요 ☕📚 최근 불안했던 감정이 조금씩 가라앉고 있는 것 같아 다행이에요. 스스로를 돌보는 시간을 가져주는 모습이 참 인상적이에요. 오늘처럼 평온한 순간을 자주 마주하길 바랄게요 🌼"
+                    }
+
+                    주의: 설명 없이 이와 동일한 구조의 JSON만 출력해주세요.
+                `,
+              },
+              {
+                role: "user", // 사용자 입력내용을 작성해줌.
+                content: `한글로 답변을 주는 분석으로 해줘. 다음과 같은 기분을 분석해주세요: "${mood.content}"`,
+              },
+            ],
+          }),
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error("API 요청 실패");
+      }
+
+      const data = await response.json();
+      setAnalysis(data.choices[0].message.content);
+      // JSON 파싱
+      const parsed = JSON.parse(data.choices[0].message.content);
+      return parsed; // ✅ 결과 리턴해야 handleSubmitTest에서 받아서 쓸 수 있음
+    } catch (error) {
+      console.error("Error:", error);
+      setAnalysis(
+        "죄송합니다. 분석 중 오류가 발생했습니다. 다시 시도해주세요.",
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  // End - OpenAI 에서 일기 분석하기
+  const handleSubmitTest = async e => {
+    setIsLoading(true);
+
+    const result = await analyzeMood(mood.content);
+    if (!result) {
+      alert("분석 실패. 다시 시도해주세요.");
+      setIsLoading(false);
+      return;
+    }
+    const newMood = {
+      ...mood,
+      ...result,
+      date: moment().format("YYYY-MM-DD"),
+    };
+
+    setMoodList([...moodList, newMood]);
+    setMood(initMood);
+    setIsLoading(false);
+  };
+
+  // 최초 한번만 실행
+  // 로컬스토리지가 없다면 생성, 있다면 읽어오기
+  useEffect(() => {
+    const result = localStorage.getItem("mind-mood");
+    if (!result) {
+      localStorage.setItem("mind-mood", JSON.stringify([]));
+    } else {
+      try {
+        const json = JSON.parse(result);
+        const check = Array.isArray(json);
+        if (check) {
+          setMoodList(json);
+        } else {
+          setMoodList([]);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, []);
+
+  // 일기 전체 목록에 변경점(추가)이 생길 경우
+  useEffect(() => {
+    localStorage.setItem("mind-mood", JSON.stringify(moodList));
+  }, [moodList]);
+
+  return (
+    <div>
+      <Router>
+        <Routes>
+          {/* 메인 페이지에서는 일기 전체 목록 보여주기 */}
+          <Route path="/" element={<Mood moodList={moodList} />}></Route>
+          {/* Add 페이지에서는 작성한 일기를 등록하기, prop 확인하기 */}
+          <Route
+            path="/add"
+            element={
+              <MoodAdd
+                mood={mood}
+                handleAddChange={handleAddChange}
+                handleSubmitTest={handleSubmitTest}
+              />
+            }
+          ></Route>
+          {/* Chart 페이지에서는 일기 전체 목록으로 차트 그리기 */}
+          <Route
+            path="/chart"
+            element={<MoodChart moodList={moodList} />}
+          ></Route>
+        </Routes>
+      </Router>
+    </div>
+  );
+}
+
+export default App;

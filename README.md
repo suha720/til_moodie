@@ -17,3 +17,9 @@
     - `import "moment/locale/ko"`, `moment.locale("ko")`
 
 ## 브랜치 먼저 생성하기!!
+
+## API
+- `.env` 파일 생성
+  - 접두어 주의 하기 `REACT_APP_`
+  - 변수 : `REACT_APP_원하는이름=API키`
+- `gitignore` 파일에서 `.env` 파일 적용
