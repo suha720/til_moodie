@@ -10,6 +10,7 @@ import TmpDate from "./components/dates/TmpDate";
 import TmpWeek from "./components/dates/TmpWeek";
 import MiniSchedule from "./components/calendars/MiniSchedule";
 import App from "./pages/testitem/App";
+import TestApp from "./pages/testform/TestApp";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<App />);
+root.render(<TestApp />);
