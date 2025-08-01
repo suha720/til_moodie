@@ -9,6 +9,7 @@ import MooSPopup from "./components/popups/MooSPopup";
 import TmpDate from "./components/dates/TmpDate";
 import TmpWeek from "./components/dates/TmpWeek";
 import MiniSchedule from "./components/calendars/MiniSchedule";
+import App from "./pages/testitem/App";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<Main />);
+root.render(<App />);
