@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { ResponsiveBar } from "@nivo/bar";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const LoginForm = styled.form`
   margin: 16px auto;
@@ -44,8 +45,8 @@ const Card = styled.div`
   margin: 32px auto;
   padding: 20px;
   background: white;
-  border-radius: 16px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  border-radius: 15px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
 `;
 
 // 헤더 라인
@@ -63,35 +64,54 @@ const CardTitle = styled.h2`
 `;
 
 const SeeAll = styled.span`
-  font-size: 12px;
-  color: #4e741d;
   cursor: pointer;
-  &:hover {
+  /* &:hover {
     text-decoration: underline;
+  } */
+  a {
+    font-size: 12px;
+    font-weight: 600;
+    color: #4e741d;
   }
 `;
 
 const ChartWrapper = styled.div`
-  height: 220px;
+  height: 170px;
 `;
 
 // 요일별 컬러 지정
 const dayColors = {
-  월: "#FFD93D",
-  화: "#FF8C42",
-  수: "#6A9CFF",
-  목: "#FF6F91",
-  금: "#7ED6DF",
-  토: "#A29BFE",
-  일: "#FF6B6B",
+  월: "#4E741D",
+  화: "#4E741D",
+  수: "#4E741D",
+  목: "#4E741D",
+  금: "#4E741D",
+  토: "#4985B7",
+  일: "#ED7777",
 };
 
+const CustomTick = ({ x, y, value, textAnchor, fontSize }) => (
+  <g transform={`translate(${x},${18})`}>
+    <text
+      textAnchor={textAnchor}
+      dominantBaseline="middle"
+      style={{
+        fill: dayColors[value] || "#000", // 요일별 색상 지정
+        fontSize: fontSize || 12,
+        fontWeight: 700,
+      }}
+    >
+      {value}
+    </text>
+  </g>
+);
+
 const emotionColors = {
-  joy: "#FFD93D",
-  sadness: "#6A9CFF",
-  anger: "#FF6B6B",
-  anxiety: "#FF8C42",
-  calmness: "#7ED6DF",
+  joy: "#FFD43B",
+  sadness: "#527FB3",
+  anger: "#EF5350",
+  anxiety: "#A29BFE",
+  calmness: "#A5D6A7",
   none: "#E0E0E0", // 감정 데이터가 없을 경우
 };
 
@@ -177,13 +197,13 @@ function TmpForm() {
   const prepareOverallScoreData = data => {
     const days = ["일", "월", "화", "수", "목", "금", "토"];
     const scoresByDay = {
+      일: null,
       월: null,
       화: null,
       수: null,
       목: null,
       금: null,
       토: null,
-      일: null,
     };
 
     // 오늘 날짜 기준
@@ -223,7 +243,7 @@ function TmpForm() {
       };
     });
 
-    return ["월", "화", "수", "목", "금", "토", "일"].map(day => {
+    return ["일", "월", "화", "수", "목", "금", "토"].map(day => {
       const entry = scoresByDay[day];
       return {
         day,
@@ -251,7 +271,7 @@ function TmpForm() {
             주간 감정 차트{" "}
             <span
               style={{
-                fontSize: "14px",
+                fontSize: "12px",
                 fontWeight: 400,
                 color: "#999", // 중간 회색 톤 (예: tailwind의 text-gray-500)
               }}
@@ -259,7 +279,9 @@ function TmpForm() {
               ({getCurrentWeekRangeText()})
             </span>{" "}
           </CardTitle>
-          <SeeAll>전체보기</SeeAll>
+          <SeeAll>
+            <Link to={"/weekly"}>전체보기</Link>
+          </SeeAll>
         </CardHeader>
 
         <ChartWrapper>
@@ -267,31 +289,31 @@ function TmpForm() {
             data={chartData}
             keys={["score"]}
             indexBy="day"
-            margin={{ top: 10, right: 20, bottom: 30, left: 30 }}
-            padding={0.3}
+            margin={{ top: 10, right: 10, bottom: 30, left: 10 }}
+            padding={0.1}
             colors={({ data }) => emotionColors[data.topEmotion]}
             enableLabel={false}
             axisBottom={{
               tickSize: 0,
               tickPadding: 10,
               tickRotation: 0,
+              renderTick: CustomTick,
             }}
             axisLeft={null}
             gridYValues={[]}
-            borderRadius={4}
+            borderRadius={5}
             theme={{
               axis: {
                 ticks: {
                   text: {
                     fontSize: 12,
-                    fill: "#666",
                   },
                 },
               },
             }}
           />
         </ChartWrapper>
-      </Card>{" "}
+      </Card>
     </div>
   );
 }

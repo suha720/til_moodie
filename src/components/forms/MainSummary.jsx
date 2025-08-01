@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const ListWrapper = styled.div`
   //   display: grid;
@@ -9,12 +10,11 @@ const ListWrapper = styled.div`
   //   margin: 16px auto;
   //   padding: 16px;
   max-width: 390px;
-  margin: 32px auto;
+  margin: 0px auto;
   padding: 20px;
   background: white;
-  border-radius: 16px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-
+  border-radius: 15px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -24,7 +24,7 @@ const CardHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 6px;
 `;
 
 const CardTitle = styled.h2`
@@ -34,44 +34,50 @@ const CardTitle = styled.h2`
 `;
 
 const SeeAll = styled.span`
-  font-size: 12px;
-  color: #4e741d;
-  cursor: pointer;
-  &:hover {
-    text-decoration: underline;
+  a {
+    font-size: 12px;
+    font-weight: 600;
+    color: #4e741d;
   }
+
+  cursor: pointer;
+  /* &:hover {
+    text-decoration: underline;
+  } */
 `;
 
 const EntryBox = styled.div`
   display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 16px;
-
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  padding: 12px;
-  background-color: #fafafa;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  gap: 12px;
+  border-bottom: 1px solid #8dca4250;
+  /* border-radius: 12px; */
+  padding: 6px 10px;
+  background-color: #fff;
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); */
 `;
 
 const DayStyle = styled.div`
   font-size: 14px;
-  font-weight: bold;
+  font-weight: 800;
   color: #4e741d;
 `;
 
 const EmotionStyle = styled.div`
-  font-size: 14px;
+  font-size: 10px;
   font-weight: 600;
   color: #fff;
   flex-shrink: 0;
-  background-color: #ffdc49;
-  padding: 1px 6px;
+  /* background-color: #ffdc49; */
+  padding: 1px 8px;
   border-radius: 10px;
+  transform: translateY(1px);
 `;
 
 const TextStyle = styled.div`
-  font-size: 14px;
+  font-size: 12px;
+  font-weight: 600;
   color: #4e741d;
   white-space: nowrap;
   overflow: hidden;
@@ -81,9 +87,8 @@ const TextStyle = styled.div`
 `;
 
 const SubTextStyle = styled.div`
-  font-size: 14px;
-  color: #000;
-  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -91,11 +96,11 @@ const SubTextStyle = styled.div`
 `;
 
 const emotionColors = {
-  기쁨: "#FFD93D",
-  슬픔: "#6A9CFF",
-  분노: "#FF6B6B",
-  불안: "#FF8C42",
-  차분: "#7ED6DF",
+  기쁨: "#FFD43B",
+  슬픔: "#527FB3",
+  분노: "#EF5350",
+  불안: "#A29BFE",
+  차분: "#A5D6A7",
   none: "#E0E0E0", // 감정 데이터가 없을 경우
 };
 
@@ -163,7 +168,9 @@ function MainSummary() {
     <ListWrapper>
       <CardHeader>
         <CardTitle>나의 감정 기록</CardTitle>
-        <SeeAll>더보기</SeeAll>
+        <SeeAll>
+          <Link to={"/record"}>더보기</Link>
+        </SeeAll>
       </CardHeader>
 
       {weeklyData.map((entry, index) => {

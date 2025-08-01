@@ -1,5 +1,4 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useState } from "react";
 
 import TmpLogo from "../../components/logo/TmpLogo";
 import { ContainerMain } from "./Moodie.style";
@@ -11,11 +10,6 @@ import {
   EmotionPatternRText,
   EmotionPatternTextBox,
   EmotionPatternTitle,
-  MoodieCategoryBtnWrap,
-  MoodieCategoryMainBtn,
-  MoodieCategoryMainBtnWrap,
-  MoodieCategorySubBtn,
-  MoodieCategorySubBtnWrap,
   RecordAllScore,
   RecordBox,
   RecordImgBox,
@@ -30,9 +24,6 @@ import {
   RecordTextBoxTop,
   RecordTextBoxTopDate,
   RecordTextBoxTopEmotion,
-  RecordWeeklyDate,
-  RecordWeeklyDateWrap,
-  RecordWeeklyImg,
   RecordWeeklySubText,
   RecordWeeklyText,
   RecordWeeklyTextBox,
@@ -57,14 +48,37 @@ import WeekCalendar from "../../components/weekcalendar/WeekCalendar";
 import MoodieCategoryBt from "../../components/moodiecategorybutton/MoodieCategoryBt";
 
 function MoodieRecord() {
+  //js
+  const [hasRecord, setHasRecord] = useState(true);
+
+  const getWeekInfo = () => {
+    const today = new Date();
+    const month = today.getMonth() + 1;
+    const date = today.getDate();
+    const week = Math.ceil(date / 7);
+    return { month, week };
+  };
+
+  const { month, week } = getWeekInfo();
+
+  //jsx
+
   return (
     <ContainerMain>
       <TmpLogo />
       <MoodieCategoryBt />
 
       <RecordWeeklyWrap>
-        <RecordWeeklyTitle>/D/7월 4주차 기록</RecordWeeklyTitle>
+        <RecordWeeklyTitle>{`${month}월 ${week}주차 기록`}</RecordWeeklyTitle>
         <WeekCalendar />
+        {hasRecord ? (
+          // 기록 있는 경우
+          <div>기록이 있습니다</div>
+        ) : (
+          // 기록없는 경우
+          <div>기록이 없습니다</div>
+        )}
+
         <RecordWeeklyTextBox>
           <RecordWeeklyText>
             /D/7개 중{" "}
@@ -160,7 +174,7 @@ function MoodieRecord() {
         </WeeklyRecordBox>
       </WeeklyRecordBoxWrap>
       <WeeklyScoreWrap>
-        <WeeklyScoreTitle>/D/7월 4주차 기록 요약</WeeklyScoreTitle>
+        <WeeklyScoreTitle>{`${month}월 ${week}주차 기록 요약`}</WeeklyScoreTitle>
         <WeeklyScoreBox>
           <WeeklyScoreLBox>
             <WeeklyScoreLNumber>/D/3</WeeklyScoreLNumber>
