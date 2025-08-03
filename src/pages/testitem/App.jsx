@@ -9,6 +9,7 @@ import Mood from "./Mood";
 import MoodAdd from "./MoodAdd";
 import MoodChart from "./MoodChart";
 import moment from "moment";
+import { check } from "prettier";
 
 function App() {
   const initMoodList = [
@@ -16,6 +17,7 @@ function App() {
       date: "2025-07-28",
       content:
         "오늘은 친구들과 축구를 했다. 시원한 바람 속에서 땀 흘리며 놀았더니 기분이 좋았다.",
+      checkboxs: ["기쁨"],
       keywords: ["친구", "축구", "땀", "바람", "기분"],
       joy: 7,
       sadness: 1,
@@ -29,6 +31,7 @@ function App() {
       date: "2025-07-29",
       content:
         "회사에서 실수를 해서 팀장님께 혼났다. 하루 종일 마음이 불편하고 우울했다.",
+      checkboxs: ["슬픔", "블안"],
       keywords: ["회사", "실수", "혼남", "우울", "불편"],
       joy: 2,
       sadness: 6,
@@ -42,6 +45,7 @@ function App() {
       date: "2025-07-30",
       content:
         "혼자 카페에 가서 조용히 책을 읽었다. 마음이 차분해지는 하루였다.",
+      checkboxs: ["기쁨", "평온"],
       keywords: ["카페", "책", "혼자", "조용", "차분"],
       joy: 5,
       sadness: 1,
@@ -61,6 +65,7 @@ function App() {
   const initMood = {
     date: "",
     content: "",
+    checkboxs: [],
     keywords: [],
     joy: 0,
     sadness: 0,
@@ -73,9 +78,17 @@ function App() {
 
   // 새로운 일기 등록하기
   const handleAddChange = e => {
-    // 이벤트 확인용, 확인후 삭제하기
-    console.log(e.target);
-    setMood({ ...mood, [e.target.name]: e.target.value });
+    const { name, value, checked, type } = e.target;
+
+    if (type === "checkbox" && name === "checkboxs") {
+      const updatedCheckboxs = checked
+        ? [...mood.checkboxs, value]
+        : mood.checkboxs.filter(k => k !== value);
+
+      setMood(prev => ({ ...prev, checkboxs: updatedCheckboxs }));
+    } else {
+      setMood(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   // Start - OpenAI 에서 일기 분석하기
@@ -190,6 +203,7 @@ function App() {
     }
   };
   // End - OpenAI 에서 일기 분석하기
+
   const handleSubmitTest = async e => {
     setIsLoading(true);
 

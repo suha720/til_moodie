@@ -1,5 +1,47 @@
+import styled from "@emotion/styled";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { KeyWordItemWrap } from "../moodie/MoodieAdd.style";
+
+const keywords = [
+  "기쁨",
+  "슬픔",
+  "스트레스",
+  "만족",
+  "평온",
+  "피곤",
+  "불안",
+  "걱정",
+  "우울",
+  "화남",
+  "짜증",
+  "실망",
+  "외로움",
+];
+
+const KeywordLabel = styled.label`
+  // display: inline-block;
+  margin: 4px;
+  cursor: pointer;
+
+  // margin-right: 9px;
+  // margin-top: 4px;
+  // display: flex;
+
+  .keyword {
+    border: none;
+    padding: 5px 10px;
+    background-color: #ebffd3;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+
+  .keyword.active {
+    background-color: #58dbbd;
+    color: white;
+    border-color: #58dbbd;
+  }
+`;
 
 function MoodAdd({ mood, handleAddChange, handleSubmitTest }) {
   // 일기 작성하면 친절하게 메인 페이지로 이동시키기
@@ -20,6 +62,15 @@ function MoodAdd({ mood, handleAddChange, handleSubmitTest }) {
     navigate("/");
   };
 
+  const handleChange = e => {
+    const { value, checked } = e.target;
+    const updated = checked
+      ? [...mood.keywords, value]
+      : mood.keywords.filter(k => k !== value);
+
+    // 키워드 배열을 업데이트
+    handleAddChange("keywords", updated);
+  };
   return (
     <div>
       <h2>일기 작성하기</h2>
@@ -33,6 +84,27 @@ function MoodAdd({ mood, handleAddChange, handleSubmitTest }) {
             onChange={handleAddChange}
           />
         </label>
+
+        <KeyWordItemWrap>
+          {keywords.map(keyword => (
+            <KeywordLabel key={keyword}>
+              <input
+                name="checkboxs"
+                type="checkbox"
+                value={keyword}
+                checked={mood.checkboxs.includes(keyword)}
+                onChange={handleAddChange}
+                hidden
+              />
+              <span
+                className={`keyword ${mood.checkboxs.includes(keyword) ? "active" : ""}`}
+              >
+                {keyword}
+              </span>{" "}
+            </KeywordLabel>
+          ))}
+        </KeyWordItemWrap>
+
         <button type="submit">등록하기</button>
       </form>
       <button>
