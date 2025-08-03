@@ -177,3 +177,54 @@ export const TodayDiaryBtn = styled.button`
   cursor: pointer;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
 `;
+
+export const KeywordLabel = styled.label`
+  // display: inline-block;
+  // margin: 4px;
+  cursor: pointer;
+
+  // margin-right: 9px;
+  // margin-top: 4px;
+  // display: flex;
+
+  font-size: 13px;
+  .keyword {
+    border: none;
+    padding: 5px 10px;
+    background-color: #ebffd3;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+
+  .keyword.active {
+    background-color: #58dbbd;
+    color: white;
+    border-color: #58dbbd;
+  }
+`;
+
+export const KeywordLabelWrap = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: start;
+  gap: 12px;
+`;
+
+export const CheckBoxImojiRadio = styled.label`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 24px;
+  background-color: #fff;
+  border: none;
+  transform: ${({ raise }) => (raise ? "translateY(-4px)" : "none")};
+  cursor: pointer;
+
+  .label {
+    color: #374723;
+    font-size: 14px;
+    font-weight: 600;
+  }
+`;

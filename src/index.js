@@ -13,4 +13,4 @@ import App from "./pages/testitem/App";
 import TestApp from "./pages/testform/TestApp";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<TestApp />);
+root.render(<Main />);

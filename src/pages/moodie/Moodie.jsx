@@ -26,12 +26,6 @@ import MooSPopup from "../../components/popups/MooSPopup";
 function Moodie() {
   return (
     <>
-      {/* <Logo>
-        <Link to={"/"}>
-          {" "}
-          <img src="/logo2.svg" alt="Moodie Logo" width={80} />
-        </Link>
-      </Logo> */}
       <TmpLogo></TmpLogo>
 
       <ContainerMain>

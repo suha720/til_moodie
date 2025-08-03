@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import {
   CheckBox,
   CheckBoxImoji,
+  CheckBoxImojiRadio,
   CheckBoxImojis,
   CheckBoxTitle,
   EmotionKeywordPreview,
@@ -11,6 +12,8 @@ import {
   KeyWordItemsBtn,
   KeyWordItemsLi,
   KeyWordItemWrap,
+  KeywordLabel,
+  KeywordLabelWrap,
   KeyWordSelect,
   QuestionSubTitle,
   QuestionSubTitleWrap,
@@ -29,8 +32,9 @@ import { ContainerMain } from "./Moodie.style";
 import TmpLogo from "../../components/logo/TmpLogo";
 import MooPopup from "../../components/popups/MooPopup";
 import TmpDate from "../../components/dates/TmpDate";
+import { useNavigate } from "react-router-dom";
 
-function MoodieAdd() {
+function MoodieAdd({ mood, handleAddChange, handleSubmitTest }) {
   const ConatinerAdd = styled.div`
     max-width: 600px;
     margin: 0 auto;
@@ -73,9 +77,12 @@ function MoodieAdd() {
     "외로움",
   ];
   const handleEmotionKeyWordClick = Keyword => {
-    if (!emotionKeyWord.includes(Keyword)) {
-      setEmotionKeyWord(Prev => [...Prev, Keyword]);
-    }
+    setEmotionKeyWord(
+      prev =>
+        prev.includes(Keyword)
+          ? prev.filter(k => k !== Keyword) // 제거
+          : [...prev, Keyword], // 추가
+    );
   };
 
   const [imojiBt, setImojiBt] = useState(null);
@@ -86,6 +93,26 @@ function MoodieAdd() {
     { label: "화남", src: "./분노.svg" },
     { label: "평온", src: "./평온.svg" },
   ];
+
+  // start 체크박스용 체크용
+  // 일기 작성하면 친절하게 메인 페이지로 이동시키기
+  const navigate = useNavigate();
+
+  // OpenAI 에서 분석한 내용 출력 state
+  const [analysis, setAnalysis] = useState("");
+
+  // 분석하는 비동기로 진행이 됨. 로딩 상태 관리
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = e => {
+    // 폼의 버튼 눌렀을때, 새로고침 방지하기
+    e.preventDefault();
+    // 일기 전체 목록 갱신하기
+    handleSubmitTest();
+    // 메인 페이지로 이동하기
+    navigate("/");
+  };
+  // end
 
   return (
     <ContainerMain>
@@ -114,11 +141,12 @@ function MoodieAdd() {
         </QuestionSubTitleWrap>
       </QuestionWrap>
       <TodayDiaryWrap>
-        <TodayDiaryForm>
+        <TodayDiaryForm onSubmit={handleSubmit}>
           <TodayDiaryTitle>오늘의 감정기록</TodayDiaryTitle>
           <TodayDiaryBox
-            value={diaryText}
-            onChange={e => setDiaryText(e.target.value)}
+            name="content"
+            value={mood.content}
+            onChange={handleAddChange}
             rows={10}
             placeholder="오늘 하루 있었던 일, 느낀 감정, 생각들을 자유롭게 적어보세요. 솔직한 마음이 가장 중요해요.."
           />
@@ -130,7 +158,8 @@ function MoodieAdd() {
           <KeyWordBox>
             <KeyWordSelect>감정 키워드 선택</KeyWordSelect>
             <KeyWordItemWrap>
-              <KeyWordItems>
+              {/* 임시 체크 아닌 버튼 시작 */}
+              {/* <KeyWordItems>
                 {keywords.map(word => (
                   <KeyWordItemsLi key={word}>
                     <KeyWordItemsBtn
@@ -141,12 +170,33 @@ function MoodieAdd() {
                     </KeyWordItemsBtn>
                   </KeyWordItemsLi>
                 ))}
-              </KeyWordItems>
+              </KeyWordItems> */}
+              {/* 임시 체크 아닌 버튼 끝 */}
+              <KeywordLabelWrap>
+                {keywords.map(keyword => (
+                  <KeywordLabel key={keyword}>
+                    <input
+                      name="checkboxs"
+                      type="checkbox"
+                      value={keyword}
+                      checked={mood.checkboxs.includes(keyword)}
+                      onChange={handleAddChange}
+                      hidden
+                      onClick={() => handleEmotionKeyWordClick(keyword)}
+                    />
+                    <span
+                      className={`keyword ${mood.checkboxs.includes(keyword) ? "active" : ""}`}
+                    >
+                      {keyword}
+                    </span>{" "}
+                  </KeywordLabel>
+                ))}
+              </KeywordLabelWrap>
             </KeyWordItemWrap>
           </KeyWordBox>
           <CheckBox>
             <CheckBoxTitle>간단 감정 체크</CheckBoxTitle>
-            <CheckBoxImojis>
+            {/* <CheckBoxImojis>
               {imojis.map(imoji => (
                 <CheckBoxImoji
                   type="button"
@@ -162,8 +212,37 @@ function MoodieAdd() {
                   <span className="label">{imoji.label}</span>
                 </CheckBoxImoji>
               ))}
+            </CheckBoxImojis> */}
+            <CheckBoxImojis style={{ justifyContent: "space-between" }}>
+              {imojis.map(imoji => (
+                <div key={imoji.id}>
+                  <CheckBoxImojiRadio raise={mood.imoji === imoji.label}>
+                    <input
+                      type="radio"
+                      name="imoji"
+                      value={imoji.label}
+                      checked={mood.imoji === imoji.label}
+                      onChange={handleAddChange}
+                      hidden // 눈에 안 보이게 숨김 처리
+                    />
+                    <img
+                      src={imoji.src}
+                      alt={imoji.label}
+                      style={{
+                        width: 40,
+                        height: 40,
+                        opacity: mood.imoji === imoji.label ? 1 : 0.4,
+                        transition: "opacity 0.2s",
+                        cursor: "pointer", // 클릭 가능하다는 시각적 피드백
+                      }}
+                    />
+                    <p>{imoji.label}</p>
+                  </CheckBoxImojiRadio>
+                </div>
+              ))}
             </CheckBoxImojis>
           </CheckBox>
+          <TodayDiaryBtn type="submit">감정 기록 하기</TodayDiaryBtn>
         </TodayDiaryForm>
       </TodayDiaryWrap>
       <TodayDiaryBtn>감정 기록 하기</TodayDiaryBtn>
