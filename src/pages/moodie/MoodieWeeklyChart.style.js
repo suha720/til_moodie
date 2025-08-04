@@ -23,6 +23,8 @@ export const AiMessageSubTitle = styled.div`
   font-weight: 400;
   margin-top: 9px;
   line-height: 1.6;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 `;
 
 export const WeeklyEmotionWrap = styled.div`
@@ -118,6 +120,8 @@ export const WeeklyAiInsightSubText = styled.div`
   font-weight: 400;
   color: #374723;
   line-height: 1.6;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 `;
 
 export const AiAdviceWrap = styled.div`
@@ -153,4 +157,6 @@ export const AiAdviceSubText = styled.div`
   font-weight: 400;
   color: #374723;
   line-height: 1.6;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 `;

@@ -1,27 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import {
-  BottomNav,
-  ChartBox,
-  ChartBoxContent,
-  ChartBoxText,
-  Container,
-  ContainerMain,
-  EmotionBox,
-  EmotionBoxTitle,
-  Greeting,
-  HamCate,
-  Logo,
-  MoodieBtn,
-  MoodiePTag,
-  RecordButton,
-  TmpSection,
-} from "./Moodie.style";
+import { ContainerMain, Greeting, RecordButton } from "./Moodie.style";
 import TmpForm from "../../components/forms/TmpForm";
 import MainSummary from "../../components/forms/MainSummary";
 import TmpLogo from "../../components/logo/TmpLogo";
-import MooPopup from "../../components/popups/MooPopup";
-import MooSPopup from "../../components/popups/MooSPopup";
 
 function Moodie({ moodList }) {
   return (

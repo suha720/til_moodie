@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   DetailDiaryBntData,
   DetailDiaryBntWrap,
@@ -12,7 +12,6 @@ import {
   DetailDiaryInsightWrap,
   WeeklyBtn,
 } from "./MoodieDetail.style";
-import styled from "@emotion/styled";
 import {
   AiTipSubTitle,
   AiTipTitle,
@@ -43,7 +42,6 @@ function MoodieToday() {
     const dayName = dayNames[day];
     return { year, month, date, dayName };
   };
-
   const { year, month, date, dayName } = getWeekInfo();
 
   return (
@@ -57,11 +55,11 @@ function MoodieToday() {
         </TodaySaveSubTitle>
       </TodaySaveWrap>
       <TodaySaveEmotionWrap>
-        <TodaySaveEmotionImg src="./기쁨.svg" />
+        <TodaySaveEmotionImg src="/기쁨.svg" />
         <TodaySaveEmotionTextBox>
-          <TodaySaveEmotionTitle>/D/기분좋은 하루였네요.</TodaySaveEmotionTitle>
+          <TodaySaveEmotionTitle>오늘은 기쁜 하루였네요!</TodaySaveEmotionTitle>
           <TodaySaveEmotionSubTitle>
-            /D/이런 날은 나에게 작은 선물을 주는 것도 좋아요!
+            이 기분을 이어서 좋아하는 일을 더 해보는 건 어때요?
           </TodaySaveEmotionSubTitle>
         </TodaySaveEmotionTextBox>
       </TodaySaveEmotionWrap>

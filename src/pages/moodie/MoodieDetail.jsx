@@ -21,7 +21,7 @@ import {
   DetailDiaryScoreWrap,
   WeeklyBtn,
 } from "./MoodieDetail.style";
-import { Container, ContainerMain } from "./Moodie.style";
+import { ContainerMain } from "./Moodie.style";
 import TmpLogo from "../../components/logo/TmpLogo";
 
 function MoodieDetail() {

@@ -135,7 +135,7 @@ export const RecordTextBoxTop = styled.div`
 export const RecordTextBoxTopEmotion = styled.div`
   font-size: 10px;
   color: #fff;
-  background-color: #ffdc49;
+  background-color: ${({ bgColor }) => bgColor || "#ffdc49"};
   padding: 1px 8px;
   border-radius: 13px;
 `;
