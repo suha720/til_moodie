@@ -7,8 +7,7 @@ import MoodieStatistics from "./MoodieStatistics";
 import MoodieDetail from "./MoodieDetail";
 import MoodieAdd from "./MoodieAdd";
 import MoodieEdit from "./MoodieEdit";
-import TestForm from "./TestForm";
-import TestFormList from "./TestFormList";
+
 import TestNivo from "./TestNivo";
 import MoodieWeeklyChart from "./MoodieWeeklyChart";
 import MoodieAllRecord from "./MoodieAllRecord";
@@ -74,6 +73,7 @@ function Main() {
     checkboxs: [],
     imoji: "",
     keywords: [],
+
     joy: 0,
     sadness: 0,
     anxiety: 0,

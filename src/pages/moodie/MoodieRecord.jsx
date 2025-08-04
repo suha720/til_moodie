@@ -49,7 +49,6 @@ import MoodieCategoryBt from "../../components/moodiecategorybutton/MoodieCatego
 
 function MoodieRecord() {
   //js
-  const [hasRecord, setHasRecord] = useState(true);
 
   const getWeekInfo = () => {
     const today = new Date();
@@ -124,7 +123,9 @@ function MoodieRecord() {
               </RecordImgBox>
               <RecordTextBox>
                 <RecordTextBoxTop>
-                  <RecordTextBoxTopEmotion>
+                  <RecordTextBoxTopEmotion
+                    bgColor={emotionBorderColors[record.emotion]}
+                  >
                     {record.emotion}
                   </RecordTextBoxTopEmotion>
                   <RecordTextBoxTopDate>{record.date}</RecordTextBoxTopDate>

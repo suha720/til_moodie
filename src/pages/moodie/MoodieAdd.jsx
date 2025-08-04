@@ -2,15 +2,11 @@ import styled from "@emotion/styled";
 import React, { useEffect, useState } from "react";
 import {
   CheckBox,
-  CheckBoxImoji,
   CheckBoxImojiRadio,
   CheckBoxImojis,
   CheckBoxTitle,
   EmotionKeywordPreview,
   KeyWordBox,
-  KeyWordItems,
-  KeyWordItemsBtn,
-  KeyWordItemsLi,
   KeyWordItemWrap,
   KeywordLabel,
   KeywordLabelWrap,
@@ -25,7 +21,6 @@ import {
   TodayDiaryTitle,
   TodayDiaryWrap,
   TodaySubTitle,
-  TodayTitle,
   TodayWrap,
 } from "./MoodieAdd.style";
 import { ContainerMain } from "./Moodie.style";

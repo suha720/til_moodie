@@ -1,13 +1,6 @@
 import React, { useState } from "react";
 import { ContainerMain } from "./Moodie.style";
 import TmpLogo from "../../components/logo/TmpLogo";
-import {
-  MoodieCategoryBtnWrap,
-  MoodieCategoryMainBtn,
-  MoodieCategoryMainBtnWrap,
-  MoodieCategorySubBtn,
-  MoodieCategorySubBtnWrap,
-} from "./MoodieRecord.style";
 import AllCalendar from "../../components/allcalendar/AllCalendar";
 import {
   AllRecordCalendarSubText,
