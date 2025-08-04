@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 
 export const TodaySaveWrap = styled.div`
-  margin-top: 136px;
+  margin-top: 90px;
   margin-bottom: 80px;
 `;
 export const TodaySaveTitle = styled.h2`
@@ -14,6 +14,8 @@ export const TodaySaveSubTitle = styled.div`
   font-size: 14px;
   font-weight: 400;
   color: rgba(0, 0, 0, 0.5);
+  word-break: keep-all;
+  overflow-wrap: break-word;
 `;
 
 export const TodaySaveEmotionWrap = styled.div`
@@ -44,6 +46,8 @@ export const TodaySaveEmotionSubTitle = styled.div`
   font-weight: 400;
   color: rgba(0, 0, 0, 0.5);
   margin-top: 5px;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 `;
 
 export const AiTipWrap = styled.div`
@@ -71,4 +75,6 @@ export const AiTipSubTitle = styled.div`
   font-size: 12px;
   font-weight: 400;
   line-height: 1.6;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 `;

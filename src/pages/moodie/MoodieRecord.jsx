@@ -61,6 +61,39 @@ function MoodieRecord() {
 
   const { month, week } = getWeekInfo();
 
+  const weeklyRecords = [
+    {
+      emotion: "기쁨",
+      date: "2025년 7월 22일",
+      title: "/D/기분좋은 하루였네요!",
+      subTitle: "/D/오늘 운동을 했는데 온몸이 뻐근했지만 너무 뿌듯했다",
+      score: 85,
+      imgSrc: "./기쁨.svg",
+    },
+    {
+      emotion: "슬픔",
+      date: "2025년 7월 23일",
+      title: "/D/조금 우울한 하루였어요",
+      subTitle: "/D/비가 와서 기분이 가라앉았어요",
+      score: 62,
+      imgSrc: "./슬픔.svg",
+    },
+    {
+      emotion: "화남",
+      date: "2025년 7월 24일",
+      title: "/D/짜증나는 일이 있었어요",
+      subTitle: "/D/버스 놓치고 중요한 회의도 늦었어요",
+      score: 50,
+      imgSrc: "./분노.svg",
+    },
+  ];
+  const emotionBorderColors = {
+    기쁨: "#FFE24A",
+    슬픔: "#507DB2",
+    불안: "#9E54B7",
+    화남: "#FB4C36",
+    평온: "#8CC942",
+  };
   //jsx
 
   return (
@@ -71,14 +104,6 @@ function MoodieRecord() {
       <RecordWeeklyWrap>
         <RecordWeeklyTitle>{`${month}월 ${week}주차 기록`}</RecordWeeklyTitle>
         <WeekCalendar />
-        {hasRecord ? (
-          // 기록 있는 경우
-          <div>기록이 있습니다</div>
-        ) : (
-          // 기록없는 경우
-          <div>기록이 없습니다</div>
-        )}
-
         <RecordWeeklyTextBox>
           <RecordWeeklyText>
             /D/7개 중{" "}
@@ -91,87 +116,37 @@ function MoodieRecord() {
         </RecordWeeklyTextBox>
       </RecordWeeklyWrap>
       <WeeklyRecordBoxWrap>
-        <WeeklyRecordBox>
-          <RecordBox>
-            <RecordImgBox>
-              <RecordImgBoxImg src="./기쁨.svg" alt="기쁨" />
-            </RecordImgBox>
-            <RecordTextBox>
-              <RecordTextBoxTop>
-                <RecordTextBoxTopEmotion>기쁨</RecordTextBoxTopEmotion>
-                <RecordTextBoxTopDate>2025년 7월 22일</RecordTextBoxTopDate>
-              </RecordTextBoxTop>
-              <RecordTextBoxBottom>
-                <RecordTextBoxBottomTitle>
-                  /D/기분좋은 하루였네요!
-                </RecordTextBoxBottomTitle>
-                <RecordTextBoxBottomSubTitle>
-                  /D/오늘 운동을 했는데 온몸이 뻐근했지만 너무 뿌듯했다
-                </RecordTextBoxBottomSubTitle>
-              </RecordTextBoxBottom>
-              <RecordScoreBox>
-                <RecordAllScore>
-                  <RecordScore />
-                </RecordAllScore>
-                <RecordScoreText>85점</RecordScoreText>
-              </RecordScoreBox>
-            </RecordTextBox>
-          </RecordBox>
-        </WeeklyRecordBox>
-        <WeeklyRecordBox>
-          <RecordBox>
-            <RecordImgBox>
-              <RecordImgBoxImg src="./기쁨.svg" alt="기쁨" />
-            </RecordImgBox>
-            <RecordTextBox>
-              <RecordTextBoxTop>
-                <RecordTextBoxTopEmotion>기쁨</RecordTextBoxTopEmotion>
-                <RecordTextBoxTopDate>2025년 7월 22일</RecordTextBoxTopDate>
-              </RecordTextBoxTop>
-              <RecordTextBoxBottom>
-                <RecordTextBoxBottomTitle>
-                  /D/기분좋은 하루였네요!
-                </RecordTextBoxBottomTitle>
-                <RecordTextBoxBottomSubTitle>
-                  /D/오늘 운동을 했는데 온몸이 뻐근했지만 너무 뿌듯했다
-                </RecordTextBoxBottomSubTitle>
-              </RecordTextBoxBottom>
-              <RecordScoreBox>
-                <RecordAllScore>
-                  <RecordScore />
-                </RecordAllScore>
-                <RecordScoreText>85점</RecordScoreText>
-              </RecordScoreBox>
-            </RecordTextBox>
-          </RecordBox>
-        </WeeklyRecordBox>
-        <WeeklyRecordBox>
-          <RecordBox>
-            <RecordImgBox>
-              <RecordImgBoxImg src="./기쁨.svg" alt="기쁨" />
-            </RecordImgBox>
-            <RecordTextBox>
-              <RecordTextBoxTop>
-                <RecordTextBoxTopEmotion>기쁨</RecordTextBoxTopEmotion>
-                <RecordTextBoxTopDate>2025년 7월 22일</RecordTextBoxTopDate>
-              </RecordTextBoxTop>
-              <RecordTextBoxBottom>
-                <RecordTextBoxBottomTitle>
-                  /D/기분좋은 하루였네요!
-                </RecordTextBoxBottomTitle>
-                <RecordTextBoxBottomSubTitle>
-                  /D/오늘 운동을 했는데 온몸이 뻐근했지만 너무 뿌듯했다
-                </RecordTextBoxBottomSubTitle>
-              </RecordTextBoxBottom>
-              <RecordScoreBox>
-                <RecordAllScore>
-                  <RecordScore />
-                </RecordAllScore>
-                <RecordScoreText>85점</RecordScoreText>
-              </RecordScoreBox>
-            </RecordTextBox>
-          </RecordBox>
-        </WeeklyRecordBox>
+        {weeklyRecords.map((record, index) => (
+          <WeeklyRecordBox key={index}>
+            <RecordBox>
+              <RecordImgBox borderColor={emotionBorderColors[record.emotion]}>
+                <RecordImgBoxImg src={record.imgSrc} alt={record.emotion} />
+              </RecordImgBox>
+              <RecordTextBox>
+                <RecordTextBoxTop>
+                  <RecordTextBoxTopEmotion>
+                    {record.emotion}
+                  </RecordTextBoxTopEmotion>
+                  <RecordTextBoxTopDate>{record.date}</RecordTextBoxTopDate>
+                </RecordTextBoxTop>
+                <RecordTextBoxBottom>
+                  <RecordTextBoxBottomTitle>
+                    {record.title}
+                  </RecordTextBoxBottomTitle>
+                  <RecordTextBoxBottomSubTitle>
+                    {record.subTitle}
+                  </RecordTextBoxBottomSubTitle>
+                </RecordTextBoxBottom>
+                <RecordScoreBox>
+                  <RecordAllScore>
+                    <RecordScore />
+                  </RecordAllScore>
+                  <RecordScoreText>{record.score}점</RecordScoreText>
+                </RecordScoreBox>
+              </RecordTextBox>
+            </RecordBox>
+          </WeeklyRecordBox>
+        ))}
       </WeeklyRecordBoxWrap>
       <WeeklyScoreWrap>
         <WeeklyScoreTitle>{`${month}월 ${week}주차 기록 요약`}</WeeklyScoreTitle>

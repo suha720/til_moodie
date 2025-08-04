@@ -110,7 +110,7 @@ export const RecordImgBox = styled.div`
   justify-content: center;
   align-items: center;
   background-color: #fff;
-  border: 1px solid #ffdb48;
+  border: 1px solid ${({ borderColor }) => borderColor || "#ffdb48"};
   border-radius: 35px;
   width: 65px;
   height: 65px;
