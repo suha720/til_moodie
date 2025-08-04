@@ -1,7 +1,7 @@
-import React from "react";
 import Calendar from "react-calendar";
+import React from "react";
 
-function MiniSchedule() {
+function Schedule() {
   // js
   const scWrap = {
     width: "80%",
@@ -10,32 +10,15 @@ function MiniSchedule() {
     minHeight: 400,
   };
 
-  const getWeekDates = (baseDate = new Date()) => {
-    const start = new Date(baseDate);
-    const day = start.getDay(); // 0: 일요일
-    start.setDate(start.getDate() - day);
-
-    return Array.from({ length: 7 }, (_, i) => {
-      const date = new Date(start);
-      date.setDate(start.getDate() + i);
-      return date;
-    });
-  };
-
   // jsx
   return (
     <div>
-      {getWeekDates().map(date => (
-        <div key={date.toDateString()}>
-          {date.toLocaleDateString("ko-KR", {
-            weekday: "short",
-            month: "numeric",
-            day: "numeric",
-          })}
-        </div>
-      ))}
+      <h1>캘린더 출력</h1>
+      <div style={scWrap}>
+        <Calendar></Calendar>
+      </div>
     </div>
   );
 }
 
-export default MiniSchedule;
+export default Schedule;

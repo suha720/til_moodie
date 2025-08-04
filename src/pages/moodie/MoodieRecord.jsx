@@ -46,16 +46,28 @@ import {
 } from "./MoodieRecord.style";
 import WeekCalendar from "../../components/weekcalendar/WeekCalendar";
 import MoodieCategoryBt from "../../components/moodiecategorybutton/MoodieCategoryBt";
+import moment from "moment";
 
 function MoodieRecord() {
   //js
   const [hasRecord, setHasRecord] = useState(true);
 
   const getWeekInfo = () => {
-    const today = new Date();
-    const month = today.getMonth() + 1;
-    const date = today.getDate();
-    const week = Math.ceil(date / 7);
+    const today = moment();
+    const month = today.month() + 1; // 0부터 시작하므로 +1
+
+    // 이번 달의 1일을 기준으로
+    const firstDayOfMonth = moment().startOf("month");
+
+    // 첫 주의 첫 일요일까지 며칠 차이 나는지
+    const offset = firstDayOfMonth.day(); // 0(Sun) ~ 6(Sat)
+
+    // 오늘까지 총 몇 일이 지났는지 (1일부터 오늘까지)
+    const passedDays = today.date() + offset - 1;
+
+    // 주차 계산
+    const week = Math.floor(passedDays / 7) + 1;
+
     return { month, week };
   };
 

@@ -28,6 +28,7 @@ function Main() {
       anger: 0,
       anxiety: 2,
       calmness: 4,
+      title: "즐거운 축구",
       message:
         "오늘은 친구들과 축구를 하며 즐거운 시간을 보냈군요! ⚽️ 시원한 바람 속에서 땀 흘리는 순간들이 활력을 준 것 같아요 😊 최근에 비해 기쁨이 확 올라간 하루였어요. 이런 좋은 날이 자주 오기를 바랄게요! 내일도 소중한 감정을 일기장에 담아주세요 ✨",
     },
@@ -43,6 +44,7 @@ function Main() {
       anger: 2,
       anxiety: 5,
       calmness: 2,
+      title: "모멸찬 시간",
       message:
         "오늘은 회사에서 실수로 혼이 나 마음이 많이 무거웠겠어요 😔 최근에 비해 슬픔과 불안이 높아진 하루였네요. 하지만 그런 날도 있어요. 실수는 누구나 하니까 너무 자책하지 마세요. 당신은 충분히 잘하고 있어요 💪 내일은 조금 더 가벼운 마음으로 하루를 마무리하길 응원할게요 🌿",
     },
@@ -58,6 +60,7 @@ function Main() {
       anger: 0,
       anxiety: 1,
       calmness: 7,
+      title: "조용한 카페에서 찾은 나만의 평온한 시간",
       message:
         "조용한 카페에서 혼자 책을 읽으며 차분한 시간을 보냈다니 멋진 하루였어요 ☕📚 최근 불안했던 감정이 조금씩 가라앉고 있는 것 같아 다행이에요. 스스로를 돌보는 시간을 가져주는 모습이 참 인상적이에요. 오늘처럼 평온한 순간을 자주 마주하길 바랄게요 🌼",
     },
@@ -78,6 +81,7 @@ function Main() {
     sadness: 0,
     anxiety: 0,
     calmness: 0,
+    title: "",
     message: "",
   };
 
@@ -166,6 +170,8 @@ function Main() {
                       - 불안 (\`anxiety\`)
                       - 평온 (\`calmness\`)
                       - 조언 (\`message\`)
+                      - 오늘 일기를 한 문장으로 요약한 제목 (\`title\`)
+                        → 사용자가 오늘을 회고할 수 있는 간결하고 의미 있는 문장으로 작성해주세요.
   
                       다음은 답변 JSON 형식의 예시입니다.
                       ---
@@ -176,6 +182,7 @@ function Main() {
                         "anger": 0,
                         "anxiety": 1,
                         "calmness": 7,
+                        "title": "조용한 카페에서 찾은 나만의 평온한 시간",
                         "message": "조용한 카페에서 혼자 책을 읽으며 차분한 시간을 보냈다니 멋진 하루였어요 ☕📚 최근 불안했던 감정이 조금씩 가라앉고 있는 것 같아 다행이에요. 스스로를 돌보는 시간을 가져주는 모습이 참 인상적이에요. 오늘처럼 평온한 순간을 자주 마주하길 바랄게요 🌼"
                       }
   
@@ -265,7 +272,10 @@ function Main() {
           <Route path="/today" element={<MoodieToday />}></Route>
           <Route path="/record" element={<MoodieRecord />}></Route>
           <Route path="/statistics" element={<MoodieStatistics />}></Route>
-          <Route path="/detail" element={<MoodieDetail />}></Route>
+          <Route
+            path="/detail"
+            element={<MoodieDetail moodList={moodList} />}
+          ></Route>
           <Route
             path="add"
             element={
