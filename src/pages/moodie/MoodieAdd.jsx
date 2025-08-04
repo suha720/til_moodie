@@ -113,6 +113,12 @@ function MoodieAdd({ mood, handleAddChange, handleSubmitTest }) {
     navigate("/");
   };
   // end
+  const questions = [
+    "· 오늘 가장 기억에 남는 순간은 무엇인가요?",
+    "· 어떤 감정을 가장 많이 느꼈나요?",
+    "· 무엇이 그런 기분을 느끼게 했나요?",
+    "· 내일은 어떤 하루가 되었으면 좋겠나요?",
+  ];
 
   return (
     <ContainerMain>
@@ -128,16 +134,9 @@ function MoodieAdd({ mood, handleAddChange, handleSubmitTest }) {
           생각해 볼 질문들
         </QuestionTitle>
         <QuestionSubTitleWrap>
-          <QuestionSubTitle>
-            · 오늘 가장 기억에 남는 순간은 무엇인가요?
-          </QuestionSubTitle>
-          <QuestionSubTitle>· 어떤 감정을 가장 많이 느꼈나요?</QuestionSubTitle>
-          <QuestionSubTitle>
-            · 무엇이 그런 기분을 느끼게 했나요?
-          </QuestionSubTitle>
-          <QuestionSubTitle>
-            · 내일은 어떤 하루가 되었으면 좋겠나요?
-          </QuestionSubTitle>
+          {questions.map((question, index) => (
+            <QuestionSubTitle key={index}>{question}</QuestionSubTitle>
+          ))}
         </QuestionSubTitleWrap>
       </QuestionWrap>
       <TodayDiaryWrap>
@@ -229,8 +228,8 @@ function MoodieAdd({ mood, handleAddChange, handleSubmitTest }) {
                       src={imoji.src}
                       alt={imoji.label}
                       style={{
-                        width: 40,
-                        height: 40,
+                        width: imoji.label === "불안" ? "54px" : "40px",
+                        height: imoji.label === "불안" ? "40px" : "40px",
                         opacity: mood.imoji === imoji.label ? 1 : 0.4,
                         transition: "opacity 0.2s",
                         cursor: "pointer", // 클릭 가능하다는 시각적 피드백
@@ -245,7 +244,7 @@ function MoodieAdd({ mood, handleAddChange, handleSubmitTest }) {
           <TodayDiaryBtn type="submit">감정 기록 하기</TodayDiaryBtn>
         </TodayDiaryForm>
       </TodayDiaryWrap>
-      <TodayDiaryBtn>감정 기록 하기</TodayDiaryBtn>
+      {/* <TodayDiaryBtn>감정 기록 하기</TodayDiaryBtn> */}
     </ContainerMain>
   );
 }

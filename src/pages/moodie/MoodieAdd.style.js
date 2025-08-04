@@ -219,12 +219,9 @@ export const CheckBoxImojiRadio = styled.label`
   padding-bottom: 24px;
   background-color: #fff;
   border: none;
+  color: #374723;
+  font-size: 14px;
+  font-weight: 600;
   transform: ${({ raise }) => (raise ? "translateY(-4px)" : "none")};
   cursor: pointer;
-
-  .label {
-    color: #374723;
-    font-size: 14px;
-    font-weight: 600;
-  }
 `;

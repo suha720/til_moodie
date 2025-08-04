@@ -140,10 +140,12 @@ export const WeeklyBtn = styled.button`
   border: none;
   border-radius: 15px;
   font-size: 20px;
-  color: #fff;
   font-weight: 600;
   margin-top: 28px;
   margin-bottom: 51px;
   cursor: pointer;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
+  a {
+    color: #fff;
+  }
 `;

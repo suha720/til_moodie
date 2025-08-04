@@ -26,10 +26,30 @@ import {
   TodaySaveTitle,
   TodaySaveWrap,
 } from "../MoodieToday.style";
+import { ContainerMain } from "./Moodie.style";
+import TmpLogo from "../../components/logo/TmpLogo";
+import { Link } from "react-router-dom";
 
 function MoodieToday() {
+  const getWeekInfo = () => {
+    const today = new Date();
+
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1;
+    const date = today.getDate();
+    const week = Math.ceil(date / 7);
+    const day = today.getDay();
+    const dayNames = ["일", "월", "화", "수", "목", "금", "토"];
+    const dayName = dayNames[day];
+    return { year, month, date, dayName };
+  };
+
+  const { year, month, date, dayName } = getWeekInfo();
+
   return (
-    <>
+    <ContainerMain>
+      <TmpLogo />
+
       <TodaySaveWrap>
         <TodaySaveTitle>오늘의 감정기록을 저장 했어요!</TodaySaveTitle>
         <TodaySaveSubTitle>
@@ -46,7 +66,9 @@ function MoodieToday() {
         </TodaySaveEmotionTextBox>
       </TodaySaveEmotionWrap>
       <DetailDiaryDataWrap>
-        <DetailDiaryDay>2025년 7월 22일 화요일</DetailDiaryDay>
+        <DetailDiaryDay>
+          {year}년 {month}월 {date}일 {dayName}요일
+        </DetailDiaryDay>
         <hr
           style={{
             border: "none",
@@ -95,8 +117,10 @@ function MoodieToday() {
           괜찮아요.
         </AiTipSubTitle>
       </AiTipWrap>
-      <WeeklyBtn>작성 기록 보러가기</WeeklyBtn>
-    </>
+      <WeeklyBtn>
+        <Link to={"/record"}>작성 기록 보러가기</Link>
+      </WeeklyBtn>
+    </ContainerMain>
   );
 }
 
