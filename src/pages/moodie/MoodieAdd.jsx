@@ -214,8 +214,8 @@ function MoodieAdd({ mood, handleAddChange, handleSubmitTest }) {
               ))}
             </CheckBoxImojis> */}
             <CheckBoxImojis style={{ justifyContent: "space-between" }}>
-              {imojis.map(imoji => (
-                <div key={imoji.id}>
+              {imojis.map((imoji, index) => (
+                <div key={index}>
                   <CheckBoxImojiRadio raise={mood.imoji === imoji.label}>
                     <input
                       type="radio"

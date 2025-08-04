@@ -23,7 +23,7 @@ import TmpLogo from "../../components/logo/TmpLogo";
 import MooPopup from "../../components/popups/MooPopup";
 import MooSPopup from "../../components/popups/MooSPopup";
 
-function Moodie() {
+function Moodie({ moodList }) {
   return (
     <>
       <TmpLogo></TmpLogo>
@@ -38,9 +38,9 @@ function Moodie() {
           <p>무디와 함께 감정들을 기록하고 관리해 보아요.</p>
         </Greeting>
 
-        <TmpForm></TmpForm>
+        <TmpForm moodList={moodList}></TmpForm>
 
-        <MainSummary></MainSummary>
+        <MainSummary moodList={moodList}></MainSummary>
 
         <div style={{ width: "390px", margin: "32px auto" }}>
           <RecordButton>

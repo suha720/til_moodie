@@ -3,12 +3,6 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const ListWrapper = styled.div`
-  //   display: grid;
-  //   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  //   gap: 16px;
-  //   width: 360px;
-  //   margin: 16px auto;
-  //   padding: 16px;
   max-width: 390px;
   margin: 0px auto;
   padding: 20px;
@@ -39,11 +33,7 @@ const SeeAll = styled.span`
     font-weight: 600;
     color: #4e741d;
   }
-
   cursor: pointer;
-  /* &:hover {
-    text-decoration: underline;
-  } */
 `;
 
 const EntryBox = styled.div`
@@ -52,10 +42,8 @@ const EntryBox = styled.div`
   align-items: center;
   gap: 12px;
   border-bottom: 1px solid #8dca4250;
-  /* border-radius: 12px; */
   padding: 6px 10px;
   background-color: #fff;
-  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); */
 `;
 
 const DayStyle = styled.div`
@@ -69,7 +57,6 @@ const EmotionStyle = styled.div`
   font-weight: 600;
   color: #fff;
   flex-shrink: 0;
-  /* background-color: #ffdc49; */
   padding: 1px 8px;
   border-radius: 10px;
   transform: translateY(1px);
@@ -82,7 +69,7 @@ const TextStyle = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 100px; /* 고정 너비 */
+  width: 100px;
   flex-shrink: 0;
 `;
 
@@ -101,26 +88,26 @@ const emotionColors = {
   분노: "#EF5350",
   불안: "#A29BFE",
   차분: "#A5D6A7",
-  none: "#E0E0E0", // 감정 데이터가 없을 경우
+  none: "#E0E0E0",
 };
 
-function MainSummary() {
-  // js
+function MainSummary({ moodList }) {
   const [data, setData] = useState([]);
 
-  const weekDays = ["월", "화", "수", "목", "금", "토", "일"];
+  // 미국식 요일 (일요일 시작)
+  const weekDays = ["일", "월", "화", "수", "목", "금", "토"];
   const today = new Date();
+
+  // 이번 주 일요일 (시작)
   const dayOfWeek = today.getDay(); // 0(일) ~ 6(토)
-  const diffToMonday = (dayOfWeek + 6) % 7; // 월요일까지 며칠 전인지
+  const sunday = new Date(today);
+  sunday.setDate(today.getDate() - dayOfWeek);
+  sunday.setHours(0, 0, 0, 0);
 
-  const monday = new Date(today);
-  monday.setDate(today.getDate() - diffToMonday); // 이번주 월요일
-  monday.setHours(0, 0, 0, 0); // 시간 초기화
-
-  // 이번 주 일요일 (끝)
-  const sunday = new Date(monday);
-  sunday.setDate(monday.getDate() + 6);
-  sunday.setHours(23, 59, 59, 999); // 하루의 끝
+  // 이번 주 토요일 (끝)
+  const saturday = new Date(sunday);
+  saturday.setDate(sunday.getDate() + 6);
+  saturday.setHours(23, 59, 59, 999);
 
   const getData = async () => {
     try {
@@ -134,8 +121,8 @@ function MainSummary() {
   };
 
   useEffect(() => {
-    getData();
-  }, []);
+    // getData();
+  }, [moodList]);
 
   const getDominantEmotion = entry => {
     const { joy, sadness, anger, anxiety, calmness } = entry;
@@ -149,21 +136,11 @@ function MainSummary() {
     return Object.entries(emotions).sort((a, b) => b[1] - a[1])[0][0];
   };
 
-  // 이번 주 요일만 필터링 + 요일 중복 제거
-  const filteredData = data.filter(entry => {
+  const weeklyData = moodList.filter(entry => {
     const entryDate = new Date(entry.date);
-    return entryDate >= monday && entryDate <= today;
+    return entryDate >= sunday && entryDate <= saturday;
   });
 
-  const renderedDays = new Set();
-
-  // 감정 기록이 이번 주 안에 있는 것만 필터링
-  const weeklyData = data.filter(entry => {
-    const entryDate = new Date(entry.date);
-    return entryDate >= monday && entryDate <= sunday;
-  });
-
-  // jsx
   return (
     <ListWrapper>
       <CardHeader>
@@ -173,22 +150,25 @@ function MainSummary() {
         </SeeAll>
       </CardHeader>
 
-      {weeklyData.map((entry, index) => {
-        const date = new Date(entry.date);
-        const dayIndex = (date.getDay() + 6) % 7; // 월요일을 기준으로 0
-        const day = weekDays[dayIndex];
-        const dominant = getDominantEmotion(entry);
-        return (
-          <EntryBox key={entry.date}>
-            <DayStyle>{day}</DayStyle>
-            <EmotionStyle style={{ backgroundColor: emotionColors[dominant] }}>
-              {dominant}
-            </EmotionStyle>
-            <TextStyle>{entry.message}</TextStyle>
-            <SubTextStyle>{entry.content}</SubTextStyle>
-          </EntryBox>
-        );
-      })}
+      {weeklyData
+        .sort((a, b) => new Date(a.date) - new Date(b.date))
+        .map(entry => {
+          const date = new Date(entry.date);
+          const day = weekDays[date.getDay()];
+          const dominant = getDominantEmotion(entry);
+          return (
+            <EntryBox key={entry.date}>
+              <DayStyle>{day}</DayStyle>
+              <EmotionStyle
+                style={{ backgroundColor: emotionColors[dominant] }}
+              >
+                {dominant}
+              </EmotionStyle>
+              <TextStyle>{entry.message}</TextStyle>
+              <SubTextStyle>{entry.content}</SubTextStyle>
+            </EntryBox>
+          );
+        })}
     </ListWrapper>
   );
 }

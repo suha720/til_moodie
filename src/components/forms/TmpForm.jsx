@@ -118,13 +118,16 @@ const emotionColors = {
 function getCurrentWeekRangeText() {
   const today = new Date();
   const dayOfWeek = today.getDay(); // 0 (일) ~ 6 (토)
-  const diffToMonday = (dayOfWeek + 6) % 7;
 
-  const monday = new Date(today);
-  monday.setDate(today.getDate() - diffToMonday);
+  // 일요일 구하기
+  const sunday = new Date(today);
+  sunday.setDate(today.getDate() - dayOfWeek);
+  sunday.setHours(0, 0, 0, 0);
 
-  const sunday = new Date(monday);
-  sunday.setDate(monday.getDate() + 6);
+  // 토요일 구하기
+  const saturday = new Date(sunday);
+  saturday.setDate(sunday.getDate() + 6);
+  saturday.setHours(23, 59, 59, 999);
 
   const formatDate = date => {
     const yyyy = date.getFullYear();
@@ -133,27 +136,45 @@ function getCurrentWeekRangeText() {
     return `${yyyy}.${mm}.${dd}`;
   };
 
-  return `${formatDate(monday)} ~ ${formatDate(sunday)}`;
+  return `${formatDate(sunday)} ~ ${formatDate(saturday)}`;
 }
 
-function TmpForm() {
+function TmpForm({ moodList }) {
   // js 자리
   const [data, setData] = useState([]);
 
-  const getData = async () => {
-    try {
-      const res = await fetch("/EmotionMock.json");
-      const result = await res.json();
-      setData(result);
-      console.log(result);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // 목업 버전
+  // const getData = async () => {
+  //   try {
+  //     const res = await fetch("/EmotionMock.json");
+  //     const result = await res.json();
+  //     setData(result);
+  //     console.log(result);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  // 직접 받아오기 버전
+  // const getData = () => {
+  //   try {
+  //     const stored = localStorage.getItem("moodieList");
+  //     if (stored) {
+  //       const parsed = JSON.parse(stored);
+  //       setData(parsed);
+  //       console.log(parsed);
+  //     } else {
+  //       console.log("No moodieList in localStorage");
+  //     }
+  //   } catch (error) {
+  //     console.error("Failed to load moodieList from localStorage:", error);
+  //   }
+  // };
 
   useEffect(() => {
-    getData();
-  }, []);
+    // getData();
+    console.log("받은 데이터", moodList);
+  }, [moodList]);
 
   const calculateOverallScore = item => {
     const { joy, sadness, anger, anxiety, calmness } = item;
@@ -208,22 +229,20 @@ function TmpForm() {
 
     // 오늘 날짜 기준
     const today = new Date();
+
     const dayOfWeek = today.getDay(); // 0 (일) ~ 6 (토)
-    const diffToMonday = (dayOfWeek + 6) % 7; // 월요일까지 며칠 전인지
-    const monday = new Date(today);
-    monday.setDate(today.getDate() - diffToMonday);
-    monday.setHours(0, 0, 0, 0);
+    const sunday = new Date(today);
+    sunday.setDate(today.getDate() - dayOfWeek);
+    sunday.setHours(0, 0, 0, 0);
 
-    const sunday = new Date(monday);
-    sunday.setDate(monday.getDate() + 6);
-    sunday.setHours(23, 59, 59, 999);
-
+    const saturday = new Date(sunday);
+    saturday.setDate(sunday.getDate() + 6);
+    saturday.setHours(23, 59, 59, 999);
     data.forEach(item => {
       if (!item.date) return;
 
       const dateObj = new Date(item.date);
-      if (dateObj < monday || dateObj > sunday) return;
-
+      if (dateObj < sunday || dateObj > saturday) return;
       const dayName = days[dateObj.getDay()];
       const emotions = {
         joy: item.joy,
@@ -252,19 +271,10 @@ function TmpForm() {
       };
     });
   };
-  const chartData = prepareOverallScoreData(data);
+  const chartData = prepareOverallScoreData(moodList);
   // jsx 자리
   return (
     <div>
-      {/* <LoginForm action="">
-        <LoginLabel htmlFor="username">아이디</LoginLabel>
-        <LoginInput id="username" name="username" />
-        <LoginLabel htmlFor="password">비밀번호</LoginLabel>
-        <LoginInput id="password" name="password" type="password" />
-        <LoginBtn>클릭</LoginBtn>
-        <LoginBtn type="reset">취소</LoginBtn>
-      </LoginForm>
-      <hr /> */}
       <Card>
         <CardHeader>
           <CardTitle>
