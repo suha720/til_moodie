@@ -189,31 +189,6 @@ function TmpForm({ moodList }) {
     );
   };
 
-  // const prepareOverallScoreData = data => {
-  //   const days = ["일", "월", "화", "수", "목", "금", "토"];
-  //   const scoresByDay = {
-  //     일: 0,
-  //     월: 0,
-  //     화: 0,
-  //     수: 0,
-  //     목: 0,
-  //     금: 0,
-  //     토: 0,
-  //   };
-
-  //   data.forEach(item => {
-  //     if (!item.date) return;
-  //     const dateObj = new Date(item.date);
-  //     const dayName = days[dateObj.getDay()];
-  //     scoresByDay[dayName] = parseFloat(calculateOverallScore(item).toFixed(2));
-  //   });
-
-  //   return ["월", "화", "수", "목", "금", "토", "일"].map(day => ({
-  //     day,
-  //     score: scoresByDay[day] || 0,
-  //   }));
-  // };
-
   // 감정으로 bar 색 주기
   const prepareOverallScoreData = data => {
     const days = ["일", "월", "화", "수", "목", "금", "토"];

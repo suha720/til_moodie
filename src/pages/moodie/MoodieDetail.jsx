@@ -23,20 +23,43 @@ import {
 } from "./MoodieDetail.style";
 import { ContainerMain } from "./Moodie.style";
 import TmpLogo from "../../components/logo/TmpLogo";
+import moment from "moment";
+import "moment/locale/ko";
 
-function MoodieDetail() {
+function MoodieDetail({ moodList }) {
+  moment.locale("ko");
+  const today = moment().format("YYYY-MM-DD");
+  const todayDiary = moodList.find(item => item.date === today);
+  const todayImoji = todayDiary?.imoji;
+
+  // 종합 감정 점수
+  const calculateOverallScore = item => {
+    const { joy, sadness, anger, anxiety, calmness } = item;
+    return (
+      (2 * joy -
+        2 * sadness -
+        1.5 * anger -
+        1.5 * anxiety +
+        1.5 * calmness +
+        50) /
+      8.5
+    );
+  };
+
   return (
     <ContainerMain>
       <TmpLogo></TmpLogo>
       <AiMoodieBox>
-        <AiMoodieImage src="/기쁨.svg" alt="기쁨" />
+        <AiMoodieImage src={`/${todayImoji}.svg`} alt="기쁨" />
         <AiMoodieTitle>/D/기분 좋은 하루였네요.</AiMoodieTitle>
         <AiMoodieSubTitle>
           /D/이런 날은 나에게 작은 선물을 주는 것도 좋아요!
         </AiMoodieSubTitle>
       </AiMoodieBox>
       <DetailDiaryDataWrap>
-        <DetailDiaryDay>2025년 7월 22일 화요일</DetailDiaryDay>
+        <DetailDiaryDay>
+          {moment().format("YYYY년 MM월 DD일 dddd")}
+        </DetailDiaryDay>
         <hr
           style={{
             border: "none",
@@ -46,35 +69,35 @@ function MoodieDetail() {
           }}
         />
         <DetailDiaryData>
-          /데이터/오늘 운동을 했는데 온몸이 뻐근하다.
-          <br />
-          그래도 개운한 기분이든다. 꾸준히 해야겠다.
-          <br />
-          얼른 집가서 밥먹고싶다. 이번주는 쉬어야겠다.
+          {todayDiary?.content || "오늘 작성된 일기가 없습니다."}
         </DetailDiaryData>
         <DetailDiaryBntWrap>
-          <DetailDiaryBntData>/피곤/</DetailDiaryBntData>
-          <DetailDiaryBntData>/개운/</DetailDiaryBntData>
-          <DetailDiaryBntData>/만족/</DetailDiaryBntData>
+          {todayDiary?.checkboxs?.map((item, index) => (
+            <DetailDiaryBntData key={index}>{item}</DetailDiaryBntData>
+          ))}
         </DetailDiaryBntWrap>
       </DetailDiaryDataWrap>
       <DetailDiaryInsightWrap>
         <DetailDiaryInsightTitle>AI 인사이트</DetailDiaryInsightTitle>
         <DetailDiaryInsightBox>
           <DetailDiaryInsightSubTitle>
-            /D/개운하고 만족스러운 하루!
+            {todayDiary?.title || "오늘 작성된 일기가 없습니다."}
           </DetailDiaryInsightSubTitle>
           <DetailDiaryInsightSubTitleText>
-            /D/개운하고 만족스러운 하루는 큰 성취보다 작은 일상을 잘
-            마무리했을때 찾아옵니다. 해야 할 일을 무리 없이 끝내고, 스스로에게
-            고생했다 말해줄 수 있다면 그 하루는 충분히 의미 있었던 날이에요.
+            {todayDiary?.message || "오늘 작성된 일기가 없습니다."}
           </DetailDiaryInsightSubTitleText>
         </DetailDiaryInsightBox>
       </DetailDiaryInsightWrap>
       <DetailDiaryScoreWrap>
         <DetailDiaryScoreTitle>
           오늘의 감정점수
-          <span className="label">/D/85</span>점
+          <span className="label">
+            {" "}
+            {todayDiary
+              ? `${calculateOverallScore(todayDiary).toFixed(1)} / 10 `
+              : "작성된 일기 없음"}
+          </span>
+          점
         </DetailDiaryScoreTitle>
         <DetailDiaryScoreBox>
           <DetailDiaryScoreText>
