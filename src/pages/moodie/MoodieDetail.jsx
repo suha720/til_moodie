@@ -1,4 +1,3 @@
-import styled from "@emotion/styled";
 import React from "react";
 import {
   AiMoodieBox,
@@ -25,6 +24,7 @@ import { ContainerMain } from "./Moodie.style";
 import TmpLogo from "../../components/logo/TmpLogo";
 import moment from "moment";
 import "moment/locale/ko";
+import EmotionMessages from "./../../apis/EmotionMessages.json";
 
 function MoodieDetail({ moodList }) {
   moment.locale("ko");
@@ -45,16 +45,22 @@ function MoodieDetail({ moodList }) {
       8.5
     );
   };
+  // 랜덤 메시지 선택
+  const messages = EmotionMessages[todayImoji] || [];
+  const randomMessage = messages[
+    Math.floor(Math.random() * messages.length)
+  ] || {
+    title: "오늘 하루는 어땠나요?",
+    subTitle: "당신의 감정을 기록해보세요.",
+  };
 
   return (
     <ContainerMain>
       <TmpLogo></TmpLogo>
       <AiMoodieBox>
         <AiMoodieImage src={`/${todayImoji}.svg`} alt="기쁨" />
-        <AiMoodieTitle>/D/기분 좋은 하루였네요.</AiMoodieTitle>
-        <AiMoodieSubTitle>
-          /D/이런 날은 나에게 작은 선물을 주는 것도 좋아요!
-        </AiMoodieSubTitle>
+        <AiMoodieTitle>{randomMessage.title}</AiMoodieTitle>
+        <AiMoodieSubTitle>{randomMessage.subTitle}</AiMoodieSubTitle>
       </AiMoodieBox>
       <DetailDiaryDataWrap>
         <DetailDiaryDay>

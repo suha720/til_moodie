@@ -6,9 +6,6 @@ import {
   AllRecordCalendarSubText,
   AllRecordCalendarText,
   AllRecordCalendarTextWrap,
-  AllRecordCalendarTopButton,
-  AllRecordCalendarTopButtonWrap,
-  AllRecordCalendarTopTitle,
   AllRecordCalendarTopWrap,
   AllRecordCalendarWrap,
   EmotionStatsEmotionScore,
@@ -29,24 +26,23 @@ import MoodieCategoryBt from "../../components/moodiecategorybutton/MoodieCatego
 
 function MoodieAllRecord() {
   //js
-  const getMonthInfo = () => {
-    const today = new Date();
-    return {
-      year: today.getFullYear(),
-      month: today.getMonth() + 1,
-    };
+
+  const [currentDate, setCurrentDate] = useState(new Date());
+
+  const handleActiveStartDateChange = ({ activeStartDate }) => {
+    setCurrentDate(activeStartDate);
   };
 
-  const [currentDate, setCurrentDate] = useState(getMonthInfo);
+  const leftEmotions = [
+    { name: "불안", src: "./불안.svg" },
+    { name: "평온", src: "./평온.svg" },
+  ];
 
-  const changeMonth = offset => {
-    const newDate = new Date(currentDate.year, currentDate.month - 1 + offset);
-    setCurrentDate({
-      year: newDate.getFullYear(),
-      month: newDate.getMonth() + 1,
-    });
-  };
-
+  const rightEmotions = [
+    { name: "기쁨", src: "./기쁨.svg" },
+    { name: "분노", src: "./분노.svg" },
+    { name: "슬픔", src: "./슬픔.svg" },
+  ];
   //jsx
   return (
     <ContainerMain>
@@ -55,20 +51,14 @@ function MoodieAllRecord() {
 
       <AllRecordCalendarWrap>
         <AllRecordCalendarTopWrap>
-          <AllRecordCalendarTopTitle>{`${currentDate.year}년 ${currentDate.month}월 기록`}</AllRecordCalendarTopTitle>
-          <AllRecordCalendarTopButtonWrap>
-            <AllRecordCalendarTopButton onClick={() => changeMonth(-1)}>
-              {`${currentDate.month - 1}월`}
-            </AllRecordCalendarTopButton>
-            <AllRecordCalendarTopButton onClick={() => changeMonth(1)}>
-              {`${currentDate.month + 1}월`}
-            </AllRecordCalendarTopButton>
-          </AllRecordCalendarTopButtonWrap>
+          <AllCalendar
+            currentDate={currentDate}
+            onActiveStartDateChange={handleActiveStartDateChange}
+          />
         </AllRecordCalendarTopWrap>
-        <AllCalendar year={currentDate.year} month={currentDate.month} />
         <AllRecordCalendarTextWrap>
           <AllRecordCalendarText>
-            {`${currentDate.month}월은`}
+            {currentDate.getMonth() + 1}월은
             <span className="text"> 총 /D/개의 기록이 보관되어 있어요.</span>
           </AllRecordCalendarText>
           <AllRecordCalendarSubText>
@@ -80,7 +70,7 @@ function MoodieAllRecord() {
 
       <MonthlyEmotionReport>
         <MonthlyEmotionReportTitle>
-          {`${currentDate.month}월 모든 기록 감정 요약`}
+          {currentDate.getMonth() + 1}월 모든 기록 감정 요약
         </MonthlyEmotionReportTitle>
         <EmotionStatsInfowrap>
           <EmotionStatsLInfo>
@@ -89,28 +79,20 @@ function MoodieAllRecord() {
           </EmotionStatsLInfo>
           <EmotionStatsRInfo>
             <EmotionStatsLSubInfo>
-              <EmotionStatsEmotionScore>
-                <img className="imgp" src="./불안.svg" alt="불안" />
-                <div className="scoretext">불안 : /D/점</div>
-              </EmotionStatsEmotionScore>
-              <EmotionStatsEmotionScore>
-                <img className="img" src="./평온.svg" alt="평온" />
-                <div className="scoretext">평온 : /D/점</div>
-              </EmotionStatsEmotionScore>
+              {leftEmotions.map((emotion, idx) => (
+                <EmotionStatsEmotionScore key={idx}>
+                  <img className="img" src={emotion.src} alt={emotion.name} />
+                  <div className="scoretext">{emotion.name} : /D/점</div>
+                </EmotionStatsEmotionScore>
+              ))}
             </EmotionStatsLSubInfo>
             <EmotionStatsRSubInfo>
-              <EmotionStatsEmotionScore>
-                <img className="img" src="./기쁨.svg" alt="기쁨" />
-                <div className="scoretext">기쁨 : /D/점</div>
-              </EmotionStatsEmotionScore>
-              <EmotionStatsEmotionScore>
-                <img className="img" src="./분노.svg" alt="분노" />
-                <div className="scoretext">분노 : /D/점</div>
-              </EmotionStatsEmotionScore>
-              <EmotionStatsEmotionScore>
-                <img className="img" src="./슬픔.svg" alt="슬픔" />
-                <div className="scoretext">슬픔 : /D/점</div>
-              </EmotionStatsEmotionScore>
+              {rightEmotions.map((emotion, idx) => (
+                <EmotionStatsEmotionScore key={idx}>
+                  <img className="img" src={emotion.src} alt={emotion.name} />
+                  <div className="scoretext">{emotion.name} : /D/점</div>
+                </EmotionStatsEmotionScore>
+              ))}
             </EmotionStatsRSubInfo>
           </EmotionStatsRInfo>
         </EmotionStatsInfowrap>
