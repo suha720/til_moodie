@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 
 export const AiMoodieBox = styled.div`
-  margin-top: 88px;
+  margin-top: 30px;
   margin-bottom: 30px;
 `;
 export const AiMoodieImage = styled.img`
@@ -13,11 +13,17 @@ export const AiMoodieTitle = styled.h2`
   font-size: 24px;
   font-weight: 600;
   margin-bottom: 9px;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  padding-left: 25px;
+  padding-right: 25px;
 `;
 export const AiMoodieSubTitle = styled.div`
   font-size: 12px;
   color: rgba(0, 0, 0, 0.6);
   font-weight: 400;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 `;
 
 export const DetailDiaryDataWrap = styled.div`
@@ -41,6 +47,8 @@ export const DetailDiaryData = styled.div`
   line-height: 1.5;
   padding: 22px 24px;
   text-align: left;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 `;
 export const DetailDiaryBntWrap = styled.div`
   display: flex;
@@ -93,6 +101,8 @@ export const DetailDiaryInsightSubTitleText = styled.div`
   font-weight: 400;
   line-height: 1.4;
   padding: 0 27px 21px 27px;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 `;
 
 export const DetailDiaryScoreWrap = styled.div`
@@ -144,8 +154,6 @@ export const WeeklyBtn = styled.button`
   margin-top: 28px;
   margin-bottom: 51px;
   cursor: pointer;
+  color: #ffffffff;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
-  a {
-    color: #fff;
-  }
 `;

@@ -16,29 +16,8 @@ export const AllRecordCalendarTopWrap = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 0 25px;
-  margin-top: 61px;
+  margin-top: 90px;
   margin-bottom: 12px;
-`;
-export const AllRecordCalendarTopTitle = styled.div`
-  font-size: 28px;
-  font-weight: 700;
-  color: #314813;
-`;
-
-export const AllRecordCalendarTopButtonWrap = styled.div`
-  display: flex;
-  gap: 8px;
-`;
-
-export const AllRecordCalendarTopButton = styled.button`
-  font-size: 16px;
-  font-weight: 500;
-  color: #fff;
-  border: none;
-  background-color: #8dca41;
-  padding: 5px 12px;
-  border-radius: 6px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
 `;
 
 export const AllRecordCalendarTextWrap = styled.div`

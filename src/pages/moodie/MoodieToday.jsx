@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   DetailDiaryBntData,
   DetailDiaryBntWrap,
@@ -24,25 +24,15 @@ import {
   TodaySaveSubTitle,
   TodaySaveTitle,
   TodaySaveWrap,
-} from "../MoodieToday.style";
+} from "./MoodieToday.style";
 import { ContainerMain } from "./Moodie.style";
 import TmpLogo from "../../components/logo/TmpLogo";
 import { Link } from "react-router-dom";
+import moment from "moment";
 
 function MoodieToday() {
-  const getWeekInfo = () => {
-    const today = new Date();
-
-    const year = today.getFullYear();
-    const month = today.getMonth() + 1;
-    const date = today.getDate();
-    const week = Math.ceil(date / 7);
-    const day = today.getDay();
-    const dayNames = ["일", "월", "화", "수", "목", "금", "토"];
-    const dayName = dayNames[day];
-    return { year, month, date, dayName };
-  };
-  const { year, month, date, dayName } = getWeekInfo();
+  moment.locale("ko");
+  const today = moment().format("YYYY-MM-DD");
 
   return (
     <ContainerMain>
@@ -65,7 +55,7 @@ function MoodieToday() {
       </TodaySaveEmotionWrap>
       <DetailDiaryDataWrap>
         <DetailDiaryDay>
-          {year}년 {month}월 {date}일 {dayName}요일
+          {moment().format("YYYY년 MM월 DD일 dd요일")}
         </DetailDiaryDay>
         <hr
           style={{
@@ -76,11 +66,8 @@ function MoodieToday() {
           }}
         />
         <DetailDiaryData>
-          /데이터/오늘 운동을 했는데 온몸이 뻐근하다.
-          <br />
-          그래도 개운한 기분이든다. 꾸준히 해야겠다.
-          <br />
-          얼른 집가서 밥먹고싶다. 이번주는 쉬어야겠다.
+          /데이터/오늘 운동을 했는데 온몸이 뻐근하다. 그래도 개운한 기분이든다.
+          꾸준히 해야겠다. 얼른 집가서 밥먹고싶다. 이번주는 쉬어야겠다.
         </DetailDiaryData>
         <DetailDiaryBntWrap>
           <DetailDiaryBntData>/피곤/</DetailDiaryBntData>

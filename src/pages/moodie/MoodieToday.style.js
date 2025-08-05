@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 
 export const TodaySaveWrap = styled.div`
-  margin-top: 90px;
+  margin-top: 80px;
   margin-bottom: 80px;
 `;
 export const TodaySaveTitle = styled.h2`
