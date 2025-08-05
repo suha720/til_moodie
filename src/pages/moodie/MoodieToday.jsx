@@ -28,38 +28,65 @@ import {
 import { ContainerMain } from "./Moodie.style";
 import TmpLogo from "../../components/logo/TmpLogo";
 import { Link } from "react-router-dom";
+import moment from "moment";
+import { ResponsivePie } from "@nivo/pie";
 
-function MoodieToday() {
+function MoodieToday({ moodList }) {
+  const [hasTodayDiary, setHasTodayDiary] = useState(false);
+  const today = moment().format("YYYY-MM-DD");
+  const todayDiary = moodList.find(item => item.date === today);
+  const todayImoji = todayDiary?.imoji;
+
+  useEffect(() => {
+    const today = moment().format("YYYY-MM-DD");
+    const found = moodList.find(item => item.date === today);
+    setHasTodayDiary(!!found);
+  }, [moodList]);
+
   const getWeekInfo = () => {
-    const today = new Date();
+    const today = moment();
 
-    const year = today.getFullYear();
-    const month = today.getMonth() + 1;
-    const date = today.getDate();
+    const year = today.year();
+    const month = today.month() + 1; // moment는 0부터 시작하므로 +1 필요
+    const date = today.date();
     const week = Math.ceil(date / 7);
-    const day = today.getDay();
+    const day = today.day();
     const dayNames = ["일", "월", "화", "수", "목", "금", "토"];
     const dayName = dayNames[day];
+
     return { year, month, date, dayName };
   };
   const { year, month, date, dayName } = getWeekInfo();
 
+  const data = [
+    { id: "기쁨", label: "기쁨", value: todayDiary?.joy },
+    { id: "슬픔", label: "슬픔", value: todayDiary?.sadness },
+    { id: "분노", label: "분노", value: todayDiary?.anger },
+    { id: "불안", label: "불안", value: todayDiary?.anxiety },
+    { id: "평온", label: "평온", value: todayDiary?.calmness },
+  ];
+
   return (
     <ContainerMain>
       <TmpLogo />
-
       <TodaySaveWrap>
-        <TodaySaveTitle>오늘의 감정기록을 저장 했어요!</TodaySaveTitle>
+        <TodaySaveTitle>
+          {hasTodayDiary
+            ? "오늘의 감정기록을 저장 했어요!"
+            : "오늘 작성된 일기가 없습니다."}
+        </TodaySaveTitle>
         <TodaySaveSubTitle>
           앞으로도 꾸준히 감정 기록을 해보아요.
         </TodaySaveSubTitle>
       </TodaySaveWrap>
       <TodaySaveEmotionWrap>
-        <TodaySaveEmotionImg src="/기쁨.svg" />
+        <TodaySaveEmotionImg src={`/${todayImoji}.svg`} />
         <TodaySaveEmotionTextBox>
-          <TodaySaveEmotionTitle>오늘은 기쁜 하루였네요!</TodaySaveEmotionTitle>
+          <TodaySaveEmotionTitle>
+            {todayDiary?.title[2] || "오늘 작성된 일기가 없습니다."}
+          </TodaySaveEmotionTitle>
           <TodaySaveEmotionSubTitle>
-            이 기분을 이어서 좋아하는 일을 더 해보는 건 어때요?
+            {todayDiary?.message[2] || "오늘 작성된 일기가 없습니다."}
           </TodaySaveEmotionSubTitle>
         </TodaySaveEmotionTextBox>
       </TodaySaveEmotionWrap>
@@ -76,16 +103,12 @@ function MoodieToday() {
           }}
         />
         <DetailDiaryData>
-          /데이터/오늘 운동을 했는데 온몸이 뻐근하다.
-          <br />
-          그래도 개운한 기분이든다. 꾸준히 해야겠다.
-          <br />
-          얼른 집가서 밥먹고싶다. 이번주는 쉬어야겠다.
+          {todayDiary?.content || "오늘 작성된 일기가 없습니다."}
         </DetailDiaryData>
         <DetailDiaryBntWrap>
-          <DetailDiaryBntData>/피곤/</DetailDiaryBntData>
-          <DetailDiaryBntData>/개운/</DetailDiaryBntData>
-          <DetailDiaryBntData>/만족/</DetailDiaryBntData>
+          {todayDiary?.checkboxs?.map((item, index) => (
+            <DetailDiaryBntData key={index}>{item}</DetailDiaryBntData>
+          ))}
         </DetailDiaryBntWrap>
       </DetailDiaryDataWrap>
       <DetailDiaryInsightWrap>
@@ -94,15 +117,16 @@ function MoodieToday() {
         </DetailDiaryInsightTitle>
         <DetailDiaryInsightBox>
           <DetailDiaryInsightSubTitle>
-            /D/개운하고 만족스러운 하루!
+            {todayDiary?.title[0] || "오늘 작성된 일기가 없습니다."}
           </DetailDiaryInsightSubTitle>
           <DetailDiaryInsightSubTitleText>
-            /D/스스로에게 고생했다 말해 줄 수 있다면 그 하루는 충분히 의미있는
-            날이에요.
+            {todayDiary?.message[0] || "오늘 작성된 일기가 없습니다."}
           </DetailDiaryInsightSubTitleText>
         </DetailDiaryInsightBox>
       </DetailDiaryInsightWrap>
-      <AiTipWrap>
+
+      {/* 재활용 고려중 start */}
+      {/* <AiTipWrap>
         <AiTipTitle>
           <img className="img" src="./tipicon.svg" alt="팁" />
           당신에게 딱 맞는 팁
@@ -114,7 +138,47 @@ function MoodieToday() {
           챙기고요. 이번 주 쉬고 싶다면 가볍게 걷기나 요가처럼 부담 없는 활동도
           괜찮아요.
         </AiTipSubTitle>
-      </AiTipWrap>
+      </AiTipWrap> */}
+      {/* 재활용 고려중 end */}
+
+      <div
+        style={{
+          width: 390,
+          height: 390,
+          margin: "32px auto",
+          padding: 20,
+          background: "white",
+          borderRadius: 15,
+          boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.15)",
+        }}
+      >
+        <AiTipTitle>오늘의 감정분포</AiTipTitle>
+        <ResponsivePie
+          data={data}
+          margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
+          innerRadius={0.5}
+          padAngle={0.7}
+          cornerRadius={3}
+          activeOuterRadiusOffset={8}
+          arcLinkLabelsSkipAngle={10}
+          arcLinkLabelsTextColor="#333"
+          arcLinkLabelsThickness={2}
+          arcLinkLabelsColor={{ from: "color" }}
+          arcLabelsSkipAngle={10}
+          arcLabelsTextColor={{ from: "color", modifiers: [["darker", 2]] }}
+          legends={[
+            {
+              anchor: "bottom",
+              direction: "row",
+              translateY: 56,
+              itemWidth: 60,
+              itemHeight: 18,
+              symbolShape: "circle",
+            },
+          ]}
+        />
+      </div>
+
       <WeeklyBtn>
         <Link to={"/record"}>작성 기록 보러가기</Link>
       </WeeklyBtn>

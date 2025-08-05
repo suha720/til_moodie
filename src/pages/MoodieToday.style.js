@@ -39,6 +39,11 @@ export const TodaySaveEmotionTitle = styled.div`
   font-size: 16px;
   font-weight: 600;
   color: #4e741d;
+
+  width: 290px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 export const TodaySaveEmotionSubTitle = styled.div`
   text-align: left;
