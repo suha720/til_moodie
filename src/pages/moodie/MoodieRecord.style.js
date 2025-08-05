@@ -8,7 +8,7 @@ export const MoodieCategoryBtnWrap = styled.div`
 `;
 export const MoodieCategoryMainBtnWrap = styled.div`
   display: flex;
-  gap: 10px;
+  justify-content: space-between;
   margin: 0 auto;
 `;
 export const MoodieCategoryMainBtn = styled.button`
@@ -21,18 +21,19 @@ export const MoodieCategoryMainBtn = styled.button`
 
   border: none;
   border-radius: 10px;
-  padding: 12px 58px;
+  padding: 12px 56px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
   cursor: pointer;
 `;
 export const MoodieCategorySubBtnWrap = styled.div`
   display: flex;
   gap: 5px;
+  width: 390px;
   margin: 0 auto;
   background-color: #8dca41;
   border-radius: 10px;
   padding: 5px;
-  margin-top: 14px;
+  margin-top: 12px;
 `;
 export const MoodieCategorySubBtn = styled.button`
   color: ${({ isActive }) => (isActive ? "#6b9931" : "#fff")};

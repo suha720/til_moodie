@@ -24,7 +24,7 @@ import {
   TodaySaveSubTitle,
   TodaySaveTitle,
   TodaySaveWrap,
-} from "../MoodieToday.style";
+} from "./MoodieToday.style";
 import { ContainerMain } from "./Moodie.style";
 import TmpLogo from "../../components/logo/TmpLogo";
 import { Link } from "react-router-dom";
@@ -69,7 +69,6 @@ function MoodieToday({ moodList }) {
   return (
     <ContainerMain>
       <TmpLogo />
-
       <TodaySaveWrap>
         <TodaySaveTitle>
           {hasTodayDiary
@@ -93,7 +92,7 @@ function MoodieToday({ moodList }) {
       </TodaySaveEmotionWrap>
       <DetailDiaryDataWrap>
         <DetailDiaryDay>
-          {year}년 {month}월 {date}일 {dayName}요일
+          {moment().format("YYYY년 MM월 DD일 dd요일")}
         </DetailDiaryDay>
         <hr
           style={{

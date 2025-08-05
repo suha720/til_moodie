@@ -1,4 +1,3 @@
-import styled from "@emotion/styled";
 import React from "react";
 import {
   AiMoodieBox,
@@ -25,6 +24,7 @@ import { ContainerMain } from "./Moodie.style";
 import TmpLogo from "../../components/logo/TmpLogo";
 import moment from "moment";
 import "moment/locale/ko";
+import EmotionMessages from "./../../apis/EmotionMessages.json";
 
 function MoodieDetail({ moodList }) {
   moment.locale("ko");
@@ -44,6 +44,14 @@ function MoodieDetail({ moodList }) {
         50) /
       8.5
     );
+  };
+  // 랜덤 메시지 선택
+  const messages = EmotionMessages[todayImoji] || [];
+  const randomMessage = messages[
+    Math.floor(Math.random() * messages.length)
+  ] || {
+    title: "오늘 하루는 어땠나요?",
+    subTitle: "당신의 감정을 기록해보세요.",
   };
 
   return (
