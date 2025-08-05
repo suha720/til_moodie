@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   DetailDiaryBntData,
   DetailDiaryBntWrap,
@@ -124,8 +124,6 @@ function MoodieToday({ moodList }) {
           </DetailDiaryInsightSubTitleText>
         </DetailDiaryInsightBox>
       </DetailDiaryInsightWrap>
-
-      {/* 재활용 고려중 start */}
       {/* <AiTipWrap>
         <AiTipTitle>
           <img className="img" src="./tipicon.svg" alt="팁" />
@@ -139,8 +137,6 @@ function MoodieToday({ moodList }) {
           괜찮아요.
         </AiTipSubTitle>
       </AiTipWrap> */}
-      {/* 재활용 고려중 end */}
-
       <div
         style={{
           width: 390,
@@ -178,7 +174,6 @@ function MoodieToday({ moodList }) {
           ]}
         />
       </div>
-
       <WeeklyBtn>
         <Link to={"/record"}>작성 기록 보러가기</Link>
       </WeeklyBtn>
