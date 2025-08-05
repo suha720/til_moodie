@@ -59,8 +59,12 @@ function MoodieDetail({ moodList }) {
       <TmpLogo></TmpLogo>
       <AiMoodieBox>
         <AiMoodieImage src={`/${todayImoji}.svg`} alt="기쁨" />
-        <AiMoodieTitle>{randomMessage.title}</AiMoodieTitle>
-        <AiMoodieSubTitle>{randomMessage.subTitle}</AiMoodieSubTitle>
+        <AiMoodieTitle>
+          {todayDiary?.title[1] || "오늘 작성된 일기가 없습니다."}
+        </AiMoodieTitle>
+        <AiMoodieSubTitle>
+          {todayDiary?.message[1] || "오늘 작성된 일기가 없습니다."}
+        </AiMoodieSubTitle>
       </AiMoodieBox>
       <DetailDiaryDataWrap>
         <DetailDiaryDay>
@@ -87,10 +91,10 @@ function MoodieDetail({ moodList }) {
         <DetailDiaryInsightTitle>AI 인사이트</DetailDiaryInsightTitle>
         <DetailDiaryInsightBox>
           <DetailDiaryInsightSubTitle>
-            {todayDiary?.title || "오늘 작성된 일기가 없습니다."}
+            {todayDiary?.title[0] || "오늘 작성된 일기가 없습니다."}
           </DetailDiaryInsightSubTitle>
           <DetailDiaryInsightSubTitleText>
-            {todayDiary?.message || "오늘 작성된 일기가 없습니다."}
+            {todayDiary?.message[0] || "오늘 작성된 일기가 없습니다."}
           </DetailDiaryInsightSubTitleText>
         </DetailDiaryInsightBox>
       </DetailDiaryInsightWrap>
@@ -107,7 +111,7 @@ function MoodieDetail({ moodList }) {
         </DetailDiaryScoreTitle>
         <DetailDiaryScoreBox>
           <DetailDiaryScoreText>
-            /D/데이터 업데이트 칠 곳을 표시해 두었습니다.
+            {todayDiary?.message[2] || "오늘 작성된 일기가 없습니다."}
           </DetailDiaryScoreText>
         </DetailDiaryScoreBox>
       </DetailDiaryScoreWrap>

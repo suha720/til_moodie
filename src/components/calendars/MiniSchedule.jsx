@@ -1,4 +1,5 @@
 import Calendar from "react-calendar";
+import "./customCalendar.css";
 import React from "react";
 
 function Schedule() {
@@ -15,7 +16,7 @@ function Schedule() {
     <div>
       <h1>캘린더 출력</h1>
       <div style={scWrap}>
-        <Calendar></Calendar>
+        <Calendar calendarType="gregory"></Calendar>
       </div>
     </div>
   );
