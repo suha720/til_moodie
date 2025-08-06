@@ -24,7 +24,7 @@ import {
 } from "./MoodieAllRecord.style";
 import MoodieCategoryBt from "../../components/moodiecategorybutton/MoodieCategoryBt";
 
-function MoodieAllRecord() {
+function MoodieAllRecord({ moodList }) {
   //js
 
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -43,6 +43,14 @@ function MoodieAllRecord() {
     { name: "분노", src: "./분노.svg" },
     { name: "슬픔", src: "./슬픔.svg" },
   ];
+
+  const emotionToImage = {
+    기쁨: "/기쁨.svg",
+    슬픔: "/슬픔.svg",
+    분노: "/분노.svg",
+    불안: "/불안.svg",
+    평온: "/평온.svg",
+  };
   //jsx
   return (
     <ContainerMain>
@@ -54,6 +62,8 @@ function MoodieAllRecord() {
           <AllCalendar
             currentDate={currentDate}
             onActiveStartDateChange={handleActiveStartDateChange}
+            moodList={moodList}
+            emotionToImage={emotionToImage}
           />
         </AllRecordCalendarTopWrap>
         <AllRecordCalendarTextWrap>

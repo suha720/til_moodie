@@ -317,7 +317,10 @@ function Main() {
           ></Route>
           <Route path="edit" element={<MoodieEdit />}></Route>
           <Route path="/weekly" element={<MoodieWeeklyChart />}></Route>
-          <Route path="/allrecord" element={<MoodieAllRecord />}></Route>
+          <Route
+            path="/allrecord"
+            element={<MoodieAllRecord moodList={moodList} />}
+          ></Route>
           {/* <Route
             path="test"
             element={<TestForm onAddDiary={addDiary} />}
