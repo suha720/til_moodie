@@ -25,6 +25,7 @@ import TmpLogo from "../../components/logo/TmpLogo";
 import moment from "moment";
 import "moment/locale/ko";
 import EmotionMessages from "./../../apis/EmotionMessages.json";
+import { Link } from "react-router-dom";
 
 function MoodieDetail({ moodList }) {
   moment.locale("ko");
@@ -115,7 +116,9 @@ function MoodieDetail({ moodList }) {
           </DetailDiaryScoreText>
         </DetailDiaryScoreBox>
       </DetailDiaryScoreWrap>
-      <WeeklyBtn>주간 기록 화면으로</WeeklyBtn>
+      <WeeklyBtn>
+        <Link to={"/record"}>주간 기록 화면으로</Link>
+      </WeeklyBtn>
     </ContainerMain>
   );
 }

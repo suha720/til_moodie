@@ -105,7 +105,7 @@ function MoodieAdd({ mood, handleAddChange, handleSubmitTest }) {
     // 일기 전체 목록 갱신하기
     handleSubmitTest();
     // 메인 페이지로 이동하기
-    navigate("/");
+    navigate("/today");
   };
   // end
   const questions = [

@@ -12,6 +12,7 @@ import TestNivo from "./TestNivo";
 import MoodieWeeklyChart from "./MoodieWeeklyChart";
 import MoodieAllRecord from "./MoodieAllRecord";
 import moment from "moment";
+import ScrollToTop from "../../scrolls/ScrollToTop";
 
 function Main() {
   const initMoodList = [
@@ -290,6 +291,7 @@ function Main() {
   return (
     <div className="wrap">
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Moodie moodList={moodList} />}></Route>
           <Route
@@ -316,7 +318,10 @@ function Main() {
             }
           ></Route>
           <Route path="edit" element={<MoodieEdit />}></Route>
-          <Route path="/weekly" element={<MoodieWeeklyChart />}></Route>
+          <Route
+            path="/weekly"
+            element={<MoodieWeeklyChart moodList={moodList} />}
+          ></Route>
           <Route path="/allrecord" element={<MoodieAllRecord />}></Route>
           {/* <Route
             path="test"

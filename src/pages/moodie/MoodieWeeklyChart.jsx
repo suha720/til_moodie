@@ -23,8 +23,9 @@ import {
   WeeklyEmotionWrap,
 } from "./MoodieWeeklyChart.style";
 
-function MoodieWeeklyChart() {
+function MoodieWeeklyChart({ moodList }) {
   //js
+
   //jsx
   return (
     <ContainerMain>
