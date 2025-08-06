@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import moment from "moment";
 import Calendar from "react-calendar";
 import "./AllCalendar.css";
@@ -36,8 +36,13 @@ const AllCalendar = ({
   // 해당날짜 기분(imoji)찾기
   const getDayMood = date => {
     const targetDate = moment(date).format("YYYY-MM-DD");
-    return moodList.find(item => item.date === targetDate);
+    return moodList?.find(item => item.date === targetDate);
   };
+
+  useEffect(() => {
+    console.log(moodList);
+  }, []);
+
   return (
     <div>
       <Calendar
