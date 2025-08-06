@@ -48,7 +48,7 @@ import WeekCalendar from "../../components/weekcalendar/WeekCalendar";
 import MoodieCategoryBt from "../../components/moodiecategorybutton/MoodieCategoryBt";
 import moment from "moment";
 
-function MoodieRecord() {
+function MoodieRecord({ moodList }) {
   //js
 
   const getWeekInfo = () => {
@@ -114,7 +114,7 @@ function MoodieRecord() {
 
       <RecordWeeklyWrap>
         <RecordWeeklyTitle>{`${month}월 ${week}주차 기록`}</RecordWeeklyTitle>
-        <WeekCalendar />
+        <WeekCalendar moodList={moodList} />
         <RecordWeeklyTextBox>
           <RecordWeeklyText>
             /D/7개 중{" "}
