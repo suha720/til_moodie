@@ -45,7 +45,7 @@ const DateCell = styled.div`
   }
 `;
 
-const WeekCalendar = () => {
+const WeekCalendar = ({ moodList = [] }) => {
   const today = new Date();
 
   // 오늘 포함된 주의 일요일~토요일 구하기
@@ -61,6 +61,14 @@ const WeekCalendar = () => {
   };
 
   const weekDates = getWeekDates(today);
+
+  const emotionToImage = {
+    기쁨: "/기쁨.svg",
+    슬픔: "/슬픔.svg",
+    분노: "/분노.svg",
+    불안: "/불안.svg",
+    평온: "/평온.svg",
+  };
 
   return (
     <CalendarWrapper>
@@ -82,9 +90,34 @@ const WeekCalendar = () => {
             date.getMonth() === today.getMonth() &&
             date.getFullYear() === today.getFullYear();
 
+          // 해당 날짜 문자열로 변환 (YYYY-MM-DD)
+          const dateStr = date.toISOString().slice(0, 10);
+
+          // moodList에서 해당 날짜의 일기 찾기
+          const dayMood = moodList.find(item => item.date === dateStr);
+
           return (
             <DateCell key={date.toISOString()} isToday={isToday}>
               {date.getDate()}
+
+              {/* test */}
+              <div style={{ position: "relative", display: "inline-block" }}>
+                {dayMood?.imoji && (
+                  <img
+                    src={emotionToImage[dayMood.imoji]}
+                    alt={dayMood.imoji}
+                    style={{
+                      position: "absolute",
+                      top: "-30px",
+                      left: "-10px",
+                      transform: "translateX(-50%)",
+                      width: "40px",
+                      height: "40px",
+                      zIndex: 1,
+                    }}
+                  />
+                )}
+              </div>
             </DateCell>
           );
         })}

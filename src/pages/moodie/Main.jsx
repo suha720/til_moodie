@@ -20,7 +20,7 @@ function Main() {
       content:
         "오늘은 친구들과 축구를 했다. 시원한 바람 속에서 땀 흘리며 놀았더니 기분이 좋았다.",
       checkboxs: ["기쁨"],
-      imoji: "기쁨",
+      imoji: "슬픔",
       keywords: ["친구", "축구", "땀", "바람", "기분"],
       joy: 7,
       sadness: 1,
@@ -32,7 +32,7 @@ function Main() {
         "오늘은 친구들과 축구를 하며 즐거운 시간을 보냈군요! ⚽️ 시원한 바람 속에서 땀 흘리는 순간들이 활력을 준 것 같아요 😊 최근에 비해 기쁨이 확 올라간 하루였어요. 이런 좋은 날이 자주 오기를 바랄게요! 내일도 소중한 감정을 일기장에 담아주세요 ✨",
     },
     {
-      date: "2025-08-06",
+      date: "2025-08-07",
       content:
         "회사에서 실수를 해서 팀장님께 혼났다. 하루 종일 마음이 불편하고 우울했다.",
       checkboxs: ["슬픔", "블안"],
@@ -48,7 +48,7 @@ function Main() {
         "오늘은 회사에서 실수로 혼이 나 마음이 많이 무거웠겠어요 😔 최근에 비해 슬픔과 불안이 높아진 하루였네요. 하지만 그런 날도 있어요. 실수는 누구나 하니까 너무 자책하지 마세요. 당신은 충분히 잘하고 있어요 💪 내일은 조금 더 가벼운 마음으로 하루를 마무리하길 응원할게요 🌿",
     },
     {
-      date: "2025-08-07",
+      date: "2025-08-08",
       content:
         "혼자 카페에 가서 조용히 책을 읽었다. 마음이 차분해지는 하루였다.",
       checkboxs: ["기쁨", "평온"],
@@ -283,7 +283,10 @@ function Main() {
             path="/today"
             element={<MoodieToday moodList={moodList} />}
           ></Route>
-          <Route path="/record" element={<MoodieRecord />}></Route>
+          <Route
+            path="/record"
+            element={<MoodieRecord moodList={moodList} />}
+          ></Route>
           <Route path="/statistics" element={<MoodieStatistics />}></Route>
           <Route
             path="/detail"
