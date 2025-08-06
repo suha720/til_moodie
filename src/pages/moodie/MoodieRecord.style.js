@@ -178,7 +178,8 @@ export const RecordAllScore = styled.div`
 `;
 export const RecordScore = styled.div`
   background-color: #95e333;
-  width: 200px;
+  /* width: 200px; */
+  width: ${({ percentage }) => `${percentage}%`};
   height: 7px;
   border-radius: 10px;
 `;
