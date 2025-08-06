@@ -59,11 +59,16 @@ function MoodieToday({ moodList }) {
   const { year, month, date, dayName } = getWeekInfo();
 
   const data = [
-    { id: "기쁨", label: "기쁨", value: todayDiary?.joy },
-    { id: "슬픔", label: "슬픔", value: todayDiary?.sadness },
-    { id: "분노", label: "분노", value: todayDiary?.anger },
-    { id: "불안", label: "불안", value: todayDiary?.anxiety },
-    { id: "평온", label: "평온", value: todayDiary?.calmness },
+    { id: "기쁨", label: "기쁨", value: todayDiary?.joy, color: "#FFD43B" },
+    { id: "슬픔", label: "슬픔", value: todayDiary?.sadness, color: "#527FB3" },
+    { id: "분노", label: "분노", value: todayDiary?.anger, color: "#EF5350" },
+    { id: "불안", label: "불안", value: todayDiary?.anxiety, color: "#A29BFE" },
+    {
+      id: "평온",
+      label: "평온",
+      value: todayDiary?.calmness,
+      color: "#A5D6A7",
+    },
   ];
 
   return (
@@ -151,6 +156,7 @@ function MoodieToday({ moodList }) {
         <AiTipTitle>오늘의 감정분포</AiTipTitle>
         <ResponsivePie
           data={data}
+          colors={{ datum: "data.color" }}
           margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
           innerRadius={0.5}
           padAngle={0.7}
