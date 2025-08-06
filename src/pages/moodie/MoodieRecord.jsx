@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import TmpLogo from "../../components/logo/TmpLogo";
 import { ContainerMain } from "./Moodie.style";
@@ -141,7 +141,41 @@ function MoodieRecord({ moodList }) {
     );
   };
 
-  //jsx
+  const getWeekRange = date => {
+    // US 기준 주 시작일 (일요일)
+    const startOfWeek = moment(date).startOf("week"); // Sunday 기준
+    const endOfWeek = moment(date).endOf("week"); // Saturday
+    return { startOfWeek, endOfWeek };
+  };
+
+  const calculateThisWeekAverageScore = moodList => {
+    if (!Array.isArray(moodList) || moodList.length === 0) return 0;
+
+    const { startOfWeek, endOfWeek } = getWeekRange(new Date());
+
+    // 이번 주에 해당하는 데이터 필터링
+    const thisWeekList = moodList.filter(item => {
+      const itemDate = moment(item.date, "YYYY-MM-DD"); // date가 문자열이라고 가정
+      return itemDate.isBetween(startOfWeek, endOfWeek, null, "[]"); // inclusive 포함
+    });
+
+    if (thisWeekList.length === 0) return 0;
+
+    // 점수 배열 생성
+    const scores = thisWeekList.map(item => calculateOverallScore(item));
+
+    // 평균 계산
+    const averageScore =
+      scores.reduce((sum, score) => sum + score, 0) / scores.length;
+
+    return averageScore;
+  };
+
+  const [avgScore, setAvgScore] = useState(0);
+
+  useEffect(() => {
+    setAvgScore(calculateThisWeekAverageScore(moodList));
+  }, [moodList]);
 
   return (
     <ContainerMain>
@@ -187,15 +221,20 @@ function MoodieRecord({ moodList }) {
                   </RecordTextBoxTop>
                   <RecordTextBoxBottom>
                     <RecordTextBoxBottomTitle>
-                      {record.title}
+                      {record.title[0]}
                     </RecordTextBoxBottomTitle>
                     <RecordTextBoxBottomSubTitle>
-                      {record.message}
+                      {record.message[0]}
                     </RecordTextBoxBottomSubTitle>
                   </RecordTextBoxBottom>
                   <RecordScoreBox>
                     <RecordAllScore>
-                      <RecordScore />
+                      <RecordScore
+                        percentage={Math.floor(
+                          calculateOverallScore(record) * 10,
+                          100,
+                        )}
+                      />
                     </RecordAllScore>
                     <RecordScoreText>
                       {Math.floor(calculateOverallScore(record))}점
@@ -211,11 +250,11 @@ function MoodieRecord({ moodList }) {
         <WeeklyScoreTitle>{`${month}월 ${week}주차 기록 요약`}</WeeklyScoreTitle>
         <WeeklyScoreBox>
           <WeeklyScoreLBox>
-            <WeeklyScoreLNumber>/D/3</WeeklyScoreLNumber>
+            <WeeklyScoreLNumber>{countThisWeek}</WeeklyScoreLNumber>
             <WeeklyScoreLText>총 감정 기록 수</WeeklyScoreLText>
           </WeeklyScoreLBox>
           <WeeklyScoreRBox>
-            <WeeklyScoreRNumber>/D/55</WeeklyScoreRNumber>
+            <WeeklyScoreRNumber>{avgScore.toFixed(1)}</WeeklyScoreRNumber>
             <WeeklyScoreRText>평균 감정 점수</WeeklyScoreRText>
           </WeeklyScoreRBox>
         </WeeklyScoreBox>
