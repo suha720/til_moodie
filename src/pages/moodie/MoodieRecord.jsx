@@ -128,6 +128,19 @@ function MoodieRecord({ moodList }) {
     }
   };
 
+  const calculateOverallScore = item => {
+    const { joy, sadness, anger, anxiety, calmness } = item;
+    return (
+      (2 * joy -
+        2 * sadness -
+        1.5 * anger -
+        1.5 * anxiety +
+        1.5 * calmness +
+        50) /
+      8.5
+    );
+  };
+
   //jsx
 
   return (
@@ -150,41 +163,50 @@ function MoodieRecord({ moodList }) {
           </RecordWeeklySubText>
         </RecordWeeklyTextBox>
       </RecordWeeklyWrap>
+
       <WeeklyRecordBoxWrap>
-        {weeklyRecords.map((record, index) => (
-          <WeeklyRecordBox key={index}>
-            <RecordBox>
-              <RecordImgBox borderColor={emotionBorderColors[record.emotion]}>
-                <RecordImgBoxImg src={record.imgSrc} alt={record.emotion} />
-              </RecordImgBox>
-              <RecordTextBox>
-                <RecordTextBoxTop>
-                  <RecordTextBoxTopEmotion
-                    bgColor={emotionBorderColors[record.emotion]}
-                  >
-                    {record.emotion}
-                  </RecordTextBoxTopEmotion>
-                  <RecordTextBoxTopDate>{record.date}</RecordTextBoxTopDate>
-                </RecordTextBoxTop>
-                <RecordTextBoxBottom>
-                  <RecordTextBoxBottomTitle>
-                    {record.title}
-                  </RecordTextBoxBottomTitle>
-                  <RecordTextBoxBottomSubTitle>
-                    {record.subTitle}
-                  </RecordTextBoxBottomSubTitle>
-                </RecordTextBoxBottom>
-                <RecordScoreBox>
-                  <RecordAllScore>
-                    <RecordScore />
-                  </RecordAllScore>
-                  <RecordScoreText>{record.score}점</RecordScoreText>
-                </RecordScoreBox>
-              </RecordTextBox>
-            </RecordBox>
-          </WeeklyRecordBox>
-        ))}
+        {moodList
+          .sort((a, b) => moment(b.date).diff(moment(a.date)))
+          .map((record, index) => (
+            <WeeklyRecordBox key={index}>
+              <RecordBox>
+                <RecordImgBox borderColor={emotionBorderColors[record.imoji]}>
+                  <RecordImgBoxImg
+                    src={`/${record.imoji}.svg`}
+                    alt={record.imoji}
+                  />
+                </RecordImgBox>
+                <RecordTextBox>
+                  <RecordTextBoxTop>
+                    <RecordTextBoxTopEmotion
+                      bgColor={emotionBorderColors[record.imoji]}
+                    >
+                      {record.imoji}
+                    </RecordTextBoxTopEmotion>
+                    <RecordTextBoxTopDate>{record.date}</RecordTextBoxTopDate>
+                  </RecordTextBoxTop>
+                  <RecordTextBoxBottom>
+                    <RecordTextBoxBottomTitle>
+                      {record.title}
+                    </RecordTextBoxBottomTitle>
+                    <RecordTextBoxBottomSubTitle>
+                      {record.message}
+                    </RecordTextBoxBottomSubTitle>
+                  </RecordTextBoxBottom>
+                  <RecordScoreBox>
+                    <RecordAllScore>
+                      <RecordScore />
+                    </RecordAllScore>
+                    <RecordScoreText>
+                      {Math.floor(calculateOverallScore(record))}점
+                    </RecordScoreText>
+                  </RecordScoreBox>
+                </RecordTextBox>
+              </RecordBox>
+            </WeeklyRecordBox>
+          ))}
       </WeeklyRecordBoxWrap>
+
       <WeeklyScoreWrap>
         <WeeklyScoreTitle>{`${month}월 ${week}주차 기록 요약`}</WeeklyScoreTitle>
         <WeeklyScoreBox>
