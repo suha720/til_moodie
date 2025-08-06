@@ -105,7 +105,7 @@ function MoodieDetail({ moodList }) {
             {" "}
             {todayDiary
               ? `${calculateOverallScore(todayDiary).toFixed(1)} / 10 `
-              : "작성된 일기 없음"}
+              : "? / 10 "}
           </span>
           점
         </DetailDiaryScoreTitle>

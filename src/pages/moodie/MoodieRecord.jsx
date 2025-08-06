@@ -48,7 +48,7 @@ import WeekCalendar from "../../components/weekcalendar/WeekCalendar";
 import MoodieCategoryBt from "../../components/moodiecategorybutton/MoodieCategoryBt";
 import moment from "moment";
 
-function MoodieRecord() {
+function MoodieRecord({ moodList }) {
   //js
 
   const getWeekInfo = () => {
@@ -71,6 +71,13 @@ function MoodieRecord() {
   };
 
   const { month, week } = getWeekInfo();
+
+  const todayInfo = getWeekInfo(moment().format("YYYY-MM-DD"));
+
+  const countThisWeek = moodList.filter(item => {
+    const { month, week } = getWeekInfo(item.date);
+    return month === todayInfo.month && week === todayInfo.week;
+  }).length;
 
   const weeklyRecords = [
     {
@@ -105,6 +112,22 @@ function MoodieRecord() {
     화남: "#FB4C36",
     평온: "#8CC942",
   };
+
+  // 일기 수에 따른 코멘트
+  const getWeeklyComment = count => {
+    if (count === 0) {
+      return "이번 주는 좀 바빴나 봐요! 다음 주엔 감정 한 줄씩만 남겨보는 건 어때요? 😊";
+    } else if (count <= 2) {
+      return "한 번이라도 써준 거 정말 좋아요! 시작이 반이니까, 다음엔 좀 더 자주 써봐요 💪";
+    } else if (count <= 4) {
+      return "감정을 하나씩 잘 챙기고 있네요 🙌 조금씩 기록하다 보면 어느새 익숙해질 거예요!";
+    } else if (count <= 6) {
+      return "오! 거의 매일 썼네요 😲 진짜 잘하고 있어요. 자신을 돌보는 힘, 이미 갖고 있는 듯!";
+    } else {
+      return "완.벽. 그 자체✨ 매일매일 감정 챙긴 당신, 너무 멋져요! 스스로도 느껴지죠? 😎";
+    }
+  };
+
   //jsx
 
   return (
@@ -117,12 +140,13 @@ function MoodieRecord() {
         <WeekCalendar />
         <RecordWeeklyTextBox>
           <RecordWeeklyText>
-            /D/7개 중{" "}
-            <span className="label">3개의 기록을 작성완료 했어요.</span>
+            7개 중{" "}
+            <span className="label">
+              {countThisWeek}개의 기록을 작성완료 했어요.
+            </span>
           </RecordWeeklyText>
           <RecordWeeklySubText>
-            /D/차근차근 감정을 기록하며 자신을 돌보고 있어요! 꾸준히 작성하여 큰
-            변화를 만들어 보아요😊
+            {getWeeklyComment(countThisWeek)}
           </RecordWeeklySubText>
         </RecordWeeklyTextBox>
       </RecordWeeklyWrap>
