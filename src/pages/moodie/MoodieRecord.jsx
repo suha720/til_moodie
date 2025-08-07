@@ -47,9 +47,15 @@ import {
 import WeekCalendar from "../../components/weekcalendar/WeekCalendar";
 import MoodieCategoryBt from "../../components/moodiecategorybutton/MoodieCategoryBt";
 import moment from "moment";
+import useFakeLoading from "../../hooks/useFakeLoading";
+import { PulseLoader } from "react-spinners";
+import { generateWeeklyInsights } from "../../services/openai";
+import LoadingSpinner from "../../components/spinners/LoadingSpinner";
 
-function MoodieRecord({ moodList }) {
+function MoodieRecord({ moodList, isLoading }) {
   //js
+
+  const isFakeLoading = useFakeLoading(isLoading, 500);
 
   const getWeekInfo = () => {
     const today = moment();
@@ -171,118 +177,201 @@ function MoodieRecord({ moodList }) {
     return averageScore;
   };
 
+  const getThisWeekRecords = moodList => {
+    const today = moment();
+    const { startOfWeek, endOfWeek } = {
+      startOfWeek: today.clone().startOf("week"),
+      endOfWeek: today.clone().endOf("week"),
+    };
+
+    return moodList.filter(item => {
+      const itemDate = moment(item.date, "YYYY-MM-DD");
+      return itemDate.isBetween(startOfWeek, endOfWeek, null, "[]");
+    });
+  };
+
   const [avgScore, setAvgScore] = useState(0);
 
   useEffect(() => {
     setAvgScore(calculateThisWeekAverageScore(moodList));
   }, [moodList]);
 
+  const [weeklyInsight, setWeeklyInsight] = useState(null);
+
+  useEffect(() => {
+    const fetchWeeklyInsight = async () => {
+      const thisWeekList = getThisWeekRecords(moodList);
+      if (thisWeekList.length === 0) return;
+
+      const emotionCount = {};
+      thisWeekList.forEach(item => {
+        emotionCount[item.imoji] = (emotionCount[item.imoji] || 0) + 1;
+      });
+      const topEmotion =
+        Object.entries(emotionCount).sort((a, b) => b[1] - a[1])[0]?.[0] || "";
+      const topEmotionRatio = `${Math.round((emotionCount[topEmotion] / thisWeekList.length) * 100)}%`;
+
+      const bestDayData = thisWeekList
+        .map(item => ({
+          date: item.date,
+          score: calculateOverallScore(item),
+        }))
+        .sort((a, b) => b.score - a.score)[0];
+
+      const summaryData = {
+        week: `${month}월 ${week}주차`,
+        totalCount: thisWeekList.length,
+        averageScore: calculateThisWeekAverageScore(thisWeekList).toFixed(1),
+        topEmotion,
+        topEmotionRatio,
+        bestDay: bestDayData?.date,
+        bestDayScore: Math.floor(bestDayData?.score || 0),
+        stability: "다소 안정적", // 추후 분석 가능
+      };
+
+      const result = await generateWeeklyInsights(summaryData);
+      if (result) {
+        setWeeklyInsight(result);
+      }
+    };
+
+    fetchWeeklyInsight();
+  }, [moodList]);
+
   return (
-    <ContainerMain>
-      <TmpLogo />
-      <MoodieCategoryBt />
+    <>
+      <TmpLogo></TmpLogo>
+      {isFakeLoading ? (
+        <ContainerMain style={{ textAlign: "center", paddingTop: "120px" }}>
+          <LoadingSpinner />
+        </ContainerMain>
+      ) : (
+        <ContainerMain>
+          {/* <TmpLogo /> */}
+          <MoodieCategoryBt />
 
-      <RecordWeeklyWrap>
-        <RecordWeeklyTitle>{`${month}월 ${week}주차 기록`}</RecordWeeklyTitle>
-        <WeekCalendar moodList={moodList} />
-        <RecordWeeklyTextBox>
-          <RecordWeeklyText>
-            7개 중{" "}
-            <span className="label">
-              {countThisWeek}개의 기록을 작성완료 했어요.
-            </span>
-          </RecordWeeklyText>
-          <RecordWeeklySubText>
-            {getWeeklyComment(countThisWeek)}
-          </RecordWeeklySubText>
-        </RecordWeeklyTextBox>
-      </RecordWeeklyWrap>
+          <RecordWeeklyWrap>
+            <RecordWeeklyTitle>{`${month}월 ${week}주차 기록`}</RecordWeeklyTitle>
+            <WeekCalendar moodList={moodList} />
+            <RecordWeeklyTextBox>
+              <RecordWeeklyText>
+                7개 중{" "}
+                <span className="label">
+                  {countThisWeek}개의 기록을 작성완료 했어요.
+                </span>
+              </RecordWeeklyText>
+              <RecordWeeklySubText>
+                {getWeeklyComment(countThisWeek)}
+              </RecordWeeklySubText>
+            </RecordWeeklyTextBox>
+          </RecordWeeklyWrap>
 
-      <WeeklyRecordBoxWrap>
-        {moodList
-          .sort((a, b) => moment(b.date).diff(moment(a.date)))
-          .map((record, index) => (
-            <WeeklyRecordBox key={index}>
-              <RecordBox>
-                <RecordImgBox borderColor={emotionBorderColors[record.imoji]}>
-                  <RecordImgBoxImg
-                    src={`/${record.imoji}.svg`}
-                    alt={record.imoji}
-                  />
-                </RecordImgBox>
-                <RecordTextBox>
-                  <RecordTextBoxTop>
-                    <RecordTextBoxTopEmotion
-                      bgColor={emotionBorderColors[record.imoji]}
+          <WeeklyRecordBoxWrap>
+            {getThisWeekRecords(moodList)
+              .sort((a, b) => moment(b.date).diff(moment(a.date)))
+              .map((record, index) => (
+                <WeeklyRecordBox key={index}>
+                  <RecordBox>
+                    <RecordImgBox
+                      borderColor={emotionBorderColors[record.imoji]}
                     >
-                      {record.imoji}
-                    </RecordTextBoxTopEmotion>
-                    <RecordTextBoxTopDate>{record.date}</RecordTextBoxTopDate>
-                  </RecordTextBoxTop>
-                  <RecordTextBoxBottom>
-                    <RecordTextBoxBottomTitle>
-                      {record.title[0]}
-                    </RecordTextBoxBottomTitle>
-                    <RecordTextBoxBottomSubTitle>
-                      {record.message[0]}
-                    </RecordTextBoxBottomSubTitle>
-                  </RecordTextBoxBottom>
-                  <RecordScoreBox>
-                    <RecordAllScore>
-                      <RecordScore
-                        percentage={Math.floor(
-                          calculateOverallScore(record) * 10,
-                          100,
-                        )}
+                      <RecordImgBoxImg
+                        src={`/${record.imoji}.svg`}
+                        alt={record.imoji}
                       />
-                    </RecordAllScore>
-                    <RecordScoreText>
-                      {Math.floor(calculateOverallScore(record))}점
-                    </RecordScoreText>
-                  </RecordScoreBox>
-                </RecordTextBox>
-              </RecordBox>
-            </WeeklyRecordBox>
-          ))}
-      </WeeklyRecordBoxWrap>
+                    </RecordImgBox>
+                    <RecordTextBox>
+                      <RecordTextBoxTop>
+                        <RecordTextBoxTopEmotion
+                          bgColor={emotionBorderColors[record.imoji]}
+                        >
+                          {record.imoji}
+                        </RecordTextBoxTopEmotion>
+                        <RecordTextBoxTopDate>
+                          {record.date}
+                        </RecordTextBoxTopDate>
+                      </RecordTextBoxTop>
+                      <RecordTextBoxBottom>
+                        <RecordTextBoxBottomTitle>
+                          {record.title[0]}
+                        </RecordTextBoxBottomTitle>
+                        <RecordTextBoxBottomSubTitle>
+                          {record.message[0]}
+                        </RecordTextBoxBottomSubTitle>
+                      </RecordTextBoxBottom>
+                      <RecordScoreBox>
+                        <RecordAllScore>
+                          <RecordScore
+                            percentage={Math.min(
+                              calculateOverallScore(record) * 10,
+                              100,
+                            )}
+                          />
+                        </RecordAllScore>
+                        <RecordScoreText>
+                          {Math.floor(calculateOverallScore(record))}점
+                        </RecordScoreText>
+                      </RecordScoreBox>
+                    </RecordTextBox>
+                  </RecordBox>
+                </WeeklyRecordBox>
+              ))}
+          </WeeklyRecordBoxWrap>
 
-      <WeeklyScoreWrap>
-        <WeeklyScoreTitle>{`${month}월 ${week}주차 기록 요약`}</WeeklyScoreTitle>
-        <WeeklyScoreBox>
-          <WeeklyScoreLBox>
-            <WeeklyScoreLNumber>{countThisWeek}</WeeklyScoreLNumber>
-            <WeeklyScoreLText>총 감정 기록 수</WeeklyScoreLText>
-          </WeeklyScoreLBox>
-          <WeeklyScoreRBox>
-            <WeeklyScoreRNumber>{avgScore.toFixed(1)}</WeeklyScoreRNumber>
-            <WeeklyScoreRText>평균 감정 점수</WeeklyScoreRText>
-          </WeeklyScoreRBox>
-        </WeeklyScoreBox>
-        <WeeklyInsightBox>
-          <WeeklyInsightTitle>🎈 이번 주 인사이트</WeeklyInsightTitle>
-          <WeeklyInsightSubTitle>
-            /D/차근차근 기록하고 있어요! 감정을 돌아보며 점수를 관리해보세요.
-          </WeeklyInsightSubTitle>
-        </WeeklyInsightBox>
-      </WeeklyScoreWrap>
-      <EmotionPatternBox>
-        <EmotionPatternTitle>감정 패턴</EmotionPatternTitle>
-        <EmotionPatternTextBox>
-          <EmotionPatternLBox>
-            <EmotionPatternLText>가장 많이 느낀 감정</EmotionPatternLText>
-            <EmotionPatternLText>가장 좋았던 날</EmotionPatternLText>
-            <EmotionPatternLText>감정 기복</EmotionPatternLText>
-          </EmotionPatternLBox>
-          <EmotionPatternRBox>
-            <EmotionPatternRText>/D/😊기쁨(43%)</EmotionPatternRText>
-            <EmotionPatternRText>/D/2025년 7월 22일(85점)</EmotionPatternRText>
-            <EmotionPatternRText>
-              <span className="point">/D/다소 안정적</span>
-            </EmotionPatternRText>
-          </EmotionPatternRBox>
-        </EmotionPatternTextBox>
-      </EmotionPatternBox>
-    </ContainerMain>
+          <WeeklyScoreWrap>
+            <WeeklyScoreTitle>{`${month}월 ${week}주차 기록 요약`}</WeeklyScoreTitle>
+            <WeeklyScoreBox>
+              <WeeklyScoreLBox>
+                <WeeklyScoreLNumber>{countThisWeek}</WeeklyScoreLNumber>
+                <WeeklyScoreLText>총 감정 기록 수</WeeklyScoreLText>
+              </WeeklyScoreLBox>
+              <WeeklyScoreRBox>
+                <WeeklyScoreRNumber>{avgScore.toFixed(1)}</WeeklyScoreRNumber>
+                <WeeklyScoreRText>평균 감정 점수</WeeklyScoreRText>
+              </WeeklyScoreRBox>
+            </WeeklyScoreBox>
+
+            <WeeklyInsightBox>
+              <WeeklyInsightTitle>🎈 이번 주 인사이트</WeeklyInsightTitle>
+              <WeeklyInsightSubTitle>
+                {weeklyInsight
+                  ? weeklyInsight.insight
+                  : "오늘 작성된 일기가 없습니다."}
+              </WeeklyInsightSubTitle>
+            </WeeklyInsightBox>
+          </WeeklyScoreWrap>
+          <EmotionPatternBox>
+            <EmotionPatternTitle>감정 패턴</EmotionPatternTitle>
+            <EmotionPatternTextBox>
+              <EmotionPatternLBox>
+                <EmotionPatternLText>가장 많이 느낀 감정</EmotionPatternLText>
+                <EmotionPatternLText>가장 좋았던 날</EmotionPatternLText>
+                <EmotionPatternLText>감정 기복</EmotionPatternLText>
+              </EmotionPatternLBox>
+              <EmotionPatternRBox>
+                <EmotionPatternRText>
+                  {weeklyInsight
+                    ? weeklyInsight.topEmotionText
+                    : "오늘 작성된 일기가 없습니다."}
+                </EmotionPatternRText>
+                <EmotionPatternRText>
+                  {weeklyInsight
+                    ? weeklyInsight.bestDayText
+                    : "오늘 작성된 일기가 없습니다."}
+                </EmotionPatternRText>
+                <EmotionPatternRText>
+                  <span className="point">
+                    {weeklyInsight
+                      ? weeklyInsight.stabilityText
+                      : "오늘 작성된 일기가 없습니다."}
+                  </span>
+                </EmotionPatternRText>
+              </EmotionPatternRBox>
+            </EmotionPatternTextBox>
+          </EmotionPatternBox>
+        </ContainerMain>
+      )}
+    </>
   );
 }
 
