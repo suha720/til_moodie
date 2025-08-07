@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import { ResponsiveBar } from "@nivo/bar";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { DotLoader } from "react-spinners";
 
 const LoginForm = styled.form`
   margin: 16px auto;
@@ -139,43 +140,8 @@ function getCurrentWeekRangeText() {
   return `${formatDate(sunday)} ~ ${formatDate(saturday)}`;
 }
 
-function TmpForm({ moodList }) {
+function TmpForm({ moodList, isLoading }) {
   // js 자리
-  const [data, setData] = useState([]);
-
-  // 목업 버전
-  // const getData = async () => {
-  //   try {
-  //     const res = await fetch("/EmotionMock.json");
-  //     const result = await res.json();
-  //     setData(result);
-  //     console.log(result);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // 직접 받아오기 버전
-  // const getData = () => {
-  //   try {
-  //     const stored = localStorage.getItem("moodieList");
-  //     if (stored) {
-  //       const parsed = JSON.parse(stored);
-  //       setData(parsed);
-  //       console.log(parsed);
-  //     } else {
-  //       console.log("No moodieList in localStorage");
-  //     }
-  //   } catch (error) {
-  //     console.error("Failed to load moodieList from localStorage:", error);
-  //   }
-  // };
-
-  useEffect(() => {
-    // getData();
-    console.log("받은 데이터", moodList);
-  }, [moodList]);
-
   const calculateOverallScore = item => {
     const { joy, sadness, anger, anxiety, calmness } = item;
     return (
@@ -270,33 +236,50 @@ function TmpForm({ moodList }) {
         </CardHeader>
 
         <ChartWrapper>
-          <ResponsiveBar
-            data={chartData}
-            keys={["score"]}
-            indexBy="day"
-            margin={{ top: 10, right: 10, bottom: 30, left: 10 }}
-            padding={0.1}
-            colors={({ data }) => emotionColors[data.topEmotion]}
-            enableLabel={false}
-            axisBottom={{
-              tickSize: 0,
-              tickPadding: 10,
-              tickRotation: 0,
-              renderTick: CustomTick,
-            }}
-            axisLeft={null}
-            gridYValues={[]}
-            borderRadius={5}
-            theme={{
-              axis: {
-                ticks: {
-                  text: {
-                    fontSize: 12,
+          {isLoading ? (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                height: "100%",
+              }}
+            >
+              <DotLoader color="#4E741D" size={50} />
+              <p style={{ marginTop: "16px", fontSize: "14px", color: "#666" }}>
+                분석된 감정 데이터를 불러오는 중입니다...
+              </p>
+            </div>
+          ) : (
+            <ResponsiveBar
+              data={chartData}
+              keys={["score"]}
+              indexBy="day"
+              margin={{ top: 10, right: 10, bottom: 30, left: 10 }}
+              padding={0.1}
+              colors={({ data }) => emotionColors[data.topEmotion]}
+              enableLabel={false}
+              axisBottom={{
+                tickSize: 0,
+                tickPadding: 10,
+                tickRotation: 0,
+                renderTick: CustomTick,
+              }}
+              axisLeft={null}
+              gridYValues={[]}
+              borderRadius={5}
+              theme={{
+                axis: {
+                  ticks: {
+                    text: {
+                      fontSize: 12,
+                    },
                   },
                 },
-              },
-            }}
-          />
+              }}
+            />
+          )}
         </ChartWrapper>
       </Card>
     </div>

@@ -28,8 +28,9 @@ import TmpLogo from "../../components/logo/TmpLogo";
 import MooPopup from "../../components/popups/MooPopup";
 import TmpDate from "../../components/dates/TmpDate";
 import { useNavigate } from "react-router-dom";
+import moment from "moment";
 
-function MoodieAdd({ mood, handleAddChange, handleSubmitTest }) {
+function MoodieAdd({ mood, moodList, handleAddChange, handleSubmitTest }) {
   const ConatinerAdd = styled.div`
     max-width: 600px;
     margin: 0 auto;
@@ -114,6 +115,15 @@ function MoodieAdd({ mood, handleAddChange, handleSubmitTest }) {
     "· 무엇이 그런 기분을 느끼게 했나요?",
     "· 내일은 어떤 하루가 되었으면 좋겠나요?",
   ];
+
+  useEffect(() => {
+    const today = moment().format("YYYY-MM-DD");
+    const alreadyWritten = moodList.some(item => item.date === today);
+
+    if (alreadyWritten) {
+      navigate("/today", { replace: true });
+    }
+  }, [moodList]);
 
   return (
     <ContainerMain>

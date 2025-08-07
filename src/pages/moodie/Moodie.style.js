@@ -28,6 +28,7 @@ export const MoodiePTag = styled.p`
 // 여기서부터 추가된 것
 
 export const ContainerMain = styled.div`
+  position: relative;
   max-width: 440px;
   margin: 0 auto;
   padding: 24px 0;
