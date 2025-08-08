@@ -23,9 +23,11 @@ import {
   WeeklyEmotionWrap,
 } from "./MoodieWeeklyChart.style";
 
-function MoodieWeeklyChart({ moodList }) {
+function MoodieWeeklyChart({ moodList, monthlyInsights }) {
   //js
-
+  const entries = Object.entries(monthlyInsights).sort(([a], [b]) =>
+    a.localeCompare(b),
+  );
   //jsx
   return (
     <ContainerMain>
@@ -95,6 +97,22 @@ function MoodieWeeklyChart({ moodList }) {
               진실하답니다.
             </WeeklyAiInsightSubText>
           </WeeklyAiInsightBox>
+
+          {entries.map(([monthId, data]) => (
+            <div key={monthId}>
+              <h3>{data.summary.title}</h3>
+              <p>{data.summary.description}</p>
+              <ul>
+                {data.tips?.map((t, i) => (
+                  <li key={i}>{t}</li>
+                ))}
+              </ul>
+              <small>
+                평균: 😀{data.averages.joy} 😔{data.averages.sadness} 😡
+                {data.anger} 😨{data.anxiety} 😌{data.calmness}
+              </small>
+            </div>
+          ))}
         </WeeklyAiInsightWrap>
         <AiAdviceWrap>
           <AiAdviceTitle>AI 맞춤 조언</AiAdviceTitle>

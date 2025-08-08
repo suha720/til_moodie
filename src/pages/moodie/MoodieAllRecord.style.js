@@ -124,7 +124,7 @@ export const MonthlyInsightSubTitle = styled.div`
   font-size: 12px;
   font-weight: 400;
   margin-top: 7px;
-  white-space: nowrap;
+  /* white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
+  text-overflow: ellipsis; */
 `;
