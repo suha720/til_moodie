@@ -26,6 +26,10 @@ import MoodieCategoryBt from "../../components/moodiecategorybutton/MoodieCatego
 import useFakeLoading from "../../hooks/useFakeLoading";
 import LoadingSpinner from "../../components/spinners/LoadingSpinner";
 import moment from "moment";
+import {
+  generateMonthlyInsight,
+  generateMonthlyMessage,
+} from "../../services/openai";
 
 function MoodieAllRecord({ moodList, isLoading }) {
   //js
@@ -37,13 +41,18 @@ function MoodieAllRecord({ moodList, isLoading }) {
     setCurrentDate(activeStartDate);
   };
 
+  // 새로운 시작
+  const getThisMonthRecords = (list, date) => {
+    const m = moment(date);
+    return (list || []).filter(it => {
+      const d = moment(it.date, "YYYY-MM-DD", true); // strict
+      return d.isValid() && d.month() === m.month() && d.year() === m.year();
+    });
+  };
+
+  const thisMonthRecords = getThisMonthRecords(moodList, currentDate);
   const currentMonth = moment(currentDate).month(); // 0부터 시작 (1월 = 0)
-  const countThisMonth = moodList.filter(item => {
-    return (
-      moment(item.date).month() === currentMonth &&
-      moment(item.date).year() === moment(currentDate).year()
-    );
-  }).length;
+  const countThisMonth = thisMonthRecords.length;
 
   const leftEmotions = [
     { name: "불안", src: "./불안.svg" },
@@ -64,43 +73,116 @@ function MoodieAllRecord({ moodList, isLoading }) {
     평온: "/평온.svg",
   };
 
-  // 월별 감정 점수 평균 계산
-  const getMonthlyEmotionAverages = (moodList, currentDate) => {
-    const currentMonth = moment(currentDate).month();
-    const currentYear = moment(currentDate).year();
+  // 종합 감정 점수 (하루)
+  const calculateOverallScore = item => {
+    const { joy, sadness, anger, anxiety, calmness } = item;
+    return (
+      (2 * joy -
+        2 * sadness -
+        1.5 * anger -
+        1.5 * anxiety +
+        1.5 * calmness +
+        50) /
+      8.5
+    );
+  };
 
-    const thisMonthRecords = moodList.filter(item => {
-      const date = moment(item.date, "YYYY-MM-DD");
-      return date.month() === currentMonth && date.year() === currentYear;
-    });
+  // 종합 감정 점수 (월별)
+  let monthlyOverallAverage = 0;
+  if (countThisMonth > 0) {
+    const total = thisMonthRecords.reduce(
+      (sum, it) => sum + calculateOverallScore(it),
+      0,
+    );
+    monthlyOverallAverage = total / countThisMonth;
+  }
 
-    const totals = {
-      joy: 0,
-      sadness: 0,
-      anger: 0,
-      anxiety: 0,
-      calmness: 0,
-    };
-
-    thisMonthRecords.forEach(item => {
-      totals.joy += item.joy || 0;
-      totals.sadness += item.sadness || 0;
-      totals.anger += item.anger || 0;
-      totals.anxiety += item.anxiety || 0;
-      totals.calmness += item.calmness || 0;
-    });
-
-    const count = thisMonthRecords.length || 1; // 0방지
-
+  // 각각 구하기
+  const getMonthlyEmotionAverages = records => {
+    if ((records || []).length === 0) {
+      return { joy: 0, sadness: 0, anger: 0, anxiety: 0, calmness: 0 };
+    }
+    const c = records.length;
+    const totals = records.reduce(
+      (acc, it) => {
+        acc.joy += Number(it.joy) || 0;
+        acc.sadness += Number(it.sadness) || 0;
+        acc.anger += Number(it.anger) || 0;
+        acc.anxiety += Number(it.anxiety) || 0;
+        acc.calmness += Number(it.calmness) || 0;
+        return acc;
+      },
+      { joy: 0, sadness: 0, anger: 0, anxiety: 0, calmness: 0 },
+    );
+    // 소수 버림: Math.floor / 반올림: Math.round
     return {
-      joy: Math.round(totals.joy / count),
-      sadness: Math.round(totals.sadness / count),
-      anger: Math.round(totals.anger / count),
-      anxiety: Math.round(totals.anxiety / count),
-      calmness: Math.round(totals.calmness / count),
+      joy: Math.round(totals.joy / c),
+      sadness: Math.round(totals.sadness / c),
+      anger: Math.round(totals.anger / c),
+      anxiety: Math.round(totals.anxiety / c),
+      calmness: Math.round(totals.calmness / c),
     };
   };
 
+  const emotionKeyByName = {
+    기쁨: "joy",
+    슬픔: "sadness",
+    분노: "anger",
+    불안: "anxiety",
+    평온: "calmness",
+  };
+
+  const monthlyAvg = getMonthlyEmotionAverages(thisMonthRecords);
+
+  const [calendarMessage, setCalendarMessage] = useState("");
+  useEffect(() => {
+    let alive = true;
+
+    (async () => {
+      if (countThisMonth === 0) {
+        setCalendarMessage(
+          "이번 달 기록이 아직 없어요. 오늘 한 줄부터 시작해볼까요? 🙂",
+        );
+        return;
+      }
+      try {
+        const msg = await generateMonthlyMessage({
+          count: countThisMonth,
+          avgScore: monthlyOverallAverage,
+        });
+        if (alive) setCalendarMessage(msg);
+      } catch (e) {
+        if (alive) setCalendarMessage("오늘도 짧게 마음을 남겨보면 좋아요 🙂");
+      }
+    })();
+
+    return () => {
+      alive = false;
+    };
+  }, [countThisMonth, monthlyOverallAverage]);
+
+  const [monthlyInsight, setMonthlyInsight] = useState("");
+
+  useEffect(() => {
+    let alive = true;
+    (async () => {
+      if (countThisMonth === 0) {
+        setMonthlyInsight(
+          "이번 달은 아직 기록이 없어요. 새로운 감정을 남겨보세요 🙂",
+        );
+        return;
+      }
+      try {
+        const msg = await generateMonthlyInsight({ monthlyAvg });
+        if (alive) setMonthlyInsight(msg);
+      } catch {
+        if (alive) setMonthlyInsight("이번 달 감정 경향을 분석할 수 없습니다.");
+      }
+    })();
+    return () => {
+      alive = false;
+    };
+  }, [countThisMonth]);
   //jsx
   return (
     <>
@@ -131,8 +213,10 @@ function MoodieAllRecord({ moodList, isLoading }) {
                 </span>
               </AllRecordCalendarText>
               <AllRecordCalendarSubText>
-                /D/차근 차근 감정을 기록하며 자신을 돌보고 있어요! 꾸준히
-                작성하여 큰 변화를 만들어 보아요☺
+                {calendarMessage ||
+                  (countThisMonth > 0
+                    ? "메시지 생성 중…"
+                    : "이번 달 기록이 아직 없어요.")}
               </AllRecordCalendarSubText>
             </AllRecordCalendarTextWrap>
           </AllRecordCalendarWrap>
@@ -143,7 +227,9 @@ function MoodieAllRecord({ moodList, isLoading }) {
             </MonthlyEmotionReportTitle>
             <EmotionStatsInfowrap>
               <EmotionStatsLInfo>
-                <EmotionStatsLInfoScore>55</EmotionStatsLInfoScore>
+                <EmotionStatsLInfoScore>
+                  {Math.round(monthlyOverallAverage)}
+                </EmotionStatsLInfoScore>
                 <EmotionStatsLInfoText>평균 감정 점수</EmotionStatsLInfoText>
               </EmotionStatsLInfo>
               <EmotionStatsRInfo>
@@ -155,7 +241,10 @@ function MoodieAllRecord({ moodList, isLoading }) {
                         src={emotion.src}
                         alt={emotion.name}
                       />
-                      <div className="scoretext">{emotion.name} : /D/점</div>
+                      <div className="scoretext">
+                        {emotion.name} :{" "}
+                        {monthlyAvg[emotionKeyByName[emotion.name]] || 0}점
+                      </div>
                     </EmotionStatsEmotionScore>
                   ))}
                 </EmotionStatsLSubInfo>
@@ -167,7 +256,10 @@ function MoodieAllRecord({ moodList, isLoading }) {
                         src={emotion.src}
                         alt={emotion.name}
                       />
-                      <div className="scoretext">{emotion.name} : /D/점</div>
+                      <div className="scoretext">
+                        {emotion.name} :{" "}
+                        {monthlyAvg[emotionKeyByName[emotion.name]] || 0}점
+                      </div>
                     </EmotionStatsEmotionScore>
                   ))}
                 </EmotionStatsRSubInfo>
@@ -175,10 +267,7 @@ function MoodieAllRecord({ moodList, isLoading }) {
             </EmotionStatsInfowrap>
             <MonthlyInsightWrap>
               <MonthlyInsightTitle>🎈이번 달 인사이트</MonthlyInsightTitle>
-              <MonthlyInsightSubTitle>
-                /D/이번 달은 기쁨의 감정점수가 높아요! 그 다음 감정은 화남,
-                다음은
-              </MonthlyInsightSubTitle>
+              <MonthlyInsightSubTitle>{monthlyInsight}</MonthlyInsightSubTitle>
             </MonthlyInsightWrap>
           </MonthlyEmotionReport>
         </ContainerMain>

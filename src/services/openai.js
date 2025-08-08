@@ -126,7 +126,57 @@ export async function generateWeeklyInsights(data) {
   }
 }
 
-export async function generateMonthlyInsight(emotionScores) {
+export async function generateMonthlyInsight({ monthlyAvg }) {
+  try {
+    const { joy, sadness, anger, anxiety, calmness } = monthlyAvg;
+
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: "gpt-4o-mini",
+        temperature: 0.7,
+        max_tokens: 150,
+        messages: [
+          {
+            role: "system",
+            content: `
+              당신은 일기 애플리케이션의 감정 분석 AI입니다.
+              아래 제공되는 5가지 감정 점수(0~10) 데이터를 바탕으로 이번 달 감정 경향 인사이트를 작성하세요.
+              조건:
+              - 정확히 1문장
+              - 첫 단어에 "이번 달은"으로 시작
+              - 점수가 높은 순서 상위 3개의 감정을 순서대로 언급
+              - 한국어로 작성, 긍정적이고 따뜻한 톤 유지
+              - 이모지 1~2개 포함
+              - 불필요한 설명, 접두어 없이 바로 문장 출력
+            `,
+          },
+          {
+            role: "user",
+            content: `
+              기쁨: ${Math.round(joy)}점, 슬픔: ${Math.round(sadness)}점, 분노: ${Math.round(anger)}점, 불안: ${Math.round(anxiety)}점, 평온: ${Math.round(calmness)}점
+            `,
+          },
+        ],
+      }),
+    });
+
+    if (!response.ok) throw new Error("OpenAI 요청 실패");
+
+    const data = await response.json();
+    return data?.choices?.[0]?.message?.content?.trim() || "";
+  } catch (err) {
+    console.error("generateMonthlyInsight 오류:", err);
+    return "이번 달은 기쁨이 높고 평온이 뒤를 잇는 안정적인 한 달이었어요 🙂";
+  }
+}
+
+// src/apis/openaiApi.js
+export async function generateMonthlyMessage({ count, avgScore }) {
   try {
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
@@ -135,42 +185,105 @@ export async function generateMonthlyInsight(emotionScores) {
         Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "gpt-3.5-turbo",
-        temperature: 0.6,
-        max_tokens: 300,
+        model: "gpt-4o-mini",
+        temperature: 0.7,
+        max_tokens: 120,
         messages: [
           {
             role: "system",
             content: `
-당신은 감정 기록 앱의 감성 요약 AI입니다.
-사용자의 한 달간 감정 기록 평균 점수를 바탕으로 요약 메시지를 생성해주세요.
+              당신은 일기 애플리케이션의 감정 분석 AI입니다.
+              정확히 두 문장으로만 응답하세요.
+              첫 번째 문장은 상황 정보를 요약합니다(이번 달 기록 개수).
+              두 번째 문장은 사용자가 일기를 꾸준히 쓸 수 있도록 부드럽게 이끌어주는 문장입니다.
+              톤은 따뜻하고 긍정적이며, 과장되거나 명령조는 피하세요.
+              한국어로 작성하고, 전체 응답에 이모지는 1~2개만 포함하세요.
+              줄바꿈이나 머리말 없이 한 줄로만 출력하세요.            `,
+          },
+          {
+            role: "user",
+            content: `
+              - 이번 달에는 ${count}개 기록하셨군요!
+              - 이번 달 평균 감정 점수: ${avgScore}점
 
-다음 데이터를 기반으로, 감정 순위를 정리하고 자연스럽게 설명해주세요:
-
-- joy: ${emotionScores.joy}
-- sadness: ${emotionScores.sadness}
-- anger: ${emotionScores.anger}
-- anxiety: ${emotionScores.anxiety}
-- calmness: ${emotionScores.calmness}
-
-조건:
-1. 가장 높은 감정을 먼저 언급하세요.
-2. 감정 순위를 부드럽게 이어서 설명하세요.
-3. 따뜻하고 동기부여 되는 문장으로 마무리해주세요.
-4. 결과는 한 문장만 작성하세요.
-5. JSON 형식으로 응답하세요. 형식: { "insight": "..." }
-            `,
+              요구사항:
+              - 문장 수: 정확히 2문장
+              - 1문장차: 위 상황 정보를 자연스럽게 요약(숫자 포함)
+              - 2문장차: 오늘도 가볍게 기록을 이어가도록 부드럽게 이끄는 문장
+              - 이모지 1~2개 사용(전체 기준), 과도한 칭찬·명령조 금지
+              - 줄바꿈 금지, 불필요한 설명/접두어 금지              `,
           },
         ],
       }),
     });
 
-    if (!response.ok) throw new Error("OpenAI 인사이트 생성 실패");
+    if (!response.ok) throw new Error("OpenAI 요청 실패");
 
     const data = await response.json();
-    return JSON.parse(data.choices[0].message.content);
-  } catch (error) {
-    console.error("OpenAI 월간 인사이트 오류:", error);
-    return null;
+    const text = data?.choices?.[0]?.message?.content?.trim() || "";
+    return text;
+  } catch (err) {
+    console.error("generateMonthlyMessage 오류:", err);
+    // 실패 시 기본 문구 fallback
+    return "오늘도 스스로를 살피며 한 걸음 나아가고 있어요, 작은 기록이 큰 변화를 만듭니다 🙂";
   }
+}
+
+// 테스트용입니다 삭제 예정
+export async function analyzePeriodInsight({
+  periodLabel,
+  items,
+  averages,
+  topKeywords,
+}) {
+  const payload = {
+    model: "gpt-4o-mini",
+    temperature: 0.5,
+    response_format: { type: "json_object" },
+    messages: [
+      {
+        role: "system",
+        content: `
+당신은 일기 애플리케이션의 기간 인사이트 분석 AI입니다.
+JSON만 출력하세요.
+
+필수 필드:
+
+- "summary":  
+    - "title": 문자열 (15자 이내로 그 주/월의 감정 흐름을 요약한 제목)
+    - "description": 문자열 (2~3문장으로 주요 감정 흐름, 특징, 전반적인 분위기를 서술)
+
+- "tips": 배열 (길이 3)  
+    - 각 요소는 객체이며, 다음 필드를 가집니다:
+        - "title": 문자열 (조언 제목, 10자 이내로 간결하게)
+        - "description": 문자열 (2문장 이상으로 구체적인 실행 방법과 이유를 상세히 작성)
+
+- "highlights": 문자열 배열 (길이 3)  
+    - 각 요소는 기억할 만한 긍정적/중요한 사건, 성취, 깨달음을 간단히 기술      
+    `.trim(),
+      },
+      {
+        role: "user",
+        content: JSON.stringify({
+          period: periodLabel,
+          averages,
+          topKeywords,
+          entries: items, // [{date,title,content(앞부분)}...]
+        }),
+      },
+    ],
+  };
+
+  const res = await fetch("https://api.openai.com/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!res.ok) throw new Error("OpenAI period insight error");
+  const data = await res.json();
+  return JSON.parse(data?.choices?.[0]?.message?.content || "{}");
 }

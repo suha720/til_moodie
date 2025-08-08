@@ -14,6 +14,7 @@ import ScrollToTop from "../../scrolls/ScrollToTop";
 import useMoodList from "../../hooks/useMoodList";
 import { analyzeMood } from "../../services/openai";
 import moment from "moment";
+import useInsights from "../../hooks/useInsights";
 
 function Main() {
   const [moodList, setMoodList] = useMoodList();
@@ -31,6 +32,10 @@ function Main() {
     message: "",
   });
   const [isLoading, setIsLoading] = useState(false);
+
+  // 테스트용 삭제예정
+  const { insights, isInsightLoading } = useInsights(moodList);
+  // 내부 테스트용
 
   const handleAddChange = e => {
     const { name, value, checked, type } = e.target;
@@ -107,7 +112,12 @@ function Main() {
           <Route path="/edit" element={<MoodieEdit />} />
           <Route
             path="/weekly"
-            element={<MoodieWeeklyChart moodList={moodList} />}
+            element={
+              <MoodieWeeklyChart
+                moodList={moodList}
+                monthlyInsights={insights.monthly}
+              />
+            }
           />
           <Route
             path="/allrecord"
