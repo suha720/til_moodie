@@ -1,6 +1,6 @@
 const initMoodList = [
   {
-    date: "2025-08-03",
+    date: "2025-08-10",
     content:
       "오늘은 친구들과 축구를 했다. 시원한 바람 속에서 땀 흘리며 놀았더니 기분이 좋았다.",
     checkboxs: ["기쁨"],
@@ -19,7 +19,7 @@ const initMoodList = [
     ],
   },
   {
-    date: "2025-08-08",
+    date: "2025-08-11",
     content:
       "회사에서 실수를 해서 팀장님께 혼났다. 하루 종일 마음이 불편하고 우울했다.",
     checkboxs: ["슬픔", "블안"],
@@ -38,7 +38,7 @@ const initMoodList = [
     ],
   },
   {
-    date: "2025-08-09",
+    date: "2025-08-12",
     content: "혼자 카페에 가서 조용히 책을 읽었다. 마음이 차분해지는 하루였다.",
     checkboxs: ["기쁨", "평온"],
     imoji: "기쁨",

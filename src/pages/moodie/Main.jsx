@@ -95,7 +95,7 @@ function Main() {
           />
           <Route path="/statistics" element={<MoodieStatistics />} />
           <Route
-            path="/detail"
+            path="/detail/:date?"
             element={<MoodieDetail moodList={moodList} />}
           />
           <Route

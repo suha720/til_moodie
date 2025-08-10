@@ -137,7 +137,7 @@ export async function generateMonthlyInsight({ monthlyAvg }) {
         Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "gpt-4o-mini",
+        model: "gpt-3.5-turbo",
         temperature: 0.7,
         max_tokens: 150,
         messages: [
@@ -185,7 +185,7 @@ export async function generateMonthlyMessage({ count, avgScore }) {
         Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "gpt-4o-mini",
+        model: "gpt-3.5-turbo",
         temperature: 0.7,
         max_tokens: 120,
         messages: [
@@ -237,7 +237,7 @@ export async function analyzePeriodInsight({
   topKeywords,
 }) {
   const payload = {
-    model: "gpt-4o-mini",
+    model: "gpt-3.5-turbo",
     temperature: 0.5,
     response_format: { type: "json_object" },
     messages: [
@@ -245,22 +245,45 @@ export async function analyzePeriodInsight({
         role: "system",
         content: `
 당신은 일기 애플리케이션의 기간 인사이트 분석 AI입니다.
-JSON만 출력하세요.
+반드시 JSON만 출력하세요.
 
-필수 필드:
+[필수 출력 스키마]
+- "summary":
+    - "title": 문자열 (15자 이내)
+    - "description": 문자열 (2~3문장)
+- "tips": 배열 (정확히 3개)
+    - 각 요소: { "title": 문자열(10자 이내), "description": 문자열(2문장 이상, 구체적 실행 방법 포함) }
+- "highlights": 문자열 배열 (정확히 3개)
 
-- "summary":  
-    - "title": 문자열 (15자 이내로 그 주/월의 감정 흐름을 요약한 제목)
-    - "description": 문자열 (2~3문장으로 주요 감정 흐름, 특징, 전반적인 분위기를 서술)
+[데이터 입력]
+- period: 사용자가 제공
+- averages: joy/sadness/anger/anxiety/calmness 평균(0~10)
+- topKeywords: 상위 키워드 배열
+- entries: 기간 내 기록 샘플
 
-- "tips": 배열 (길이 3)  
-    - 각 요소는 객체이며, 다음 필드를 가집니다:
-        - "title": 문자열 (조언 제목, 10자 이내로 간결하게)
-        - "description": 문자열 (2문장 이상으로 구체적인 실행 방법과 이유를 상세히 작성)
+[다음은 답변 JSON 형식의 예시입니다.]
+1) summary.title:
+   "이번주 감정 흐름"
 
-- "highlights": 문자열 배열 (길이 3)  
-    - 각 요소는 기억할 만한 긍정적/중요한 사건, 성취, 깨달음을 간단히 기술      
-    `.trim(),
+2) summary.description(줄바꿈/띄어쓰기 유지):
+   "이번 주는 기쁨도, 슬픔도, 분노도 모두 느낀 한 주였어요. 
+   다양한 감정이 스쳐간 만큼 마음이 열심히 살고있다는 증거예요. 
+   모든 감정은 지나가고, 그 안에서 나를 더 깊이 이해하게 됩니다. 잘 버텨낸 당신이 참 대단해요."
+
+3) tips(줄바꿈/띄어쓰기 유지):
+   {
+     "title": "감정을 건강하게 다루는 습관 만들기",
+     "description": 
+     "😊 기쁨이 있었던 날: 그날 있었던 작은 기쁨을 사진이나 메모로 함께 기록해보세요. 기분이 가라앉을 때 꺼내보는 용기가 됩니다.\\n\\n
+     😢 슬픈 날: 감정을 억누르기보단 5분간 조용히 눈을 감고 호흡에 집중하는 명상을 해보세요. 마음이 가벼워질 거예요.\\n\\n
+     😠 화가 났던 날: 감정이 반복될 경우, 패턴을 메모해 보는 습관을 들여보세요. 어떤 상황에서 화가 나는지 파악하면 감정을 덜 휘둘리게 돼요."
+   }
+
+[나머지 2개 tips와 3개 highlights 생성 규칙]
+- averages와 topKeywords, entries를 근거로 구체적인 실행 조언/하이라이트를 작성
+- 과한 칭찬·명령조는 피하고 따뜻한 톤 유지
+- 불필요한 접두어나 설명 없이 스키마에 맞게만 출력    
+`.trim(),
       },
       {
         role: "user",

@@ -93,7 +93,7 @@ export const RecordWeeklySubText = styled.div`
 
 export const WeeklyRecordBoxWrap = styled.div``;
 
-export const WeeklyRecordBox = styled.div`
+export const WeeklyRecordBox = styled.button`
   margin: 0 auto;
   background-color: #fff;
   border-radius: 15px;
@@ -101,6 +101,9 @@ export const WeeklyRecordBox = styled.div`
   height: 100%;
   margin-top: 12px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+
+  cursor: pointer;
+  border: none;
 `;
 
 export const RecordBox = styled.div`
