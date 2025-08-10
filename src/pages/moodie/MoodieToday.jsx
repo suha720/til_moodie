@@ -38,6 +38,7 @@ function MoodieToday({ moodList, isLoading }) {
   const [hasTodayDiary, setHasTodayDiary] = useState(false);
   const isFakeLoading = useFakeLoading(isLoading, 500);
 
+  moment.locale("ko");
   const today = moment().format("YYYY-MM-DD");
   const todayDiary = useMemo(() => {
     return moodList.find(item => item.date === today);

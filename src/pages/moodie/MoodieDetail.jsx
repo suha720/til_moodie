@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   AiMoodieBox,
   AiMoodieImage,
@@ -25,13 +25,43 @@ import TmpLogo from "../../components/logo/TmpLogo";
 import moment from "moment";
 import "moment/locale/ko";
 import EmotionMessages from "./../../apis/EmotionMessages.json";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 function MoodieDetail({ moodList }) {
   moment.locale("ko");
   const today = moment().format("YYYY-MM-DD");
   const todayDiary = moodList.find(item => item.date === today);
   const todayImoji = todayDiary?.imoji;
+
+  // URL에서 날짜 파라미터 읽기
+  const { date } = useParams();
+  const navigate = useNavigate();
+
+  // date가 없으면 오늘 날짜로 리다이렉트
+  useEffect(() => {
+    if (!date) {
+      const today = moment().format("YYYY-MM-DD");
+      navigate(`/detail/${today}`, { replace: true });
+    }
+  }, [date, navigate]);
+  const targetDate = date || moment().format("YYYY-MM-DD");
+
+  // moodList 안전 처리
+  const safeList = Array.isArray(moodList)
+    ? moodList
+    : (() => {
+        try {
+          const raw = localStorage.getItem("mind-mood");
+          const parsed = JSON.parse(raw || "[]");
+          return Array.isArray(parsed) ? parsed : [];
+        } catch {
+          return [];
+        }
+      })();
+
+  // ✅ 해당 날짜의 일기 찾기
+  const diary = safeList.find(item => item?.date === targetDate);
+  const imoji = diary?.imoji;
 
   // 종합 감정 점수
   const calculateOverallScore = item => {
@@ -59,17 +89,17 @@ function MoodieDetail({ moodList }) {
     <ContainerMain>
       <TmpLogo></TmpLogo>
       <AiMoodieBox>
-        <AiMoodieImage src={`/${todayImoji}.svg`} alt="기쁨" />
+        <AiMoodieImage src={`/${imoji}.svg`} alt="기쁨" />
         <AiMoodieTitle>
-          {todayDiary?.title[1] || "오늘 작성된 일기가 없습니다."}
+          {diary?.title[1] || "오늘 작성된 일기가 없습니다."}
         </AiMoodieTitle>
         <AiMoodieSubTitle>
-          {todayDiary?.message[1] || "오늘 작성된 일기가 없습니다."}
+          {diary?.message[1] || "오늘 작성된 일기가 없습니다."}
         </AiMoodieSubTitle>
       </AiMoodieBox>
       <DetailDiaryDataWrap>
         <DetailDiaryDay>
-          {moment().format("YYYY년 MM월 DD일 dddd")}
+          {moment(targetDate, "YYYY-MM-DD").format("YYYY년 MM월 DD일 dddd")}
         </DetailDiaryDay>
         <hr
           style={{
@@ -80,10 +110,10 @@ function MoodieDetail({ moodList }) {
           }}
         />
         <DetailDiaryData>
-          {todayDiary?.content || "오늘 작성된 일기가 없습니다."}
+          {diary?.content || "오늘 작성된 일기가 없습니다."}
         </DetailDiaryData>
         <DetailDiaryBntWrap>
-          {todayDiary?.checkboxs?.map((item, index) => (
+          {diary?.checkboxs?.map((item, index) => (
             <DetailDiaryBntData key={index}>{item}</DetailDiaryBntData>
           ))}
         </DetailDiaryBntWrap>
@@ -92,10 +122,10 @@ function MoodieDetail({ moodList }) {
         <DetailDiaryInsightTitle>AI 인사이트</DetailDiaryInsightTitle>
         <DetailDiaryInsightBox>
           <DetailDiaryInsightSubTitle>
-            {todayDiary?.title[0] || "오늘 작성된 일기가 없습니다."}
+            {diary?.title[0] || "오늘 작성된 일기가 없습니다."}
           </DetailDiaryInsightSubTitle>
           <DetailDiaryInsightSubTitleText>
-            {todayDiary?.message[0] || "오늘 작성된 일기가 없습니다."}
+            {diary?.message[0] || "오늘 작성된 일기가 없습니다."}
           </DetailDiaryInsightSubTitleText>
         </DetailDiaryInsightBox>
       </DetailDiaryInsightWrap>
@@ -104,15 +134,15 @@ function MoodieDetail({ moodList }) {
           오늘의 감정점수
           <span className="label">
             {" "}
-            {todayDiary
-              ? `${calculateOverallScore(todayDiary).toFixed(1)} / 10 `
+            {diary
+              ? `${calculateOverallScore(diary).toFixed(1)} / 10 `
               : "? / 10 "}
           </span>
           점
         </DetailDiaryScoreTitle>
         <DetailDiaryScoreBox>
           <DetailDiaryScoreText>
-            {todayDiary?.message[2] || "오늘 작성된 일기가 없습니다."}
+            {diary?.message[2] || "오늘 작성된 일기가 없습니다."}
           </DetailDiaryScoreText>
         </DetailDiaryScoreBox>
       </DetailDiaryScoreWrap>

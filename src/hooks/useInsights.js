@@ -12,6 +12,7 @@ const getWeekId = dateStr =>
 
 const getMonthId = dateStr => moment(dateStr, "YYYY-MM-DD").format("YYYY-MM");
 
+// 기존에 생성한 인사이트를 재사용
 const loadInsights = () => {
   try {
     const raw = localStorage.getItem(INSIGHT_KEY);
@@ -27,6 +28,7 @@ const saveInsights = next => {
   localStorage.setItem(INSIGHT_KEY, JSON.stringify(next));
 };
 
+// 요약 통계(평균) 계산
 const calcAverages = items => {
   const n = items.length || 0;
   const sum = items.reduce(

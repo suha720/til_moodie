@@ -51,10 +51,12 @@ import useFakeLoading from "../../hooks/useFakeLoading";
 import { PulseLoader } from "react-spinners";
 import { generateWeeklyInsights } from "../../services/openai";
 import LoadingSpinner from "../../components/spinners/LoadingSpinner";
+import { Navigate, useNavigate } from "react-router-dom";
 
 function MoodieRecord({ moodList, isLoading }) {
   //js
 
+  const navigate = useNavigate();
   const isFakeLoading = useFakeLoading(isLoading, 500);
 
   const getWeekInfo = () => {
@@ -270,7 +272,10 @@ function MoodieRecord({ moodList, isLoading }) {
             {getThisWeekRecords(moodList)
               .sort((a, b) => moment(b.date).diff(moment(a.date)))
               .map((record, index) => (
-                <WeeklyRecordBox key={index}>
+                <WeeklyRecordBox
+                  key={index}
+                  onClick={() => navigate(`/detail/${record.date}`)}
+                >
                   <RecordBox>
                     <RecordImgBox
                       borderColor={emotionBorderColors[record.imoji]}
