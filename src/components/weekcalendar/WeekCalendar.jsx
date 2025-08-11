@@ -109,7 +109,7 @@ const WeekCalendar = ({ moodList = [] }) => {
                     style={{
                       position: "absolute",
                       top: "-30px",
-                      left: "-10px",
+                      left: "-20px",
                       transform: "translateX(-50%)",
                       width: "40px",
                       height: "40px",

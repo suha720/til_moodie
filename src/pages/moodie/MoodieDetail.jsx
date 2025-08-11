@@ -131,7 +131,7 @@ function MoodieDetail({ moodList }) {
       </DetailDiaryInsightWrap>
       <DetailDiaryScoreWrap>
         <DetailDiaryScoreTitle>
-          오늘의 감정점수
+          감정점수
           <span className="label">
             {" "}
             {diary
