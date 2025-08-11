@@ -139,9 +139,7 @@ function MoodieToday({ moodList, isLoading }) {
             </DetailDiaryBntWrap>
           </DetailDiaryDataWrap>
           <DetailDiaryInsightWrap>
-            <DetailDiaryInsightTitle>
-              AI 인사이트 한 줄 요약
-            </DetailDiaryInsightTitle>
+            <DetailDiaryInsightTitle>AI 인사이트</DetailDiaryInsightTitle>
             <DetailDiaryInsightBox>
               <DetailDiaryInsightSubTitle>
                 {todayDiary?.title[0] || "오늘 작성된 일기가 없습니다."}

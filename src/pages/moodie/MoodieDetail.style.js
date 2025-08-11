@@ -20,6 +20,7 @@ export const AiMoodieTitle = styled.h2`
 `;
 export const AiMoodieSubTitle = styled.div`
   font-size: 12px;
+  margin: 0 25px;
   color: rgba(0, 0, 0, 0.6);
   font-weight: 400;
   word-break: keep-all;
