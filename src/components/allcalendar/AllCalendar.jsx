@@ -74,7 +74,7 @@ const AllCalendar = ({
                   position: "absolute",
                   top: "-20px",
                   left: "50%",
-                  transform: "translateX(-90%)",
+                  transform: "translateX(-80%)",
                   width: "40px",
                   height: "40px",
                   zIndex: 2,

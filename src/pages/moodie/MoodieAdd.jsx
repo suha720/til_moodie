@@ -86,7 +86,7 @@ function MoodieAdd({ mood, moodList, handleAddChange, handleSubmitTest }) {
     { label: "기쁨", src: "./기쁨.svg" },
     { label: "슬픔", src: "./슬픔.svg" },
     { label: "불안", src: "./불안.svg" },
-    { label: "화남", src: "./분노.svg" },
+    { label: "분노", src: "./분노.svg" },
     { label: "평온", src: "./평온.svg" },
   ];
 
