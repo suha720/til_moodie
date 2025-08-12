@@ -82,11 +82,6 @@ function MoodieRecord({ moodList, isLoading }) {
 
   const todayInfo = getWeekInfo(moment().format("YYYY-MM-DD"));
 
-  const countThisWeek = moodList.filter(item => {
-    const { month, week } = getWeekInfo(item.date);
-    return month === todayInfo.month && week === todayInfo.week;
-  }).length;
-
   const weeklyRecords = [
     {
       emotion: "기쁨",
@@ -191,6 +186,13 @@ function MoodieRecord({ moodList, isLoading }) {
       return itemDate.isBetween(startOfWeek, endOfWeek, null, "[]");
     });
   };
+
+  // const countThisWeek = moodList.filter(item => {
+  //   const { month, week } = getWeekInfo(item.date);
+  //   return month === todayInfo.month && week === todayInfo.week;
+  // }).length;
+
+  const countThisWeek = getThisWeekRecords(moodList).length;
 
   const [avgScore, setAvgScore] = useState(0);
 
