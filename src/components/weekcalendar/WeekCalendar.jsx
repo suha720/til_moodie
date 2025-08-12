@@ -1,4 +1,6 @@
+import moment from "moment";
 import React from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const weekDays = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
@@ -32,13 +34,18 @@ const DayCell = styled.div`
   }
 `;
 
-const DateCell = styled.div`
+const DateCell = styled.button`
   flex: 1;
   text-align: center;
   font-size: 30px;
   font-weight: 800;
   color: rgba(78, 116, 29, 0.1);
   padding: 8px auto;
+
+  /* 버튼용 */
+  background: transparent;
+  border: none;
+  cursor: pointer;
   // 마지막 요소 제외한 셀에만 적용
   &:not(:last-child) {
     border-right: 1px solid rgba(78, 116, 29, 0.5);
@@ -70,6 +77,8 @@ const WeekCalendar = ({ moodList = [] }) => {
     평온: "/평온.svg",
   };
 
+  const navigate = useNavigate();
+
   return (
     <CalendarWrapper>
       <Row>
@@ -91,13 +100,18 @@ const WeekCalendar = ({ moodList = [] }) => {
             date.getFullYear() === today.getFullYear();
 
           // 해당 날짜 문자열로 변환 (YYYY-MM-DD)
-          const dateStr = date.toISOString().slice(0, 10);
+          const dateStr = moment(date).format("YYYY-MM-DD");
 
           // moodList에서 해당 날짜의 일기 찾기
           const dayMood = moodList.find(item => item.date === dateStr);
 
           return (
-            <DateCell key={date.toISOString()} isToday={isToday}>
+            <DateCell
+              key={date.toISOString()}
+              isToday={isToday}
+              type="button"
+              onClick={() => navigate(`/detail/${dateStr}`)}
+            >
               {date.getDate()}
 
               {/* test */}

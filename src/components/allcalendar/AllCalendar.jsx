@@ -65,6 +65,9 @@ const AllCalendar = ({
 
           const dayMood = getDayMood(date);
 
+          // 해당 날짜 문자열로 변환 (YYYY-MM-DD)
+          const dateStr = moment(date).format("YYYY-MM-DD");
+
           return dayMood?.imoji ? (
             <div style={{ position: "relative" }}>
               <img
@@ -74,13 +77,15 @@ const AllCalendar = ({
                   position: "absolute",
                   top: "-20px",
                   left: "50%",
-                  transform: "translateX(-80%)",
+                  transform: "translateX(-87%)",
                   width: "40px",
                   height: "40px",
                   zIndex: 2,
                   cursor: "pointer",
                 }}
-                onClick={() => navigate("/detail")}
+                onClick={() =>
+                  navigate(`/detail/${moment(date).format("YYYY-MM-DD")}`)
+                }
               />
             </div>
           ) : null;
