@@ -88,7 +88,7 @@ const emotionColors = {
   슬픔: "#527FB3",
   분노: "#EF5350",
   불안: "#A29BFE",
-  차분: "#A5D6A7",
+  평온: "#A5D6A7",
   none: "#E0E0E0",
 };
 
@@ -132,7 +132,7 @@ function MainSummary({ moodList }) {
       슬픔: sadness,
       분노: anger,
       불안: anxiety,
-      차분: calmness,
+      평온: calmness,
     };
     return Object.entries(emotions).sort((a, b) => b[1] - a[1])[0][0];
   };
