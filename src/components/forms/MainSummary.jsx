@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -137,10 +138,9 @@ function MainSummary({ moodList }) {
   };
 
   const weeklyData = moodList.filter(entry => {
-    const entryDate = new Date(entry.date);
-    return entryDate >= sunday && entryDate <= saturday;
+    const d = moment(entry.date, "YYYY-MM-DD", true);
+    return d.isValid() && d.toDate() >= sunday && d.toDate() <= saturday;
   });
-
   return (
     <ListWrapper>
       <CardHeader>
@@ -164,8 +164,16 @@ function MainSummary({ moodList }) {
               >
                 {dominant}
               </EmotionStyle>
-              <TextStyle>{entry.message}</TextStyle>
-              <SubTextStyle>{entry.content}</SubTextStyle>
+              {/* <TextStyle>{entry.message}</TextStyle> */}
+              <TextStyle>
+                {Array.isArray(entry.title) ? entry.title[0] : entry.title}
+              </TextStyle>{" "}
+              {/* <SubTextStyle>{entry.content}</SubTextStyle> */}
+              <SubTextStyle>
+                {Array.isArray(entry.message)
+                  ? entry.message[0]
+                  : entry.message}
+              </SubTextStyle>
             </EntryBox>
           );
         })}
