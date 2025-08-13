@@ -63,9 +63,7 @@ export const WeeklyEmotion = styled.div`
   .settext {
     transform: translateY(5px);
   }
-  .emoji {
-    transform: translateY(-5px);
-  }
+
   .emotionnumber {
     position: absolute;
     top: -10px;
