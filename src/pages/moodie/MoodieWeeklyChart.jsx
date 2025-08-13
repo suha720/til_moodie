@@ -89,10 +89,10 @@ function MoodieWeeklyChart({ moodList, monthlyInsights }) {
                 className="emoji"
                 src="./불안.svg"
                 alt="불안"
-                style={{ width: "60px", height: "56px" }}
+                style={{ width: "50px" }}
               />
               <span className="emotionnumber">{emotionCounts["불안"]}</span>
-              <div className="settext">불안</div>
+              <div className="text">불안</div>
             </WeeklyEmotion>
             <WeeklyEmotion>
               <img src="./분노.svg" alt="분노" style={{ width: "50px" }} />

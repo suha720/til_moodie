@@ -30,6 +30,7 @@ import {
   generateMonthlyInsight,
   generateMonthlyMessage,
 } from "../../services/openai";
+import useInsights from "../../hooks/useInsights";
 
 function MoodieAllRecord({ moodList, isLoading }) {
   //js
@@ -183,6 +184,29 @@ function MoodieAllRecord({ moodList, isLoading }) {
       alive = false;
     };
   }, [countThisMonth]);
+
+  // 커스텀 훅 사용해보기 월 평균, C-Start
+  const { insights, isInsightLoading } = useInsights(moodList);
+  const monthId = moment(currentDate).format("YYYY-MM"); // 예: 2025-08
+  const monthlyAvgFromHook = insights?.monthly?.[monthId]?.averages || null;
+
+  // 월 평균 감정(0~10)으로 종합 점수 환산
+  const calcOverallFromAverages = avg => {
+    if (!avg) return 0;
+    const { joy = 0, sadness = 0, anger = 0, anxiety = 0, calmness = 0 } = avg;
+    return (
+      (2 * joy -
+        2 * sadness -
+        1.5 * anger -
+        1.5 * anxiety +
+        1.5 * calmness +
+        50) /
+      8.5
+    );
+  };
+  const monthlyOverallScore = calcOverallFromAverages(monthlyAvgFromHook);
+  // 커스텀 훅 사용해보기 월 평균, C-End
+
   //jsx
   return (
     <>
@@ -228,7 +252,7 @@ function MoodieAllRecord({ moodList, isLoading }) {
             <EmotionStatsInfowrap>
               <EmotionStatsLInfo>
                 <EmotionStatsLInfoScore>
-                  {Math.round(monthlyOverallAverage)}
+                  {Math.round(monthlyOverallScore)}
                 </EmotionStatsLInfoScore>
                 <EmotionStatsLInfoText>평균 감정 점수</EmotionStatsLInfoText>
               </EmotionStatsLInfo>
