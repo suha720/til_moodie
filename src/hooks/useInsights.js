@@ -7,8 +7,15 @@ moment.updateLocale("en", { week: { dow: 0, doy: 6 } });
 
 const INSIGHT_KEY = "mind-insights";
 
+// const getWeekId = dateStr =>
+//   moment(dateStr, "YYYY-MM-DD").startOf("week").format("YYYY-[W]ww");
+
+// US 주간 고정: 로케일 en을 명시해 startOf/endOf의 기준을 일요일로 고정
 const getWeekId = dateStr =>
-  moment(dateStr, "YYYY-MM-DD").startOf("week").format("YYYY-[W]ww");
+  moment(dateStr, "YYYY-MM-DD")
+    .locale("en")
+    .startOf("week")
+    .format("YYYY-[W]ww");
 
 const getMonthId = dateStr => moment(dateStr, "YYYY-MM-DD").format("YYYY-MM");
 
@@ -113,8 +120,10 @@ export default function useInsights(moodList) {
         const label =
           type === "weekly"
             ? `${id} (${moment(items[0].date)
+                .locale("en")
                 .startOf("week")
                 .format("MMM D")}–${moment(items[0].date)
+                .locale("en")
                 .endOf("week")
                 .format("MMM D")})`
             : `${id}`;
