@@ -31,9 +31,11 @@ function MoodieWeeklyChart({ moodList, monthlyInsights }) {
     a.localeCompare(b),
   );
 
+  // US 주간 고정: 로케일을 en으로 강제 → 일(0)~토(6)
+  const base = moment().locale("en");
   // US 날짜 기준 이번 주 시작/끝 (일요일 시작, 토요일 끝)
-  const startOfWeek = moment().startOf("week"); // locale에 따라 일요일
-  const endOfWeek = moment().endOf("week");
+  const startOfWeek = base.clone().startOf("week"); // 일요일
+  const endOfWeek = base.clone().endOf("week"); // 토요일
 
   // 카운트 초기화
   const emotionCounts = {

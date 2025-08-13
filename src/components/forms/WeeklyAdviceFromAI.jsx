@@ -19,13 +19,15 @@ import {
 
 const EMOTIONS = ["joy", "sadness", "anger", "anxiety", "calmness"];
 
-// 이번 주 범위 계산 (ISO 주: 월~일)
+// 이번 주 범위 계산 (US 주: 일~토)
 function getWeekRange(ref = moment()) {
-  return {
-    start: moment(ref).startOf("isoWeek"),
-    end: moment(ref).endOf("isoWeek"),
-    weekId: `${ref.format("GGGG")}-W${ref.format("WW")}`, // 2025-W32
-  };
+  const base = moment(ref).locale("en"); // <- 로케일 고정
+  // (일요일 시작, 토요일 끝)
+  const start = moment(ref).startOf("week");
+  const end = moment(ref).endOf("week");
+  const weekId = `US-${start.format("YYYY-[W]ww")}`; // 예: US-2025-W32
+
+  return { start, end, weekId };
 }
 
 function buildWeeklyDataset(moodList, ref = moment()) {
