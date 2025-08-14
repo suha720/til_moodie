@@ -156,7 +156,8 @@ export const RecordTextBoxBottomTitle = styled.div`
   font-size: 12px;
   text-align: left;
   font-weight: 600;
-  color: #4e741d;
+  /* color: #4e741d; */
+  color: ${({ ftColor }) => ftColor || "#ffdc49"};
 `;
 export const RecordTextBoxBottomSubTitle = styled.div`
   margin-top: 3px;
