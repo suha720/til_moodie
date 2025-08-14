@@ -271,58 +271,94 @@ function MoodieRecord({ moodList, isLoading }) {
           </RecordWeeklyWrap>
 
           <WeeklyRecordBoxWrap>
+            {/* 긴급 수정 08-14 */}
             {getThisWeekRecords(moodList)
               .sort((a, b) => moment(b.date).diff(moment(a.date)))
-              .map((record, index) => (
-                <WeeklyRecordBox
-                  key={index}
-                  onClick={() => navigate(`/detail/${record.date}`)}
-                >
-                  <RecordBox>
-                    <RecordImgBox
-                      borderColor={emotionBorderColors[record.imoji]}
-                    >
-                      <RecordImgBoxImg
-                        src={`/${record.imoji}.svg`}
-                        alt={record.imoji}
-                      />
-                    </RecordImgBox>
-                    <RecordTextBox>
-                      <RecordTextBoxTop>
-                        <RecordTextBoxTopEmotion
-                          bgColor={emotionBorderColors[record.imoji]}
-                        >
-                          {record.imoji}
-                        </RecordTextBoxTopEmotion>
-                        <RecordTextBoxTopDate>
-                          {record.date}
-                        </RecordTextBoxTopDate>
-                      </RecordTextBoxTop>
-                      <RecordTextBoxBottom>
-                        <RecordTextBoxBottomTitle>
-                          {record.title[0]}
-                        </RecordTextBoxBottomTitle>
-                        <RecordTextBoxBottomSubTitle>
-                          {record.message[0]}
-                        </RecordTextBoxBottomSubTitle>
-                      </RecordTextBoxBottom>
-                      <RecordScoreBox>
-                        <RecordAllScore>
-                          <RecordScore
-                            percentage={Math.min(
-                              calculateOverallScore(record) * 10,
-                              100,
-                            )}
-                          />
-                        </RecordAllScore>
-                        <RecordScoreText>
-                          {Math.floor(calculateOverallScore(record))}점
-                        </RecordScoreText>
-                      </RecordScoreBox>
-                    </RecordTextBox>
-                  </RecordBox>
-                </WeeklyRecordBox>
-              ))}
+              .map((record, index) => {
+                // 추가: 점수 기반 대표 감정 계산 (동점이면 imoji 우선)
+                const emotions = {
+                  기쁨: record.joy,
+                  슬픔: record.sadness,
+                  화남: record.anger, // 파일 내 컬러 키가 "화남"이므로 여기에 맞춰 매핑, 추후에 화남 = 분노 다 고정시키기
+                  불안: record.anxiety,
+                  평온: record.calmness,
+                };
+                const maxScore = Math.max(...Object.values(emotions));
+                const topEmotions = Object.entries(emotions)
+                  .filter(([_, v]) => v === maxScore)
+                  .map(([k]) => k);
+                const chosenEmotion = topEmotions.includes(record.imoji)
+                  ? record.imoji
+                  : topEmotions[0];
+
+                // 추가: 이미지 파일 매핑
+                const emotionToImage = {
+                  기쁨: "/기쁨.svg",
+                  슬픔: "/슬픔.svg",
+                  불안: "/불안.svg",
+                  화남: "/분노.svg",
+                  평온: "/평온.svg",
+                };
+
+                return (
+                  <WeeklyRecordBox
+                    key={index}
+                    onClick={() => navigate(`/detail/${record.date}`)}
+                  >
+                    <RecordBox>
+                      {/* borderColor 기준을 chosenEmotion 으로 */}
+                      <RecordImgBox
+                        borderColor={emotionBorderColors[chosenEmotion]}
+                      >
+                        {/* 이미지 src/alt 를 chosenEmotion 으로 */}
+                        <RecordImgBoxImg
+                          src={emotionToImage[chosenEmotion]}
+                          alt={chosenEmotion}
+                        />
+                      </RecordImgBox>
+
+                      <RecordTextBox>
+                        <RecordTextBoxTop>
+                          {/* ⬇ 변경: 뱃지 색/텍스트도 chosenEmotion 으로 */}
+                          <RecordTextBoxTopEmotion
+                            bgColor={emotionBorderColors[chosenEmotion]}
+                          >
+                            {chosenEmotion}
+                          </RecordTextBoxTopEmotion>
+                          <RecordTextBoxTopDate>
+                            {record.date}
+                          </RecordTextBoxTopDate>
+                        </RecordTextBoxTop>
+
+                        <RecordTextBoxBottom>
+                          <RecordTextBoxBottomTitle
+                            ftColor={emotionBorderColors[chosenEmotion]}
+                          >
+                            {record.title[0]}
+                          </RecordTextBoxBottomTitle>
+                          <RecordTextBoxBottomSubTitle>
+                            {record.message[0]}
+                          </RecordTextBoxBottomSubTitle>
+                        </RecordTextBoxBottom>
+
+                        <RecordScoreBox>
+                          <RecordAllScore>
+                            <RecordScore
+                              percentage={Math.min(
+                                calculateOverallScore(record) * 10,
+                                100,
+                              )}
+                            />
+                          </RecordAllScore>
+                          <RecordScoreText>
+                            {Math.floor(calculateOverallScore(record))}점
+                          </RecordScoreText>
+                        </RecordScoreBox>
+                      </RecordTextBox>
+                    </RecordBox>
+                  </WeeklyRecordBox>
+                );
+              })}{" "}
           </WeeklyRecordBoxWrap>
 
           <WeeklyScoreWrap>

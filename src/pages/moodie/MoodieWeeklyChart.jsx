@@ -37,26 +37,75 @@ function MoodieWeeklyChart({ moodList, monthlyInsights }) {
   const startOfWeek = base.clone().startOf("week"); // 일요일
   const endOfWeek = base.clone().endOf("week"); // 토요일
 
-  // 카운트 초기화
-  const emotionCounts = {
-    기쁨: 0,
-    슬픔: 0,
-    불안: 0,
-    분노: 0,
-    평온: 0,
+  // 이번 주 일기만 (US 주: 일~토)
+  const weeklyItems = moodList.filter(item => {
+    const d = moment(item.date, "YYYY-MM-DD");
+    return d.isBetween(startOfWeek, endOfWeek, "day", "[]");
+  });
+
+  // 키 변환 맵
+  const keyToKo = {
+    joy: "기쁨",
+    sadness: "슬픔",
+    anger: "분노",
+    anxiety: "불안",
+    calmness: "평온",
   };
+  const koToKey = Object.fromEntries(
+    Object.entries(keyToKo).map(([k, v]) => [v, k]),
+  );
+
+  // 각 일기의 '감정의 최고점'을 map으로 계산하고, 동점이면 imoji 선택, (imoji 오타인데, 추후 수정)
+  const winners = weeklyItems.map(it => {
+    const scores = {
+      joy: Number(it.joy) || 0,
+      sadness: Number(it.sadness) || 0,
+      anger: Number(it.anger) || 0,
+      anxiety: Number(it.anxiety) || 0,
+      calmness: Number(it.calmness) || 0,
+    };
+
+    const maxVal = Math.max(...Object.values(scores));
+    const tied = Object.keys(scores).filter(k => scores[k] === maxVal);
+
+    // 단일 최댓값이면 바로 한국어 라벨 반환
+    if (tied.length === 1) return keyToKo[tied[0]];
+
+    // 동점이면 해당 일기의 imoji(대표감정)로 결정, 없으면 첫 번째로
+    const imojiKey = koToKey[it.imoji];
+    const pick = tied.includes(imojiKey) ? imojiKey : tied[0];
+    return keyToKo[pick];
+  });
+
+  // 카운터 집계 (reduce)
+  const emotionCounts = winners.reduce(
+    (acc, ko) => {
+      acc[ko] = (acc[ko] || 0) + 1;
+      return acc;
+    },
+    { 기쁨: 0, 슬픔: 0, 불안: 0, 분노: 0, 평온: 0 },
+  );
+
+  // 카운트 초기화
+  // const emotionCounts = {
+  //   기쁨: 0,
+  //   슬픔: 0,
+  //   불안: 0,
+  //   분노: 0,
+  //   평온: 0,
+  // };
 
   // 이번 주 데이터만 필터해서 카운트
-  moodList.forEach(item => {
-    const date = moment(item.date, "YYYY-MM-DD");
-    if (date.isBetween(startOfWeek, endOfWeek, "day", "[]")) {
-      if (item.imoji) {
-        if (item.imoji in emotionCounts) {
-          emotionCounts[item.imoji] += 1;
-        }
-      }
-    }
-  });
+  // moodList.forEach(item => {
+  //   const date = moment(item.date, "YYYY-MM-DD");
+  //   if (date.isBetween(startOfWeek, endOfWeek, "day", "[]")) {
+  //     if (item.imoji) {
+  //       if (item.imoji in emotionCounts) {
+  //         emotionCounts[item.imoji] += 1;
+  //       }
+  //     }
+  //   }
+  // });
   //jsx
   return (
     <ContainerMain>

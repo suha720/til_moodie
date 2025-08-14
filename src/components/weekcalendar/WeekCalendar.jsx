@@ -116,21 +116,45 @@ const WeekCalendar = ({ moodList = [] }) => {
 
               {/* test */}
               <div style={{ position: "relative", display: "inline-block" }}>
-                {dayMood?.imoji && (
-                  <img
-                    src={emotionToImage[dayMood.imoji]}
-                    alt={dayMood.imoji}
-                    style={{
-                      position: "absolute",
-                      top: "-30px",
-                      left: "-20px",
-                      transform: "translateX(-50%)",
-                      width: "40px",
-                      height: "40px",
-                      zIndex: 1,
-                    }}
-                  />
-                )}
+                {dayMood &&
+                  (() => {
+                    const emotions = {
+                      기쁨: dayMood.joy,
+                      슬픔: dayMood.sadness,
+                      분노: dayMood.anger,
+                      불안: dayMood.anxiety,
+                      평온: dayMood.calmness,
+                    };
+
+                    // 1. 최고 점수 찾기
+                    const maxScore = Math.max(...Object.values(emotions));
+
+                    // 2. 최고 점수를 가진 감정 목록
+                    const topEmotions = Object.entries(emotions)
+                      .filter(([_, score]) => score === maxScore)
+                      .map(([name]) => name);
+
+                    // 3. 동점이면 imoji 값 우선
+                    const topEmotion = topEmotions.includes(dayMood.imoji)
+                      ? dayMood.imoji
+                      : topEmotions[0];
+
+                    return (
+                      <img
+                        src={emotionToImage[topEmotion]}
+                        alt={topEmotion}
+                        style={{
+                          position: "absolute",
+                          top: "-30px",
+                          left: "-20px",
+                          transform: "translateX(-50%)",
+                          width: "40px",
+                          height: "40px",
+                          zIndex: 1,
+                        }}
+                      />
+                    );
+                  })()}
               </div>
             </DateCell>
           );
