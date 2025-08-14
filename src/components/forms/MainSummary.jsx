@@ -160,9 +160,9 @@ function MainSummary({ moodList }) {
             <EntryBox key={entry.date}>
               <DayStyle>{day}</DayStyle>
               <EmotionStyle
-                style={{ backgroundColor: emotionColors[dominant] }}
+                style={{ backgroundColor: emotionColors[entry.imoji] }}
               >
-                {dominant}
+                {entry.imoji}
               </EmotionStyle>
               {/* <TextStyle>{entry.message}</TextStyle> */}
               <TextStyle>
